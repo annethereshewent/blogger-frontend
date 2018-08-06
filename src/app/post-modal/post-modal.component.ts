@@ -44,7 +44,6 @@ export class PostModalComponent implements OnInit {
     imageUploadMethod: 'Post',
     events : {
       'froalaEditor.html.set' : function(e, editor) {
-        console.log("something happened");
         setTimeout(() => {
           editor.events.focus();
           editor.selection.setAfter(editor.$el.get(0));

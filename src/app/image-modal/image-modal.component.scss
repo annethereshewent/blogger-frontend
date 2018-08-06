@@ -1,0 +1,27 @@
+:host {
+  background: #F2F2FA;
+  border-radius: 25px;
+  padding-bottom: 20px;
+}
+h3 {
+  text-align: left;
+  color: #C2C2D6;
+  font-size: 20px;
+  font-style: italic;
+}
+.dropzone {
+  border: 5px dashed grey;
+  background: #52527A;
+  padding-bottom: 40px;
+  text-align:center;
+  margin-top:20px;
+}
+:host ::ng-deep .dz-message {
+  margin-top: 20px;
+}
+:host ::ng-deep .dz-message span {
+
+  font-size: 24px;
+  font-style: italic;
+  color: #C2C2D6;
+}

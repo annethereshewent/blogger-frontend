@@ -15,6 +15,18 @@ import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { SafeHtmlPipe } from "../pipes/safehtml.pipe";
 import { PostModalComponent } from './post-modal/post-modal.component';
 import { YoutubeModalComponent } from './youtube-modal/youtube-modal.component';
+import { DropzoneModule } from 'ngx-dropzone-wrapper';
+import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
+import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
+import { ImageModalComponent } from './image-modal/image-modal.component';
+
+const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
+ // Change this to your upload POST address:
+  url: 'https://httpbin.org/post',
+  maxFilesize: 50,
+  acceptedFiles: 'image/*'
+};
+
 
 const appRoutes: Routes = [
     { 
@@ -47,7 +59,8 @@ const appRoutes: Routes = [
     UsersComponent,
     SafeHtmlPipe,
     PostModalComponent,
-    YoutubeModalComponent
+    YoutubeModalComponent,
+    ImageModalComponent
   ],
   imports: [
     BrowserModule,
@@ -55,6 +68,7 @@ const appRoutes: Routes = [
     ReactiveFormsModule,
     ModalModule.forRoot(),
     HttpClientModule,
+    DropzoneModule,
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     RouterModule.forRoot(
@@ -64,6 +78,6 @@ const appRoutes: Routes = [
   ],
   providers: [RequestService],
   bootstrap: [AppComponent],
-  entryComponents: [PostModalComponent, YoutubeModalComponent]
+  entryComponents: [PostModalComponent, YoutubeModalComponent, ImageModalComponent]
 })
 export class AppModule { }

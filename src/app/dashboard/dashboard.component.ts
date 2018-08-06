@@ -9,6 +9,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { PostModalComponent } from "../post-modal/post-modal.component";
 import { YoutubeModalComponent } from "../youtube-modal/youtube-modal.component";
+import { ImageModalComponent } from "../image-modal/image-modal.component";
 
 declare var $: any;
 
@@ -134,6 +135,13 @@ export class DashboardComponent implements OnInit {
 
   openYoutubeModal(): void {
     this.bsModalRef = this.modalService.show(YoutubeModalComponent, Object.assign({}, { class: "modal-md"}));
+    this.bsModalRef.content.postEmitter.subscribe((post) => {
+      this.posts.unshift(post);
+    })
+  }
+
+  openImageModal(): void {
+    this.bsModalRef = this.modalService.show(ImageModalComponent, Object.assign({}, { class: "modal-md"}));
     this.bsModalRef.content.postEmitter.subscribe((post) => {
       this.posts.unshift(post);
     })
