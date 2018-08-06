@@ -1,0 +1,54 @@
+<div class="row">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <h3>Please Fill in the Required Fields.</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-4"></div>
+  <div class="col-sm-4">
+    <form class="register-panel" [formGroup]="registerForm">
+      <div class="row">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5 form-group">
+          <input type="text" name="blog_title" class="form-control" id="blog_title" [(ngModel)]="blog_title" formControlName="blog_title" placeholder="Blog Title (Optional)">
+        </div>
+        <div class="col-sm-5 form-group">
+          <input type="text" name="username" class="form-control" id="username" [(ngModel)]="username" placeholder="Username" formControlName="username">
+          <p *ngIf="usernameControl.dirty && usernameControl.errors && usernameControl.errors.required" class="error">(This field is required.)</p>
+          <p *ngIf="usernameControl.errors && usernameControl.errors.duplicate" class="error">(Username is already taken.)</p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-5 form-group">
+          <input type="text" name="email" class="form-control" id="email" [(ngModel)]="email" formControlName="email" placeholder="Email">
+          <p *ngIf="emailControl.dirty && emailControl.errors && emailControl.errors.required" class="error">(This field is required.)</p>
+          <p *ngIf="emailControl.dirty && emailControl.errors && emailControl.errors.email" class="error">(Please enter a valid e-mail.)</p>
+          <p *ngIf="emailControl.errors && emailControl.errors.duplicate" class="error">(Email is already in use.)</p>
+        </div>  
+      </div>
+      <div class="row" formGroupName="passwords">
+        <div class="col-sm-1"></div>
+        <div class="col-sm-5 form-group">
+          <input type="password" name="password" class="form-control" id="password" [(ngModel)]="password" formControlName="password" placeholder="Password">
+          <p *ngIf="password2Control.dirty && passwordGroup.errors" class="error">(Passwords must match)</p>
+          <p *ngIf="password2Control.dirty && password2Control.errors && password2Control.errors.min" class="error">(Password must have a minimum of 8 characters)</p>
+        </div>
+        <div class="col-sm-5 form-group">
+          <input type="password" class="form-control" name="password2" id="password2" [(ngModel)]="password2" formControlName="password2" placeholder="Repeat Password">
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-sm-2"></div>  
+        <div class="col-sm-4">
+          <button type="button" (click)="register()" class="btn btn-success" [disabled]="registerForm.invalid">Register</button>
+        </div>
+        <div class="col-sm-4">
+          <button type="button" (click)="openLoginPanel()" class="btn btn-info">Back</button>
+        </div>
+      </div>
+    </form>  
+  </div>
+  
+</div>

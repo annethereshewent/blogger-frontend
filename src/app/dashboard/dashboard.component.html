@@ -1,0 +1,47 @@
+<div class="row">
+  <div class="col-sm-5"></div>
+  <div class="col-sm-3 button-area">
+    <!-- icons go here -->
+    <ul class="list-buttons">
+      <li><a href="javascript:void(0)" (click)="openPostModal()"><img src="/assets/images/write-document-icon.png" class="icon img-fluid"></a></li>
+      <li><a href="#" onclick="openYoutubeModal()" ><img src="/assets/images/video_icon.png" class="icon img-fluid"></a></li>
+      <li><a href="#" onclick="openImageModal()" ><img src="/assets/images/photo_upload.png" class="icon img-fluid"></a></li>
+      <li><a href="<%= user_account_path %>"><img src="/assets/images/control_panel copy.png" class="icon img-fluid"></a></li>
+      <li><a href="javascript:void(0)" (click)="logout()"><img src="/assets/images/logout.png" class="icon img-fluid"></a></li>
+    </ul>
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-3"></div>
+  <div class="col-sm-7 main-panel">
+    <div class="row">
+      <div class="col-sm-12"><h3>Feed Posts:</h3></div>
+    </div>
+    <div class="row" *ngFor="let post of posts">
+      <div class="col-sm-2"></div>
+      <div class="dash-avatar">
+        <a href="javascript:void(0)" (click)="showSidebar()">
+          <img class="avatar img-fluid" src="{{production_site ? post.avatar : 'http://localhost:3000' + post.avatar}}">
+        </a>
+        <p style="font-size:12px;color:white;margin-left:2px;"><b>{{ post.username }}</b></p>
+      </div>
+      <div class="col-sm-8">
+        <div class="content">
+          <p><i>Created on: {{post.created_at}}</i></p>
+          <div class="post">
+            <p *ngFor="let image of post.images"><img src="{{production_site ? image : 'http://localhost:3000' + image}}"></p>
+            <p [innerHtml]="post.post | safeHtml"></p>
+          </div>
+          <p *ngIf="post.edited"><i>(Post Edited on: {{ post.updated_at}})</i></p>
+          <div class="post-buttons">
+            <a href="javascript:void(0)" class="comment-text" (click)="goToComments(post)">{{ getCommentText(post) }}</a> 
+            <a *ngIf="user.user_id==post.user_id" href="javascript:void(0)" class="edit-post" (click)="editPost(post)">Edit Post</a>
+            <a href="javascript:void(0)" class="quote" (click)="openQuoteModal(post)">Quote</a>
+            <a *ngIf="user.user_id==post.user_id" href="javascript:void(0)" (click)="deletePost(post)"><li class="fa fa-trash"></li></a>
+          </div>
+        </div>
+      </div>
+      <div style="clear:left"></div>
+    </div>
+  </div>
+</div>

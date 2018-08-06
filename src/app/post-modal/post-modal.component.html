@@ -1,0 +1,7 @@
+<p class="editor-heading">{{ editorHeading }}</p>
+<div id="editor" [froalaEditor]="options" [(froalaModel)]="editorContent"></div>
+<form (ngSubmit)="submitPost()">
+    <div class="buttons-area">
+        <button class="btn btn-primary" style="margin-right:40px">{{ buttonLabel }}</button><button type="button" (click)="bsModalRef.hide()" class="btn btn-danger">Cancel</button>
+    </div>
+</form>
