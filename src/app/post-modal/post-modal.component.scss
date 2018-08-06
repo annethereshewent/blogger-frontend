@@ -1,25 +1,25 @@
 #editor {
-    margin-left: 40px;
-    margin-bottom: 20px;
+  margin-left: 40px;
+  margin-bottom: 20px;
 }
 :host {
-    background: #F2F2FA;
-    border-radius: 25px;
-    padding-bottom: 20px;
+  background: #F2F2FA;
+  border-radius: 25px;
+  padding-bottom: 20px;
 }
 h3 {
-    color: #C2C2D6;
+  color: #C2C2D6;
 }
 #editor h3 {
-    color: black;
-    text-align: left;
+  color: black;
+  text-align: left;
 }
 .editor-heading {
-    color: #7A7ACC;
-    margin-left: 40px;
+  color: #7A7ACC;
+  margin-left: 40px;
 }
 .buttons-area {
-    margin-left: 40px;
+  margin-left: 40px;
 }
 :host ::ng-deep .block-quote {
   border-left: 2px solid grey;

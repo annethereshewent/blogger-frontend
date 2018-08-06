@@ -8,6 +8,7 @@ import { Router } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { PostModalComponent } from "../post-modal/post-modal.component";
+import { YoutubeModalComponent } from "../youtube-modal/youtube-modal.component";
 
 declare var $: any;
 
@@ -131,7 +132,14 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  openQuoteModal(post: Post) {
+  openYoutubeModal(): void {
+    this.bsModalRef = this.modalService.show(YoutubeModalComponent, Object.assign({}, { class: "modal-md"}));
+    this.bsModalRef.content.postEmitter.subscribe((post) => {
+      this.posts.unshift(post);
+    })
+  }
+
+  openQuoteModal(post: Post): void {
     let data: string;
     console.log(post);
     if (post.images.length > 0 ) {
@@ -147,9 +155,6 @@ export class DashboardComponent implements OnInit {
       let num_quotes = $(new_post).find(".post-quote").length;
 
       if (num_quotes) {
-        console.log('this post has quotes in it');
-
-
         $(new_post).find(".post-quote").each(function(index) {
           console.log("it's going inside this loop");
           before_contents += "<div class='post-quote'>" + $(this).html() + "</div>";
@@ -162,10 +167,6 @@ export class DashboardComponent implements OnInit {
         before_contents = '';
         after_contents = post.post;
       }
-      console.log("vvv before_contents");
-      console.log(before_contents);
-      console.log("vvv after_contents");
-      console.log(after_contents);
 
       data = `${before_contents}<div class="post-quote"><img src="${avatar_src}" class="quote-avatar"><span>${post.username}</span><div class="quote-post">${after_contents}</div></div><p>`
     }

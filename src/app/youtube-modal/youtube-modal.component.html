@@ -1,0 +1,22 @@
+<form class="container-fluid" (ngSubmit)="submitVideo()" [formGroup]="youtubeForm">
+  <div class="row">
+    <div class="col-sm-6">
+      <h3>New Youtube Video</h3>
+    </div>
+  </div>
+  <div class="form-group row">
+    <div class="col-sm-12">
+      <label for="video">URL:</label>
+      <input type="text" class="form-control" placeholder="Enter youtube URL" name="youtube_url" [(ngModel)]="youtube_url" formControlName="youtube_url" (ngModelChange)="loadYoutubeVideo()">
+    </div>
+  </div>
+  <div class="row youtube-video">
+    <div class="col-sm-12" [innerHtml]="youtube_video | safeHtml"></div>
+  </div>
+  <div class="row">
+    <div class="col-sm-8">
+      <button class="btn btn-primary" [disabled]="youtubeForm.invalid">Submit Video</button>
+      <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()" style="margin-left:20px">Cancel</button>
+    </div>
+  </div>
+</form>

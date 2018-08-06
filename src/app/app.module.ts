@@ -14,6 +14,7 @@ import { RequestService } from './request.service';
 import { FroalaEditorModule, FroalaViewModule } from 'angular-froala-wysiwyg';
 import { SafeHtmlPipe } from "../pipes/safehtml.pipe";
 import { PostModalComponent } from './post-modal/post-modal.component';
+import { YoutubeModalComponent } from './youtube-modal/youtube-modal.component';
 
 const appRoutes: Routes = [
     { 
@@ -45,7 +46,8 @@ const appRoutes: Routes = [
     DashboardComponent,
     UsersComponent,
     SafeHtmlPipe,
-    PostModalComponent
+    PostModalComponent,
+    YoutubeModalComponent
   ],
   imports: [
     BrowserModule,
@@ -62,6 +64,6 @@ const appRoutes: Routes = [
   ],
   providers: [RequestService],
   bootstrap: [AppComponent],
-  entryComponents: [PostModalComponent]
+  entryComponents: [PostModalComponent, YoutubeModalComponent]
 })
 export class AppModule { }
