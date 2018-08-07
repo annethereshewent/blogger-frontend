@@ -32,10 +32,12 @@ export class LoginComponent implements OnInit {
     }
   }
   login(): void {
-    this.http.post<LoginResponse>(environment.server_url + "/api/login", {
-      username: this.username,
-      password: this.password
-    })
+    this
+      .http
+      .post<LoginResponse>(environment.server_url + "/api/login", {
+        username: this.username,
+        password: this.password
+      })
      .subscribe((data) => {
         if (data.success) {
           console.log("login successful!");

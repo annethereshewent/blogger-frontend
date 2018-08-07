@@ -4,7 +4,9 @@ import { User } from "../../classes/User";
 import { Post } from "../../classes/Post";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from "../../environments/environment";
+import { RequestService } from "../request.service";
 
+declare var $: any;
 
 interface SubmitPostInterface { 
   success: Boolean;
@@ -24,6 +26,8 @@ export class PostModalComponent implements OnInit {
   editorHeading: String = "Create a new post";
 
   buttonLabel: String = "Submit Post";
+
+  tags: any[] = [];
 
   @Output() postEmitter: EventEmitter<Post> = new EventEmitter<Post>();
 
@@ -55,7 +59,7 @@ export class PostModalComponent implements OnInit {
   }
 
 
-  constructor(public bsModalRef: BsModalRef, private http: HttpClient) {
+  constructor(public bsModalRef: BsModalRef, private http: HttpClient, private requestService: RequestService) {
     let user = JSON.parse(localStorage.getItem('current_user'));
     if (user) {
       this.user = user;
@@ -96,13 +100,23 @@ export class PostModalComponent implements OnInit {
     ; 
   } 
 
-  submitPost() {
+  submitPost(): void {
     if (this.user) {
+
+      //first check to see if the post has any youtube URLs
+      let youtube_id = this.requestService.parseYoutubeURL(this.editorContent);
+      if (youtube_id !== null) {
+        youtube_id = $("<div>").append(youtube_id).text();
+        this.editorContent = this.requestService.getYoutubeVideo(youtube_id);
+      }
+
       if (this.post && this.type == 'edit') {
+
         //this is an edit post request
         let postParams = {
           post: this.editorContent,
           id: this.post.id,
+          tags: this.tags.map((tag) => { return tag.value }),
           client: "web"
         };
 
@@ -111,6 +125,7 @@ export class PostModalComponent implements OnInit {
       else {
         let postParams = {
           post: this.editorContent,
+          tags: this.tags.map((tag) => { return tag.value }),
           client: "web"
         };
 

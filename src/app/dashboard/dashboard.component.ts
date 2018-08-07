@@ -4,12 +4,13 @@ import { Post } from "../../classes/Post";
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { PostModalComponent } from "../post-modal/post-modal.component";
 import { YoutubeModalComponent } from "../youtube-modal/youtube-modal.component";
 import { ImageModalComponent } from "../image-modal/image-modal.component";
+
 
 declare var $: any;
 
@@ -36,8 +37,18 @@ export class DashboardComponent implements OnInit {
   page: number = 2;
   loading_posts = false;
   bsModalRef: BsModalRef;
+  tag_name: string;
+  title: string = "Feed Posts:"
 
-  constructor(private requestService: RequestService, private router: Router, private http: HttpClient, private modalService: BsModalService) {
+  constructor(
+    private requestService: RequestService, 
+    private router: Router, 
+    private http: HttpClient, 
+    private modalService: BsModalService, 
+    private route: ActivatedRoute
+  ) {
+    
+    this.tag_name = this.route.snapshot.params.tag_name;
 
     let user = JSON.parse(localStorage.getItem('current_user'));
     if (!user) {
@@ -45,35 +56,69 @@ export class DashboardComponent implements OnInit {
       return;
     }
     this.user = user;
+    if (this.tag_name) {
+      this.title = "Tag Search:";
 
-    if (requestService.posts) {
-      this.posts = requestService.posts
-    }
-    else {
-      console.log("posts not found in memory, making a request to backend for them");
-
-      const headers = new HttpHeaders()
-        .set("Authorization", user.token)
+      let headers = new HttpHeaders()
+        .set("Authorization", this.user.token)
       ;
 
       this
         .http
-        .get<PostInterface>(`${environment.server_url}/api/fetch_posts`, { headers: headers })
+        .get<PostInterface>(`${environment.server_url}/api/tag_search/${this.tag_name}`, { headers: headers})
         .subscribe((data) => {
           if (data.success) {
             if (!environment.production) {
-              data.posts = this.fixPosts(data.posts);  
+              data.posts = this.fixPosts(data.posts);
             }
-            
-            this.posts = data.posts
+            this.posts = data.posts;
+
           }
           else {
-            //token is invalid now, for some reason. redirect back to login page
-            //this.router.navigate(["/users/login"])
+            console.log(data.message);
           }
         })
       ;
+
+
     }
+    else {
+      this.title = "Feed Posts:"
+      if (requestService.posts) {
+        this.posts = requestService.posts
+      }
+      else {
+        console.log("posts not found in memory, making a request to backend for them");
+
+        const headers = new HttpHeaders()
+          .set("Authorization", user.token)
+        ;
+
+        this
+          .http
+          .get<PostInterface>(`${environment.server_url}/api/fetch_posts`, { headers: headers })
+          .subscribe((data) => {
+            if (data.success) {
+              if (!environment.production) {
+                data.posts = this.fixPosts(data.posts);  
+              }
+              
+              this.posts = data.posts
+
+
+            }
+            else {
+              //token is invalid now, for some reason. redirect back to login page
+              localStorage.removeItem("current_user");
+              this.user = null;
+              this.router.navigate(["/users/login"])
+            }
+          })
+        ;
+      }  
+    }
+
+    
   }
 
 
@@ -84,7 +129,7 @@ export class DashboardComponent implements OnInit {
 
   @HostListener("window:  scroll", [])
   onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.loading_posts) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.tag_name && !this.loading_posts) {
       console.log('youve reached the bottom of the page!');
 
       if (this.user) {
@@ -182,16 +227,16 @@ export class DashboardComponent implements OnInit {
     console.log(data);
 
     let edited_post: Post = {
-        id: post.id,
-        created_at: post.created_at,
-        updated_at: post.updated_at,
-        post: data,
-        edited: post.edited,
-        num_comments: post.num_comments,
-        avatar: post.avatar,
-        username: post.username,
-        images: post.images,
-        user_id: post.user_id
+      id: post.id,
+      created_at: post.created_at,
+      updated_at: post.updated_at,
+      post: data,
+      edited: post.edited,
+      num_comments: post.num_comments,
+      avatar: post.avatar,
+      username: post.username,
+      images: post.images,
+      user_id: post.user_id
     };
 
     let initialState = {
@@ -267,6 +312,10 @@ export class DashboardComponent implements OnInit {
 
     })
 
+  }
+
+  tagSearch(tag: string) {
+    this.router.navigate([`/users/tags/${tag}`]);
   }
 
   getCommentText(post) {

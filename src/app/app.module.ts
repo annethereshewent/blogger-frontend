@@ -19,14 +19,8 @@ import { DropzoneModule } from 'ngx-dropzone-wrapper';
 import { DROPZONE_CONFIG } from 'ngx-dropzone-wrapper';
 import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { ImageModalComponent } from './image-modal/image-modal.component';
-
-const DEFAULT_DROPZONE_CONFIG: DropzoneConfigInterface = {
- // Change this to your upload POST address:
-  url: 'https://httpbin.org/post',
-  maxFilesize: 50,
-  acceptedFiles: 'image/*'
-};
-
+import { TagInputModule } from 'ngx-chips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 const appRoutes: Routes = [
     { 
@@ -42,6 +36,9 @@ const appRoutes: Routes = [
             },
             {
                 path: "dashboard", component: DashboardComponent
+            },
+            {
+                path: 'tags/:tag_name', component: DashboardComponent
             }
         ]
     },
@@ -64,6 +61,8 @@ const appRoutes: Routes = [
   ],
   imports: [
     BrowserModule,
+    TagInputModule,
+    BrowserAnimationsModule,
     FormsModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
@@ -73,7 +72,7 @@ const appRoutes: Routes = [
     FroalaViewModule.forRoot(),
     RouterModule.forRoot(
         appRoutes,
-        { enableTracing: environment.enable_tracing }
+        { enableTracing: false }
     )
   ],
   providers: [RequestService],

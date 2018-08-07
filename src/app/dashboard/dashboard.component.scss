@@ -38,7 +38,7 @@
   margin-bottom: 40px;
   padding: 10px 20px 0 20px;
   word-wrap: break-word;  
-  width: 90%;
+  width: 92%;
 }
 .content h3 {
   text-align: left;
@@ -74,7 +74,7 @@ h3 {
   border-radius: 20px;
   margin-bottom:20px;
   border: 1px solid #393955;
-  width: 46%
+  width: 85%;
 }
 :host ::ng-deep table td {
   border: 1px solid black;
@@ -88,4 +88,15 @@ h3 {
 a .fa-trash {
   margin-left: 10px;
   color: black;
+}
+.post-tags {
+  margin-bottom: 10px;
+}
+.tag {
+  color: #666699;
+  margin-right: 20px;
+  font-style: italic;
+}
+.post-tags a {
+  text-underline: none
 }

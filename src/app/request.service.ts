@@ -16,7 +16,11 @@ export class RequestService {
     //the youtube id will be in match[7]. can verify with console.log
     //console.log(match);
 
-    return match;
+    if (match) {
+      return match[7];
+    }
+
+    return null;
   }
 
   getYoutubeVideo(id) {

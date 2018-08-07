@@ -15,7 +15,7 @@ export class ImageModalComponent implements OnInit {
 
   config: any;
 
-  Output() postEmitter = new EventEmitter<Post>();
+  @Output() postEmitter: EventEmitter<Post> = new EventEmitter<Post>();
 
 
   constructor(public bsModalRef: BsModalRef) {
@@ -32,7 +32,7 @@ export class ImageModalComponent implements OnInit {
     }
   }
 
-  onUploadSuccess(data: array) {
+  onUploadSuccess(data: any[]) {
     let response = data[1];
     if (response.success) {
       this.postEmitter.emit(response.post);

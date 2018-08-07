@@ -9,9 +9,12 @@ import { Router } from '@angular/router';
 })
 export class UsersComponent implements OnInit {
 
-  constructor(private router: Router) { }
+  constructor(private router: Router) {
+    console.log(this.router.url.indexOf('/users/tags'));
+  }
 
   ngOnInit() {
+
   }
 
   dashboardPath() {

@@ -49,7 +49,7 @@ export class YoutubeModalComponent implements OnInit {
   loadYoutubeVideo(): void {
     if (this.youtube_url != '') {
       console.log(this.youtube_url);
-      let youtube_id = this.requestService.parseYoutubeURL(this.youtube_url)[7];
+      let youtube_id = this.requestService.parseYoutubeURL(this.youtube_url);
 
       if (youtube_id === null) {
         this.youtube_video = '';
