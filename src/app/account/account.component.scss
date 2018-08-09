@@ -31,3 +31,13 @@ textarea.form-control {
 h3 {
   text-align: left
 }
+.avatar-upload { 
+  display: none;
+}
+.profile-pic-normal {
+  width: 80px;
+  height: 80px;
+}
+.profile-pic, .profile-pic-normal {
+  border-radius: 80px;
+}

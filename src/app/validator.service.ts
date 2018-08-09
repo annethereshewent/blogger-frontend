@@ -35,6 +35,22 @@ export class ValidatorService {
     return null;
   }
 
+  alphanumeric_plus() {
+
+    let regex = /^[A-Za-z0-9]([A-Za-z0-9_-]*[A-Za-z0-9])?$/;
+
+      return (control: FormControl): any => {
+        if (control.value != '' && !regex.test(control.value)) {
+          return {
+            alphanumeric_plus: {
+              value: control.value
+            }
+          }
+        }
+
+        return null;
+      }
+  }
 
   required() {
     return (control: FormControl): any => {
@@ -72,11 +88,9 @@ export class ValidatorService {
   }
 
   checkForDuplicateEmail(control: FormControl) {
-    if (control.value != '' && this.user && this.user.email != control.value)) {
-      return this.checkForDuplicate(`${environment.server_url}/api/find_email`, {
-        email: control.value
-      }, control.value);  
-    }
+    return this.checkForDuplicate(`${environment.server_url}/api/find_email`, {
+      email: control.value
+    }, control.value);  
   }
 
   checkForDuplicate(url, postParams, value) {
@@ -98,7 +112,6 @@ export class ValidatorService {
             .post<DuplicateInterface>(url, postParams)
             .subscribe((data) => {
               if (data.duplicate) {
-                console.log("duplicate found");
                 resolve({
                   duplicate: {
                     value: value
@@ -111,8 +124,9 @@ export class ValidatorService {
             })
         }, 600);
       }
-
-      resolve(null);
+      else {
+        resolve(null);
+      }
     }); 
   }
 }

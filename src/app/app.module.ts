@@ -23,6 +23,7 @@ import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BlogComponent } from './blog/blog.component';
 import { AccountComponent } from './account/account.component';
+import { AlertModule } from 'ngx-bootstrap/alert';
 
 const appRoutes: Routes = [
     { 
@@ -79,6 +80,7 @@ const appRoutes: Routes = [
     ModalModule.forRoot(),
     HttpClientModule,
     DropzoneModule,
+    AlertModule.forRoot(),
     FroalaEditorModule.forRoot(),
     FroalaViewModule.forRoot(),
     RouterModule.forRoot(

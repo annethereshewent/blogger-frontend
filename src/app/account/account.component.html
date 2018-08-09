@@ -1,7 +1,14 @@
 <div class="container-fluid main">
   <div class="row">
     <div class="col-lg-6">
+      <alert *ngIf="alertDanger" type="danger" [dismissible]="true">Couldn't update your user settings.</alert>
+      <alert *ngIf="alertSuccess" type="success" [dismissible]="true">Successfully saved your user settings!</alert>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-lg-6">
       <div class="content" (ngSubmit)="saveChanges()">
+        <input type="file" class="avatar-upload" (change)="updateImage($event)" #avatar_upload>
         <form (ngSubmit)="saveChanges()" [formGroup]="mainForm">
           <div class="row mb20">
             <div class="col-lg-12">
@@ -11,7 +18,7 @@
           </div>
           <div class="row">
             <div class="col-lg-5"></div>
-            <div class="col-lg-6"><img [src]="production ? user.avatar_small : 'http://localhost:3000' + user.avatar_small" class="profile-pic"></div>
+            <div class="col-lg-6"><a href="javascript:void(0)" (click)="avatar_upload.click()"><img [src]="production ? user.avatar_small : (user.avatar_small.indexOf('data:') != -1 ? user.avatar_small : 'http://localhost:3000' + user.avatar_small)" [ngClass]="{'profile-pic': user.avatar_small.indexOf('user_icon.png') != -1, 'profile-pic-normal': user.avatar_small.indexOf('user_icon.png') == -1}"></a></div>
           </div>
           <div class="row mb20 form-group">
             <div class="col-lg-5">
@@ -23,7 +30,7 @@
               <label for="username">Username:</label>
               <input type="text" class="form-control" name="username" [(ngModel)]="user.username" formControlName="username">
               <div *ngIf="username.dirty && username.errors && username.errors.required" class="error">(This field is required.)</div>
-              <div *ngIf="username.dirty && username.errors && username.errors.spaces" class="error">(Spaces are not allowed.)</div>
+              <div *ngIf="username.dirty && username.errors && username.errors.alphanumeric_plus" class="error">(Please enter a valid username. Alphanumeric, underscore, and dashes allowed only.)</div>
               <div *ngIf="username.errors && username.errors.duplicate" class="error">(Username is already taken.)</div>
             </div>
           </div>
@@ -48,7 +55,7 @@
           </div>
           <div class="row form-group">
             <div class="col-lg-4"></div>
-            <div class="col-lg-6"><button class="btn btn-success">Save Changes</button></div>
+            <div class="col-lg-6"><button class="btn btn-success" [disabled]="mainForm.invalid">Save Changes</button></div>
           </div>
         </form>
         <hr>
@@ -77,6 +84,9 @@
             <div class="col-lg-4">
               <label for="email">Change Email:</label>
               <input type="text" class="form-control" [(ngModel)]="user.email" formControlName="email" name="email">
+              <div *ngIf="email.dirty && email.errors && email.errors.duplicate" class="error">(Email is already taken.)</div>
+              <div *ngIf="email.dirty && email.errors && email.errors.required" class="error">(This field is required.)</div>
+              <div *ngIf="email.dirty && email.errors && email.errors.email" class="error">(Please enter a valid email.)</div>
             </div>
           </div>
           <div formGroupName="passwords">

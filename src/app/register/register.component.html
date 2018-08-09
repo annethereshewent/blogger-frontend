@@ -16,7 +16,7 @@
         <div class="col-lg-5 form-group">
           <input type="text" name="username" class="form-control" id="username" [(ngModel)]="username" placeholder="Username" formControlName="username">
           <div *ngIf="usernameControl.dirty && usernameControl.errors && usernameControl.errors.required" class="error">(This field is required.)</div>
-          <div *ngIf="usernameControl.dirty && usernameControl.errors && usernameControl.errors.spaces" class="error">(Spaces are not allowed.)</div>
+          <div *ngIf="usernameControl.dirty && usernameControl.errors && usernameControl.errors.alphanumeric_plus" class="error">(Please enter a valid username. Alphanumeric, underscore, and dashes allowed only.)</div>
           <div *ngIf="usernameControl.errors && usernameControl.errors.duplicate" class="error">(Username is already taken.)</div>
         </div>
       </div>

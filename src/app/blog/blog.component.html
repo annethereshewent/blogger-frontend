@@ -5,7 +5,7 @@
       {{ user.blog_title }}
     </div>
     <div class="img-container">
-      <img class="sidebar-image" [src]="production ? user.avatar : 'http://localhost:3000' + user.avatar"> 
+      <img [ngClass]="{'sidebar-image': user.avatar.indexOf('user_icon.png') != -1, 'sidebar-image-normal': user.avatar.indexOf('user_icon.png') == -1}" [src]="production ? user.avatar : user.avatar.indexOf('data:') != -1 ? user.avatar : 'http://localhost:3000' + user.avatar"> 
     </div>
 
     <div class="description">{{ user.description }}</div>

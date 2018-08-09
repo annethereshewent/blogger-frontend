@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
     this.blog_title = '';
 
     this.registerForm = new FormGroup({
-      "username": new FormControl(this.username, [this.validatorService.required(), this.validatorService.spaces()], this.validatorService.checkForDuplicateUsername.bind(this.validatorService)),
+      "username": new FormControl(this.username, [this.validatorService.required(), this.validatorService.alphanumeric_plus()], this.validatorService.checkForDuplicateUsername.bind(this.validatorService)),
       'email': new FormControl(this.email, [this.validatorService.required(), Validators.email], this.validatorService.checkForDuplicateEmail.bind(this.validatorService)),
       "passwords": new FormGroup({
         "password": new FormControl(this.password, [this.validatorService.required()]),
