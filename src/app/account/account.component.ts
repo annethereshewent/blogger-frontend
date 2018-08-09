@@ -136,6 +136,39 @@ export class AccountComponent implements OnInit {
       .subscribe((data) => {
         if (data.success) {
           console.log('updated user successfully');
+          this.user = data.user;
+          localStorage.setItem("current_user", JSON.stringify(this.user));
+          this.alertSuccess = true;
+        }
+        else {
+          this.alertDanger = true;
+          console.log(data.message);
+        }
+      })
+    ;
+  }
+
+  saveSecurityChanges(): void {
+    let headers = new HttpHeaders()
+      .set("Authorization", this.user.token)
+    ;
+
+    let postParams = {
+      id: this.user.user_id,
+      email: this.user.email
+    };
+
+    if (this.password != '' && this.password2 != '') {
+      postParams.password = this.password;
+    }
+
+    this
+      .http
+      .post<UpdateUserResponse>(`${environment.server_url}/api/update_user`, postParams, { headers: headers })
+      .subscribe((data) => {
+        if (data.success) {
+          console.log('updated user successfully');
+          this.user = data.user;
           localStorage.setItem("current_user", JSON.stringify(this.user));
           this.alertSuccess = true;
         }
