@@ -1,33 +1,33 @@
 <div class="row">
-  <div class="col-sm-5"></div>
-  <div class="col-sm-4">
+  <div class="col-lg-5"></div>
+  <div class="col-lg-4">
     <!-- icons go here -->
     <div class="button-area">
       <ul class="list-buttons">
         <li><a href="javascript:void(0)" (click)="openPostModal()"><img src="/assets/images/write-document-icon.png" class="icon img-fluid"></a></li>
         <li><a href="javascript:void(0)" (click)="openYoutubeModal()" ><img src="/assets/images/video_icon.png" class="icon img-fluid"></a></li>
         <li><a href="javascript:void(0)" (click)="openImageModal()" ><img src="/assets/images/photo_upload.png" class="icon img-fluid"></a></li>
-        <li><a href="<%= user_account_path %>"><img src="/assets/images/control_panel copy.png" class="icon img-fluid"></a></li>
+        <li><a href="javascript:void(0)" (click)="openAccountPath()"><img src="/assets/images/control_panel copy.png" class="icon img-fluid"></a></li>
         <li><a href="javascript:void(0)" (click)="logout()"><img src="/assets/images/logout.png" class="icon img-fluid"></a></li>
       </ul>
     </div>
   </div>
 </div>
 <div class="row">
-  <div class="col-sm-3"></div>
-  <div class="col-sm-7 main-panel">
+  <div class="col-lg-3"></div>
+  <div class="col-lg-7 main-panel">
     <div class="row">
-      <div class="col-sm-12"><h3>{{ title }}</h3></div>
+      <div class="col-lg-12"><h3>{{ title }}</h3></div>
     </div>
     <div class="row" *ngFor="let post of posts">
-      <div class="col-sm-2"></div>
+      <div class="col-lg-2"></div>
       <div class="dash-avatar">
         <a href="javascript:void(0)" (click)="showSidebar()">
           <img class="avatar img-fluid" src="{{production_site ? post.avatar : 'http://localhost:3000' + post.avatar}}">
         </a>
         <p style="font-size:12px;color:white;margin-left:2px;"><b>{{ post.username }}</b></p>
       </div>
-      <div class="col-sm-8">
+      <div class="col-lg-8">
         <div class="content">
           <p><i>Created on: {{post.created_at}}</i></p>
           <div class="post">

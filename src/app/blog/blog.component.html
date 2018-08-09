@@ -1,0 +1,32 @@
+<link rel="stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl(theme)">
+<aside class="sidebar">
+  <div class="sidebar-main">
+    <div class="title">
+      {{ user.blog_title }}
+    </div>
+    <div class="img-container">
+      <img class="sidebar-image" [src]="production ? user.avatar : 'http://localhost:3000' + user.avatar"> 
+    </div>
+
+    <div class="description">{{ user.description }}</div>
+    <nav class="links">
+      <ul>
+        <li><a href="/blog/posts/{{user.username}}">home</a></li>                         
+        <li><a href="/blog/account">control panel</a></li>
+        <li><a href="/users/contact">contact</a></li> 
+        <li *ngIf="user.id==current_user.id"><a href="javascript:void(0)" onClick="openPostModal()">new</a></li>
+      </ul>
+    </nav>
+  </div>
+</aside>
+<div class="navigation-content">
+  <ul class="nav-buttons">
+    <li *ngIf="user.user_id != current_user.user_id && !is_friends()" id="addFriend"><a href="#" onclick="addFriend()"><i class="fa fa-user-plus"></i>Add Friend</a></li>
+    <li *ngIf="show_requests()" id="Requests"><a href="#" onClick="openRequests()"><p id="num-requests" >{{ check_requests() }}</p><i class="fa fa-users"></i><i>Requests</i></a></li>
+    <li *ngIf="current_user" id="Logout"><a href="javascript:void(0)" (click)="logout()"><i class="fa fa-sign-out"></i>Logout</a></li>
+    <li *ngIf="current_user" id="Dashboard"><a href="javascript:void(0)" (click)="router.navigate(['/users/dashboard'])"><i class="fa fa-tachometer"></i>Dashboard</a></li>
+  </ul>
+</div>
+
+
+<router-outlet (activate)="onActivate($event)"></router-outlet>

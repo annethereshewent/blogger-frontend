@@ -1,10 +1,10 @@
 <p class="editor-heading">{{ editorHeading }}</p>
 <div id="editor" [froalaEditor]="options" [(froalaModel)]="editorContent"></div>
 <form (ngSubmit)="submitPost()">
-    <div class="tags-area">
-        <tag-input [(ngModel)]='tags' name="tags" [separatorKeyCodes]="[188]"></tag-input>
-    </div>
-    <div class="buttons-area">
-        <button class="btn btn-primary" style="margin-right:40px">{{ buttonLabel }}</button><button type="button" (click)="bsModalRef.hide()" class="btn btn-danger">Cancel</button>
-    </div>
+  <div class="tags-area">
+    <tag-input [(ngModel)]='tags' name="tags" [separatorKeyCodes]="[188]"></tag-input>
+  </div>
+  <div class="buttons-area">
+    <button class="btn btn-primary" style="margin-right:40px">{{ buttonLabel }}</button><button type="button" (click)="bsModalRef.hide()" class="btn btn-danger">Cancel</button>
+  </div>
 </form>

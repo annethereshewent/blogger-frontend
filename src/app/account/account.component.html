@@ -1,0 +1,103 @@
+<div class="container-fluid main">
+  <div class="row">
+    <div class="col-lg-6">
+      <div class="content" (ngSubmit)="saveChanges()">
+        <form (ngSubmit)="saveChanges()" [formGroup]="mainForm">
+          <div class="row mb20">
+            <div class="col-lg-12">
+              <h2 class="form-heading">General</h2>
+              <p class="sub-heading">Display settings for the general look and feel of your blog.</p>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-5"></div>
+            <div class="col-lg-6"><img [src]="production ? user.avatar_small : 'http://localhost:3000' + user.avatar_small" class="profile-pic"></div>
+          </div>
+          <div class="row mb20 form-group">
+            <div class="col-lg-5">
+              <label for="blog_title">Blog title:</label>
+              <input type="text" class="form-control" name="blog_title" [(ngModel)]="user.blog_title" formControlName="blog_title">
+            </div>
+            <div class="col-lg-1"></div>
+            <div class="col-lg-5">
+              <label for="username">Username:</label>
+              <input type="text" class="form-control" name="username" [(ngModel)]="user.username" formControlName="username">
+              <div *ngIf="username.dirty && username.errors && username.errors.required" class="error">(This field is required.)</div>
+              <div *ngIf="username.dirty && username.errors && username.errors.spaces" class="error">(Spaces are not allowed.)</div>
+              <div *ngIf="username.errors && username.errors.duplicate" class="error">(Username is already taken.)</div>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-4">
+              <label for="description">Short description of blog:</label>
+              <textarea class="form-control" name="description" [(ngModel)]="user.description" formControlName="description"></textarea>
+            </div>
+          </div>
+          <div class="row mb20">
+            <div class="col-lg-7">
+              <h3 class="form-heading">Select Theme:</h3>
+              <ul class="theme-colors">
+                <a href="javascript:void(0)" (click)="switchTheme('default')"><li style="background:#7A7ACC" title="Default"></li></a>
+                <a href="javascript:void(0)" (click)="switchTheme('forest')"><li style="background:#4DB870" title="Forest"></li></a>
+                <a href="javascript:void(0)" (click)="switchTheme('strawberry')"><li style="background:#FFB2B2" title="Strawberry"></li></a>
+                <a href="javascript:void(0)" (click)="switchTheme('ruby')"><li style="background:#FF0000" title="Ruby"></li></a>
+                <a href="javascript:void(0)" (click)="switchTheme('aqua')"><li style="background:#0099FF" title="Aqua"></li></a>
+              </ul>
+            </div>
+          </div>
+          <div class="row form-group">
+            <div class="col-lg-4"></div>
+            <div class="col-lg-6"><button class="btn btn-success">Save Changes</button></div>
+          </div>
+        </form>
+        <hr>
+        <div class="row ">
+          <div class="col-lg-6">
+            <h2 class="form-heading">Security</h2>
+            <p class="sub-heading">Password and e-mail changes</p>
+          </div>
+        </div>
+        <form *ngIf="!authorized" (ngSubmit)="verifyPassword()">
+          <div class="row form-group">
+            <div class="col-lg-7">
+              <label for="password"><i>Please enter current password to continue:</i></label>
+              <input type="password" class="form-control" name="password" [(ngModel)]="password">
+            </div>
+          </div>
+          <div class="row mb20">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-6">
+              <button class="btn btn-warning">Verify</button>
+            </div>
+          </div>
+        </form>
+        <form *ngIf="authorized" (ngSubmit)="saveSecurityChanges()" [formGroup]="securityForm">
+          <div class="row mb20 form-group">
+            <div class="col-lg-4">
+              <label for="email">Change Email:</label>
+              <input type="text" class="form-control" [(ngModel)]="user.email" formControlName="email" name="email">
+            </div>
+          </div>
+          <div formGroupName="passwords">
+            <div class="row form-group">
+              <div class="col-lg-4">
+                <label for="password">Change Password:</label>
+                <input type="password" class="form-control" name="password" [(ngModel)]="new_password" formControlName="password" placeholder="Enter new password">
+              </div>
+            </div>
+            <div class="row mb20">
+              <div class="col-lg-4">
+                <input type="password" class="form-control" name="password2" [(ngModel)]="new_password2" formControlName="password2" placeholder="Repeat password">
+              </div>
+            </div>
+          </div>
+          <div class="row mb20">
+            <div class="col-lg-2"></div>
+            <div class="col-lg-6"><button class="btn btn-success" [disabled]="securityForm.invalid">Save Changes</button></div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

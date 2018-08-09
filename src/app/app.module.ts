@@ -21,6 +21,8 @@ import { DropzoneConfigInterface } from 'ngx-dropzone-wrapper';
 import { ImageModalComponent } from './image-modal/image-modal.component';
 import { TagInputModule } from 'ngx-chips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { BlogComponent } from './blog/blog.component';
+import { AccountComponent } from './account/account.component';
 
 const appRoutes: Routes = [
     { 
@@ -44,6 +46,13 @@ const appRoutes: Routes = [
     },
     {
         path: '', redirectTo: 'users', pathMatch: "full"
+    },
+    {
+        path: 'blog', component: BlogComponent, children: [
+            {
+                path: "account", component: AccountComponent
+            }
+        ]
     }
 ];
 
@@ -57,7 +66,9 @@ const appRoutes: Routes = [
     SafeHtmlPipe,
     PostModalComponent,
     YoutubeModalComponent,
-    ImageModalComponent
+    ImageModalComponent,
+    BlogComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,

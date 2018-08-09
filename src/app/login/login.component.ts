@@ -10,9 +10,7 @@ interface LoginResponse {
     success: Boolean;
     posts: Post[],
     token: String,
-    user_id: String,
-    username: String;
-    avatar: String;
+    user: User;
 }
 
 @Component({
@@ -44,7 +42,7 @@ export class LoginComponent implements OnInit {
           //login was successful! redirect to the next page
           this.requestService.posts = data.posts;
           //save the token/user to local storage or possibly a session if thats possible.
-          let user = new User(data.user_id, data.username, data.token, data.avatar);
+          let user = data.user
           localStorage.setItem("current_user", JSON.stringify(user));
 
           this.router.navigate(["/users/dashboard"]);

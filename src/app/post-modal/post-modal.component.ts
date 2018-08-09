@@ -33,7 +33,7 @@ export class PostModalComponent implements OnInit {
 
   @Input() post: Post;
   @Input() type: String;
-
+  @Input() edit_tags: string[];
   options = {
     // inlineMode: false,
     // paragraphy: true,
@@ -67,15 +67,19 @@ export class PostModalComponent implements OnInit {
 
   }
 
-  initialize(initControls) {
-    initControls.getEditor('events.focus', true);
-  }
+  // initialize(initControls) {
+  //   initControls.getEditor('events.focus', true);
+  // }
 
   ngOnInit() {
     if (this.post) {
       this.editorContent = this.post.post;
       this.buttonLabel = this.type == "edit" ? "Edit Post" : "Quote Post";
       this.editorHeading = this.type == 'edit' ? "Edit Post" : "Quote Post";
+
+      if (this.edit_tags) {
+        this.tags = this.edit_tags.map((tag) => { return { display: tag, value: tag } })
+      }
     }
   }
 
@@ -111,7 +115,6 @@ export class PostModalComponent implements OnInit {
       }
 
       if (this.post && this.type == 'edit') {
-
         //this is an edit post request
         let postParams = {
           post: this.editorContent,

@@ -104,8 +104,6 @@ export class DashboardComponent implements OnInit {
               }
               
               this.posts = data.posts
-
-
             }
             else {
               //token is invalid now, for some reason. redirect back to login page
@@ -165,7 +163,8 @@ export class DashboardComponent implements OnInit {
 
     let initialState = {
       post: post,
-      type: "edit"
+      type: "edit",
+      edit_tags: post.tags
     };
 
     this.bsModalRef = this.modalService.show(PostModalComponent,Object.assign({}, { class: "modal-md", initialState } ));
@@ -236,7 +235,8 @@ export class DashboardComponent implements OnInit {
       avatar: post.avatar,
       username: post.username,
       images: post.images,
-      user_id: post.user_id
+      user_id: post.user_id,
+      tags: post.tags
     };
 
     let initialState = {
@@ -314,7 +314,11 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  tagSearch(tag: string) {
+  openAccountPath(): void {
+    this.router.navigate(["/blog/account"])
+  }
+
+  tagSearch(tag: string): void {
     this.router.navigate([`/users/tags/${tag}`]);
   }
 

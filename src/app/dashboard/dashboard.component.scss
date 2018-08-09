@@ -1,3 +1,4 @@
+@import "../../styles.scss";
 :host ::ng-deep .block-quote {
   border-left: 2px solid grey;
   padding-left:10px;
@@ -73,9 +74,11 @@ h3 {
   background: #52527A;
   border-radius: 20px;
   margin-bottom:20px;
+  padding-left: 20px;
   border: 1px solid #393955;
   width: 85%;
 }
+
 :host ::ng-deep table td {
   border: 1px solid black;
 }
@@ -99,4 +102,9 @@ a .fa-trash {
 }
 .post-tags a {
   text-underline: none
+}
+@include media-breakpoint-down(md) {
+  .button-area {
+    width: 100%
+  }
 }

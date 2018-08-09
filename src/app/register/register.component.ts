@@ -6,17 +6,13 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Post } from "../../classes/Post";
 import { User } from "../../classes/User";
 import { RequestService } from "../request.service";
+import { ValidatorService } from "../validator.service";
 
 
-interface DuplicateInterface {
-  duplicate: Boolean;
-}
+
 interface RegisterInterface {
   success: Boolean;
-  token: String;
-  user_id: number;
-  username: String;
-  avatar: String;
+  user: User;
   posts: Post[];
   message: String;
 }
@@ -36,9 +32,19 @@ export class RegisterComponent implements OnInit {
 
   private debounceTimeout;
 
+
   registerForm: FormGroup;
 
-  constructor(private router: Router, private http: HttpClient,  private requestService: RequestService) {
+  constructor(
+    private router: Router, 
+    private http: HttpClient,  
+    private requestService: RequestService, 
+    private validatorService: ValidatorService
+  ) {
+
+    if (JSON.parse(localStorage.getItem("current_user"))) {
+      this.router.navigate(["/users/dashboard"]);
+    }
 
     this.password = '';
     this.password2 = '';
@@ -47,12 +53,12 @@ export class RegisterComponent implements OnInit {
     this.blog_title = '';
 
     this.registerForm = new FormGroup({
-      "username": new FormControl(this.username, [this.required()], this.checkForDuplicateUsername.bind(this)),
-      'email': new FormControl(this.email, [this.required(), Validators.email], this.checkForDuplicateEmail.bind(this)),
+      "username": new FormControl(this.username, [this.validatorService.required(), this.validatorService.spaces()], this.validatorService.checkForDuplicateUsername.bind(this.validatorService)),
+      'email': new FormControl(this.email, [this.validatorService.required(), Validators.email], this.validatorService.checkForDuplicateEmail.bind(this.validatorService)),
       "passwords": new FormGroup({
-        "password": new FormControl(this.password, [this.required()]),
-        "password2": new FormControl(this.password2, [this.required(), Validators.min(8)])
-      }, this.passwordsMustMatch),
+        "password": new FormControl(this.password, [this.validatorService.required()]),
+        "password2": new FormControl(this.password2, [this.validatorService.required(), Validators.min(8)])
+      }, this.validatorService.passwordsMustMatch),
       "blog_title": new FormControl(this.blog_title)
     });
   }
@@ -84,61 +90,6 @@ export class RegisterComponent implements OnInit {
     return (<FormGroup>this.registerForm.get('passwords')).controls.password2;
   }
 
-  required() {
-    return (control: FormControl): any => {
-      if (control.value == null || control.value.trim() == '') {
-        return {
-          required: {
-            value: control.value
-          } 
-        };
-      }
-
-      return null; 
-    }
-    
-  }
-
-  checkForDuplicateUsername(control: FormControl) {
-    if (control.value != '') {
-      return this.checkForDuplicate(`${environment.server_url}/api/find_user`, {
-        username: control.value
-      }); 
-    } 
-  }
-
-  checkForDuplicate(url, postParams) {
-    clearTimeout(this.debounceTimeout);
-    return new Promise((resolve, reject) => {
-      this.debounceTimeout = setTimeout(() => {
-        this
-          .http
-          .post<DuplicateInterface>(url, postParams)
-          .subscribe((data) => {
-            if (data.duplicate) {
-              console.log("duplicate found");
-              resolve({
-                duplicate: {
-                  value: postParams.email ? postParams.email : postParams.username
-                }
-              });
-            }
-            else {
-              resolve(null);
-            }
-          })
-      }, 600);
-    }); 
-  }
-  
-  checkForDuplicateEmail(control: FormControl) {
-    if (control.value != '') {
-      return this.checkForDuplicate(`${environment.server_url}/api/find_email`, {
-        email: control.value
-      });  
-    }
-  }
-
   register(): void {
     this
       .http
@@ -151,7 +102,7 @@ export class RegisterComponent implements OnInit {
       .subscribe((data) => {
         if (data.success) {
           this.requestService.posts = data.posts;
-          let user: User = new User(data.user_id, data.username, data.token, data.avatar);
+          let user: User = data.user;
           localStorage.setItem("current_user", JSON.stringify(user));
 
           this.router.navigate(["/users/dashboard"]);
@@ -161,21 +112,6 @@ export class RegisterComponent implements OnInit {
         }
       })
     ; 
-  }
-
-  passwordsMustMatch(passwordGroup: FormGroup) {
-    let password = passwordGroup.controls.password.value;
-    let password2 = passwordGroup.controls.password2.value;
-
-    if (password != password2) {
-      return {
-        passwordMismatch: {
-          value: password2
-        }
-      };
-    }
-
-    return null;
   }
 
 }

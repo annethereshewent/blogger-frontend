@@ -9,4 +9,5 @@ export class Post {
   username: string;
   images: string[];
   user_id: number;
+  tags: string[];
 }
