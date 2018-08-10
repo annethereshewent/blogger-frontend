@@ -5,8 +5,9 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ValidatorService } from "../validator.service";
 
-interface VerifyPasswordResponse {
+interface GenericResponse {
   success: boolean;
+  message: string;
 }
 interface UpdateUserResponse {
   success: boolean;
@@ -55,22 +56,21 @@ export class AccountComponent implements OnInit {
       this.user = user;
 
       this.userDiffer = this.differs.find(this.user).create();
+
+      this.mainForm = new FormGroup({
+        "username": new FormControl(this.user.username, [this.validatorService.required(), this.validatorService.alphanumeric_plus()], this.validatorService.checkForDuplicateUsername.bind(this.validatorService)),
+        "blog_title": new FormControl(this.user.blog_title),
+        "description": new FormControl(this.user.description),
+      });
+
+      this.securityForm = new FormGroup({
+        "email": new FormControl(this.user.email, [this.validatorService.required(), Validators.email], this.validatorService.checkForDuplicateEmail.bind(this.validatorService)),
+        "passwords": new FormGroup({
+          "password": new FormControl(this.new_password),
+          "password2": new FormControl(this.new_password2, [Validators.min(8)])
+        }, this.validatorService.passwordsMustMatch)
+      });
     }
-
-    this.mainForm = new FormGroup({
-      "username": new FormControl(this.user.username, [this.validatorService.required(), this.validatorService.alphanumeric_plus()], this.validatorService.checkForDuplicateUsername.bind(this.validatorService)),
-      "blog_title": new FormControl(this.user.blog_title),
-      "description": new FormControl(this.user.description),
-    });
-
-    this.securityForm = new FormGroup({
-      "email": new FormControl(this.user.email, [this.validatorService.required(), Validators.email], this.validatorService.checkForDuplicateEmail.bind(this.validatorService)),
-      "passwords": new FormGroup({
-        "password": new FormControl(this.new_password),
-        "password2": new FormControl(this.new_password2, [Validators.min(8)])
-      }, this.validatorService.passwordsMustMatch)
-    });
-
   }
 
   ngOnInit(): void {
@@ -88,13 +88,51 @@ export class AccountComponent implements OnInit {
   verifyPassword(): void {
     this
       .http
-      .post<VerifyPasswordResponse>(`${environment.server_url}/api/verify`, { id: this.user.user_id, password: this.password })
+      .post<GenericResponse>(`${environment.server_url}/api/verify`, { id: this.user.user_id, password: this.password })
       .subscribe((data) => {
         if (data.success) {
           this.authorized = true;
         }
         else {
+          console.log(data.message);
           console.log("could not authorize user.");
+        }
+      })
+    ;
+  }
+
+  switchTheme(theme) {
+    let headers = new HttpHeaders()
+      .set("Authorization", this.user.token)
+    ;
+
+    let theme_id: number;
+
+    switch(theme) {
+      case 'forest':
+        theme_id = 2;
+        break;
+      case 'strawberry':
+        theme_id = 3;
+        break;
+      case 'ruby':
+        theme_id = 4;
+        break;
+      case 'aqua':
+        theme_id = 5;
+        break;
+      default:
+        theme_id = 1;
+        break;
+    }
+
+    this
+      .http
+      .post<GenericResponse>(`${environment.server_url}/api/switch_theme`, { theme_id: theme_id}, { headers: headers})
+      .subscribe((data) => {
+        if (data.success) {
+          this.user.theme = theme;
+          localStorage.setItem("current_user", JSON.stringify(this.user));
         }
       })
     ;
@@ -125,14 +163,22 @@ export class AccountComponent implements OnInit {
       formData.append('avatar', this.avatar);
     }
 
-    formData.append('id', this.user.user_id);
+    formData.append('id', String(this.user.user_id));
     formData.append('blog_title', this.user.blog_title);
     formData.append('displayname', this.user.username);
     formData.append('description', this.user.description);
 
+    this.saveSettings(formData);
+  }
+
+  saveSettings(postParams): void {
+    let headers = new HttpHeaders()
+      .set("Authorization", this.user.token)
+    ;
+
     this
       .http
-      .post<UpdateUserResponse>(`${environment.server_url}/api/update_user`, formData, { headers: headers })
+      .post<UpdateUserResponse>(`${environment.server_url}/api/update_user`, postParams, { headers: headers })
       .subscribe((data) => {
         if (data.success) {
           console.log('updated user successfully');
@@ -153,31 +199,16 @@ export class AccountComponent implements OnInit {
       .set("Authorization", this.user.token)
     ;
 
-    let postParams = {
+    let postParams: any = {
       id: this.user.user_id,
       email: this.user.email
     };
 
-    if (this.password != '' && this.password2 != '') {
-      postParams.password = this.password;
+    if (this.new_password != '' && this.new_password2 != '') {
+      postParams.password = this.new_password;
     }
 
-    this
-      .http
-      .post<UpdateUserResponse>(`${environment.server_url}/api/update_user`, postParams, { headers: headers })
-      .subscribe((data) => {
-        if (data.success) {
-          console.log('updated user successfully');
-          this.user = data.user;
-          localStorage.setItem("current_user", JSON.stringify(this.user));
-          this.alertSuccess = true;
-        }
-        else {
-          this.alertDanger = true;
-          console.log(data.message);
-        }
-      })
-    ;
+    this.saveSettings(postParams);
   }
 
 

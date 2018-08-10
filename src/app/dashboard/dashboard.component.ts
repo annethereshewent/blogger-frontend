@@ -1,4 +1,4 @@
-import { Component, OnInit, HostListener } from '@angular/core';
+import { Component, OnInit, HostListener, IterableDiffers, IterableDiffer } from '@angular/core';
 import { RequestService } from "../request.service";
 import { Post } from "../../classes/Post";
 import { User } from "../../classes/User";
@@ -39,15 +39,19 @@ export class DashboardComponent implements OnInit {
   bsModalRef: BsModalRef;
   tag_name: string;
   title: string = "Feed Posts:"
+  iterableDiffer: IterableDiffer<any>;
 
   constructor(
     private requestService: RequestService, 
     private router: Router, 
     private http: HttpClient, 
     private modalService: BsModalService, 
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private differs: IterableDiffers;
   ) {
     
+    this.iterableDiffer = differs.find([]).create(null);
+
     this.tag_name = this.route.snapshot.params.tag_name;
 
     let user = JSON.parse(localStorage.getItem('current_user'));
@@ -171,7 +175,7 @@ export class DashboardComponent implements OnInit {
     this.bsModalRef.content.postEmitter.subscribe((post) => {
       let index = this.posts.map((post) => { return post.id }).indexOf(post.id);
 
-      let fixed_post = this.fixPosts([post])[0];
+      let fixed_post = environment.production ? this.fixPosts([post])[0] : post;
 
       this.posts[index] = fixed_post;
     });
@@ -306,8 +310,7 @@ export class DashboardComponent implements OnInit {
     };
     this.bsModalRef = this.modalService.show(PostModalComponent,options);
     this.bsModalRef.content.postEmitter.subscribe((post) => {
-      console.log("hey, it worked!");
-      let fixed_post = this.fixPosts([post])[0];
+      let fixed_post = environment.production ? post : this.fixPosts([post])[0];
       this.posts.unshift(fixed_post);
 
     })
@@ -340,6 +343,14 @@ export class DashboardComponent implements OnInit {
     // let bsModalRef = this.modalService.show(ConfirmPopupComponent, Object.assign({}, this.modalConfig, { class: 'modal-sm', initialState })
     // );
 
+  }
+
+  ngDoCheck() {
+    let changes = this.iterableDiffer.diff(this.posts);
+    if (changes) {
+      console.log('changes detected.');
+      this.requestService.posts = this.posts;
+    }
   }
 
 }

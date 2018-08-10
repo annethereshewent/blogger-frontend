@@ -1,3 +1,4 @@
+@import "../../styles.scss";
 :host {
   background: #F2F2FA;
   border-radius: 25px;
@@ -20,7 +21,6 @@ h3 {
   margin-top: 20px;
 }
 :host ::ng-deep .dz-message span {
-
   font-size: 24px;
   font-style: italic;
   color: #C2C2D6;

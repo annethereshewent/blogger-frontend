@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { Router } from '@angular/router';
+import { RequestService } from "../request.service";
 
 @Component({
   selector: 'app-users',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class UsersComponent implements OnInit {
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private requestService: RequestService) {
     console.log(this.router.url.indexOf('/users/tags'));
   }
 
@@ -18,6 +19,7 @@ export class UsersComponent implements OnInit {
   }
 
   dashboardPath() {
+    this.requestService.posts = null;
     this.router.navigate(['/users/dashboard']);
   }
 

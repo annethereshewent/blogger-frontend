@@ -4,9 +4,13 @@
       <h3>Image Upload</h3>
     </div>
   </div>
-  <div class="row">
+  <div class="row mb20">
     <div class="col-lg-2"></div>
     <div class="col-lg-8 dropzone" [dropzone]="config" (error)="onUploadError($event)" (success)="onUploadSuccess($event)">
     </div>
   </div>
+  <div class="row">
+    <div class="col-lg-12">
+      <tag-input [(ngModel)]='tags' name="tags" [separatorKeyCodes]="[188]"></tag-input>
+    </div>
 </div>

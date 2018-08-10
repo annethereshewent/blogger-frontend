@@ -3,7 +3,6 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
-import { RequestService } from "../request.service";
 
 @Component({
   selector: 'app-blog',
@@ -12,19 +11,19 @@ import { RequestService } from "../request.service";
 })
 export class BlogComponent implements OnInit {
 
-  theme: string = "/assets/theme/default.css";
   user: User;
   current_user: User;
   production: boolean = environment.production;
 
 
 
-  constructor(public sanitizer: DomSanitizer, public router: Router, private requestService: RequestService) {
+  constructor(public sanitizer: DomSanitizer, public router: Router) {
     let current_user: User;
     if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
       this.current_user = current_user;
       if (this.router.url == "/blog/account") {
         this.user = this.current_user;
+        console.log(this.user.theme);
       }
     }
     else if (this.router.url == '/blog/account') {
@@ -58,5 +57,5 @@ export class BlogComponent implements OnInit {
     }
   }
 
-  
+
 }

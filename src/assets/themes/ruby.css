@@ -1,0 +1,91 @@
+.content {
+  font-family:"arial narrow";
+  background: #800000;
+  color: white;
+  border:1px solid #990000;
+  //margin: 30px 30px 30px 30px;
+  padding-left: 40px;
+  padding-bottom:20px;
+  padding-right:20px;
+}
+body {
+  background:#BD5C5C;
+  overflow-x: hidden;
+}
+.sidebar {
+  position:fixed;
+  height: 100%;
+  width: 300px;
+  background:#990000;
+  top: 0;
+  left: 0;
+  font-family: "Arial Narrow", serif;
+  color:white;
+}
+.sidebar a { 
+  color: white;
+  text-decoration: none;
+}
+.links ul {
+  list-style-type: none;
+}
+.links ul li {
+  border-bottom: 1px solid white;
+  width: 75%;
+
+}
+.sidebar-main {
+  margin-left: 20px;
+  margin-top: 40px;
+}
+.sidebar-image {
+  border-radius: 60px;
+  margin-left: 40px;
+}
+.description {
+  font-size:10px;
+  width:100px;
+  margin-left:70px;
+}
+.title {
+  color: white;
+  font-size:20px;
+  padding-bottom:10px;
+  padding-top:10px;
+  margin-top:20px;
+  border-top:1px solid white;
+  border-bottom:1px solid white;
+  width:150px;
+  text-align:center;
+  margin-left:40px;
+  margin-bottom: 20px;
+}
+.links a:hover {
+  padding-left:20px;
+  color:#EBCCCC;
+  border-color:#EBCCCC;
+  -webkit-transition: all 0.6s ease-in-out;
+  -moz-transition: all 0.6s ease-in-out;
+  -o-transition: all 0.6s ease-in-out;
+  -ms-transition: all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
+}
+.form-heading {
+  color: #BE5C5C;
+}
+.sub-heading {
+  color:#BE5C5C;
+  font-style:italic;
+  font-size:12px;
+  margin-top: -10px;
+}
+a {
+  color: red;
+}
+.profile-pic {
+  border-radius: 80px;
+}
+h3 {
+  font-size: 20px;
+  font-style: italic;
+}

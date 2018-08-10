@@ -14,6 +14,11 @@
     <div class="col-lg-12" [innerHtml]="youtube_video | safeHtml"></div>
   </div>
   <div class="row">
+    <div class="col-lg-12">
+      <tag-input formControlName="tags" [(ngModel)]="tags" name="tags" [separatorKeyCodes]="[188]"></tag-input>
+    </div>
+  </div>
+  <div class="row">
     <div class="col-lg-8">
       <button class="btn btn-primary" [disabled]="youtubeForm.invalid">Submit Video</button>
       <button type="button" class="btn btn-danger" (click)="bsModalRef.hide()" style="margin-left:20px">Cancel</button>

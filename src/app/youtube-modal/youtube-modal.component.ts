@@ -23,11 +23,13 @@ export class YoutubeModalComponent implements OnInit {
   youtube_video: string = '';
   youtube_url: string = '';
   youtubeForm: FormGroup;
+  tags: any[];
   @Output() postEmitter: EventEmitter<Post> = new EventEmitter<Post>();
 
   constructor(public bsModalRef: BsModalRef, private requestService: RequestService, private http: HttpClient) {
     this.youtubeForm = new FormGroup({
-      "youtube_url": new FormControl(this.youtube_url, [this.required()])
+      "youtube_url": new FormControl(this.youtube_url, [this.required()]),
+      "tags": new FormControl(this.tags)
     });
   }
 

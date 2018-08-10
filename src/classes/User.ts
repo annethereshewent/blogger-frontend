@@ -8,4 +8,5 @@ export class User {
     blog_title: string;
     description: string;
     email: string;
+    theme: string;
 }

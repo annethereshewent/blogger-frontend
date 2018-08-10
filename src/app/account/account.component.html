@@ -8,7 +8,7 @@
   <div class="row">
     <div class="col-lg-6">
       <div class="content" (ngSubmit)="saveChanges()">
-        <input type="file" class="avatar-upload" (change)="updateImage($event)" #avatar_upload>
+        <input type="file" class="avatar-upload" (change)="updateImage($event)" accept="image/*" #avatar_upload>
         <form (ngSubmit)="saveChanges()" [formGroup]="mainForm">
           <div class="row mb20">
             <div class="col-lg-12">
@@ -67,8 +67,8 @@
         </div>
         <form *ngIf="!authorized" (ngSubmit)="verifyPassword()">
           <div class="row form-group">
-            <div class="col-lg-7">
-              <label for="password"><i>Please enter current password to continue:</i></label>
+            <div class="col-lg-6">
+              <label for="password"><i>Please enter password to continue:</i></label>
               <input type="password" class="form-control" name="password" [(ngModel)]="password">
             </div>
           </div>

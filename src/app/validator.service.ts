@@ -14,10 +14,9 @@ interface DuplicateInterface {
 export class ValidatorService {
 
   private debounceTimeout;
-  private user: User;
 
   constructor(private http: HttpClient) {
-    this.user = JSON.parse(localStorage.getItem("current_user"));
+
   }
 
   passwordsMustMatch(passwordGroup: FormGroup) {
@@ -94,16 +93,20 @@ export class ValidatorService {
   }
 
   checkForDuplicate(url, postParams, value) {
+    let user: User;
     clearTimeout(this.debounceTimeout);
+
     return new Promise((resolve, reject) => {
       let compare_value;
 
-      if (this.user) {
-        compare_value = postParams.email ? this.user.email : this.user.username
+      if (user = JSON.parse(localStorage.getItem('current_user'))) {
+        compare_value = postParams.email ? user.email : user.username
       }
       else {
         compare_value = '';
       }
+
+      console.log("comparing (control.value) " + value + " with (username, email) " + compare_value);
 
       if (value != '' &&  value != compare_value) {
         this.debounceTimeout = setTimeout(() => {
