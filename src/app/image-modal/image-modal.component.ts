@@ -16,6 +16,7 @@ export class ImageModalComponent implements OnInit {
   config: any;
 
   @Output() postEmitter: EventEmitter<Post> = new EventEmitter<Post>();
+  tags: any[];
 
 
   constructor(public bsModalRef: BsModalRef) {
@@ -24,6 +25,7 @@ export class ImageModalComponent implements OnInit {
         url: `${environment.server_url}/api/upload_image`,
         method: 'post',
         paramName: 'file',
+        params: { tags: this.tags },
         acceptedFiles: "image/*",
         headers: {
           "Authorization": this.user.token

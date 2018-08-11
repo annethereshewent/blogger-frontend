@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
 
+
 @Component({
   selector: 'app-blog',
   templateUrl: './blog.component.html',
@@ -17,7 +18,11 @@ export class BlogComponent implements OnInit {
 
 
 
-  constructor(public sanitizer: DomSanitizer, public router: Router) {
+  constructor(
+    public sanitizer: DomSanitizer, 
+    public router: Router, 
+    private route: ActivatedRoute,
+  ) {
     let current_user: User;
     if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
       this.current_user = current_user;

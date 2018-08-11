@@ -47,7 +47,7 @@ export class DashboardComponent implements OnInit {
     private http: HttpClient, 
     private modalService: BsModalService, 
     private route: ActivatedRoute,
-    private differs: IterableDiffers;
+    private differs: IterableDiffers
   ) {
     
     this.iterableDiffer = differs.find([]).create(null);

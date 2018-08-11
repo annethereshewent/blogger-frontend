@@ -85,3 +85,8 @@ h3 {
   font-size: 20px;
   font-style: italic;
 }
+@media (max-width: 991.98px) {
+  .sidebar {
+    width: 0px;
+  }
+}

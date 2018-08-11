@@ -38,17 +38,17 @@ export class ValidatorService {
 
     let regex = /^[A-Za-z0-9]([A-Za-z0-9_-]*[A-Za-z0-9])?$/;
 
-      return (control: FormControl): any => {
-        if (control.value != '' && !regex.test(control.value)) {
-          return {
-            alphanumeric_plus: {
-              value: control.value
-            }
+    return (control: FormControl): any => {
+      if (control.value != '' && !regex.test(control.value)) {
+        return {
+          alphanumeric_plus: {
+            value: control.value
           }
         }
-
-        return null;
       }
+
+      return null;
+    }
   }
 
   required() {
@@ -105,8 +105,6 @@ export class ValidatorService {
       else {
         compare_value = '';
       }
-
-      console.log("comparing (control.value) " + value + " with (username, email) " + compare_value);
 
       if (value != '' &&  value != compare_value) {
         this.debounceTimeout = setTimeout(() => {

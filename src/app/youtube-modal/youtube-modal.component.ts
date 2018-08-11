@@ -6,6 +6,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from "../../classes/User";
 import { Post } from "../../classes/Post";
 import { environment } from "../../environments/environment";
+import { ValidatorService } from "../validator.service";
 
 interface PostResponse {
   success: boolean;
@@ -26,26 +27,11 @@ export class YoutubeModalComponent implements OnInit {
   tags: any[];
   @Output() postEmitter: EventEmitter<Post> = new EventEmitter<Post>();
 
-  constructor(public bsModalRef: BsModalRef, private requestService: RequestService, private http: HttpClient) {
+  constructor(public bsModalRef: BsModalRef, private requestService: RequestService, private http: HttpClient, private validatorService: ValidatorService) {
     this.youtubeForm = new FormGroup({
-      "youtube_url": new FormControl(this.youtube_url, [this.required()]),
+      "youtube_url": new FormControl(this.youtube_url, [this.validatorService.required()]),
       "tags": new FormControl(this.tags)
     });
-  }
-
-  required() {
-    return (control: FormControl): any => {
-      if (control.value == null || control.value.trim() == '') {
-        return {
-          required: {
-            value: control.value
-          } 
-        };
-      }
-
-      return null; 
-    }
-    
   }
 
   loadYoutubeVideo(): void {

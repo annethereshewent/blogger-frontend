@@ -11,7 +11,7 @@ import { RequestService } from "../request.service";
 export class UsersComponent implements OnInit {
 
   constructor(private router: Router, private requestService: RequestService) {
-    console.log(this.router.url.indexOf('/users/tags'));
+
   }
 
   ngOnInit() {

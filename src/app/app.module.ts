@@ -24,6 +24,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { BlogComponent } from './blog/blog.component';
 import { AccountComponent } from './account/account.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
+import { PostsComponent } from './posts/posts.component';
 
 const appRoutes: Routes = [
     { 
@@ -52,6 +53,9 @@ const appRoutes: Routes = [
         path: 'blog', component: BlogComponent, children: [
             {
                 path: "account", component: AccountComponent
+            },
+            {
+                path: "posts/:username", component: PostsComponent
             }
         ]
     }
@@ -69,7 +73,8 @@ const appRoutes: Routes = [
     YoutubeModalComponent,
     ImageModalComponent,
     BlogComponent,
-    AccountComponent
+    AccountComponent,
+    PostsComponent
   ],
   imports: [
     BrowserModule,
