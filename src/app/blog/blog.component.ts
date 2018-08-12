@@ -104,6 +104,10 @@ export class BlogComponent implements OnInit {
     this.sidebar_hidden = this.sidebar_hidden ? false : true;
   }
 
+  getTheme(): string {
+    return this.user ? '/assets/themes/' + this.user.theme + '.css' : '/assets/themes/default.css';
+  }
+
   onActivate(component) {
     if (component.updateUser) {
       component.updateUser.subscribe((user) => {

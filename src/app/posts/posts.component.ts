@@ -27,7 +27,6 @@ export class PostsComponent implements OnInit {
   ) { 
     this.requestService.posts$.subscribe((posts) => { 
       this.posts = posts;
-      console.log(this.posts);
     });
   }
 

@@ -1,6 +1,6 @@
-<link rel="stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl('/assets/themes/' + user.theme + '.css')">
+<link rel="stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl(getTheme())">
 <div class="wrapper">
-  <nav [ngClass]="{ 'sidebar': true, 'hidden': sidebar_hidden}">
+  <nav [ngClass]="{ 'sidebar': true, 'hidden': sidebar_hidden}" *ngIf="user">
     <div class="sidebar-main">
       <div class="title">
         {{ user.blog_title }}
@@ -23,7 +23,7 @@
   </nav>
   <router-outlet (activate)="onActivate($event)"></router-outlet>
 </div>
-<div class="navigation-content">
+<div class="navigation-content" *ngIf="user">
   <ul class="nav-buttons">
     <li *ngIf="user.user_id != current_user.user_id && !is_friends()" id="addFriend"><a href="#" onclick="addFriend()"><i class="fa fa-user-plus"></i>Add Friend</a></li>
     <li *ngIf="show_requests()" id="Requests"><a href="#" onClick="openRequests()"><p id="num-requests" >{{ check_requests() }}</p><i class="fa fa-users"></i><i>Requests</i></a></li>
