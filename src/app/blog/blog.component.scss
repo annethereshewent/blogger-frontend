@@ -64,6 +64,18 @@
 #sidebar-toggle-button.hidden {
   margin-left: 0px;
 }
+.pagination {
+  font-size: 12px;
+}
+.pagination.main {
+  margin-left: 40px;
+}
+#next_page {
+  margin-left: 60px;
+}
+.pagination-number {
+  margin-left: 100px;
+}
 @media (max-width: 991.98px) {
   .sidebar {
     margin-left: -300px;

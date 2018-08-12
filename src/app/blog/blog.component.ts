@@ -29,6 +29,10 @@ export class BlogComponent implements OnInit {
   sidebar_button_class: string = "fa fa-caret-square-o-left";
   sidebar_hidden: boolean = false;
   is_mobile: boolean = false;
+  page: number = null;
+  prev_page: number = null;
+  next_page: number = null;
+  username = '';
 
 
 
@@ -52,24 +56,39 @@ export class BlogComponent implements OnInit {
       }
     }
     else {
-      let username = this.route.snapshot.firstChild.params.username;
-      if (username) {
-        let current_user: User;
-        if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
-          this.current_user = current_user;
-        }
-
-        this
-          .http
-          .get<UserPostResponse>(`${environment.server_url}/api/fetch_blog_posts/${username}`)
-          .subscribe((data) => {
-            if (data.success) {
-              this.user = data.user;
-              this.requestService.addPosts(data.posts);
-            }
-          })
-        ;
+      let current_user: User;
+      if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
+        this.current_user = current_user;
       }
+
+      this.route.firstChild.params.subscribe((params) => {
+        console.log("something happened");
+        let username = params.username;
+        if (username) {
+          if (username != this.username) {
+            this.username = username;
+          }
+          this.page = params.page;
+          let url = `${environment.server_url}/api/fetch_blog_posts/${username}/${this.page}`;
+
+          this
+            .http
+            .get<UserPostResponse>(url)
+            .subscribe((data) => {
+              if (data.success) {
+                if (data.user) {
+                  this.user = data.user;
+                }
+
+                this.requestService.addPosts(data.posts);
+                this.prev_page = data.pagination.prev_page;
+                this.next_page = data.pagination.next_page;
+              }
+            })
+          ;
+        }
+      })
+      
     }
 
   }
@@ -98,6 +117,15 @@ export class BlogComponent implements OnInit {
 
   check_requests(): string {
     return '';
+  }
+
+
+  navigateNextPage() {
+    this.router.navigate([`/blog/posts/${this.username}`, this.next_page]);
+  }
+
+  navigatePreviousPage() {
+    this.router.navigate([`/blog/posts/${this.username}`, this.prev_page]);
   }
 
   toggleSidebar(): void {

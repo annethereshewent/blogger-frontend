@@ -55,7 +55,10 @@ const appRoutes: Routes = [
                 path: "account", component: AccountComponent
             },
             {
-                path: "posts/:username", component: PostsComponent
+                path: "posts/:username", redirectTo: "/blog/posts/:username/1", pathMatch: "full"
+            },
+            {
+                path: "posts/:username/:page", component: PostsComponent
             }
         ]
     }
