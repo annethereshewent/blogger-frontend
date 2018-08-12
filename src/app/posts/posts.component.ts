@@ -25,7 +25,6 @@ export class PostsComponent implements OnInit {
   @Output() updateUser: EventEmitter<User> = new EventEmitter<User>();
 
   constructor(private route: ActivatedRoute, private router: Router, private http: HttpClient) { 
-    console.log(this.route.snapshot.params);
     let username: string = this.route.snapshot.params.username
     if (username) {
       this
@@ -38,6 +37,7 @@ export class PostsComponent implements OnInit {
             this.updateUser.emit(data.user);
           }
         })
+      ;
     }
   }
 
