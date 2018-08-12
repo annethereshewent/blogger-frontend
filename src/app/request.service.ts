@@ -14,6 +14,9 @@ export class RequestService {
   private _posts: Subject<Post[]> = new BehaviorSubject<Post[]>(this.posts);
   posts$ = this._posts.asObservable();
 
+  private _sidebar_hidden: Subject<boolean> = new BehaviorSubject<boolean>(false);
+  sidebar_hidden$ = this._sidebar_hidden.asObservable();
+
   parseYoutubeURL(content) {
     var regEx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     var match = content.match(regEx);
@@ -36,6 +39,10 @@ export class RequestService {
 
   addPosts(posts: Post[]) {
     this._posts.next(posts);
+  }
+
+  toggleSidebar(hidden: boolean) {
+    this._sidebar_hidden.next(hidden);
   }
 
   getCommentText(post) {

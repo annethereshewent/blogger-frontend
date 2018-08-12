@@ -42,10 +42,12 @@
   margin-left: 40px;
 }
 .sidebar {
-  min-width: 300px;
-  max-width: 300px;
-  min-height: 100vh;
-  margin-right: 40px;
+  width: 300px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  z-index: 999;
   transition: all 0.3s
 }
 .sidebar.hidden {
@@ -54,7 +56,6 @@
 .wrapper {
   display: flex;
   width: 100%;
-  align-items: stretch;
 }
 #sidebar-toggle-button { 
   margin-left: 300px;

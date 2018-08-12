@@ -1,7 +1,14 @@
 :host {
-  width: 100%;
+  width: calc(100% - 300px);
+  padding: 40px;
   transition: all 0.3s;
   min-height: 100vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+:host(.active) {
+  width: 100%
 }
 #main {
   margin-top: 80px;
@@ -45,4 +52,12 @@
 :host ::ng-deep .block-quote-outer a {
   color:black;
   font-size: 14px;
+}
+@media (max-width: 991.98px) {
+  :host {
+    width: 100%;
+  }
+  :host(.active) {
+    width: calc(100% - 300px);
+  }
 }

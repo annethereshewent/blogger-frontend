@@ -1,8 +1,9 @@
-import { Component, OnInit, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, Output, EventEmitter, HostBinding } from '@angular/core';
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { RequestService } from "../request.service";
 import { ValidatorService } from "../validator.service";
 
 interface GenericResponse {
@@ -47,12 +48,20 @@ export class AccountComponent implements OnInit {
 
   avatar: File = null;
 
+  @HostBinding('class.active') is_active: boolean = false;
+
   private userDiffer: KeyValueDiffer<string, any>;
   @Output() updateUser: EventEmitter<User> = new EventEmitter<User>();
 
-  constructor(private http: HttpClient, private differs: KeyValueDiffers, private validatorService: ValidatorService) { 
+  constructor(
+    private http: HttpClient, 
+    private differs: KeyValueDiffers, 
+    private validatorService: ValidatorService, 
+    private requestService: RequestService
+  ) { 
     let user: User;
     if (user = JSON.parse(localStorage.getItem('current_user'))) {
+      this.requestService.sidebar_hidden$.subscribe((active) => this.is_active = active)
       this.user = user;
 
       this.userDiffer = this.differs.find(this.user).create();

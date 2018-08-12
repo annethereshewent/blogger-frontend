@@ -108,6 +108,7 @@ export class BlogComponent implements OnInit {
       this.sidebar_button_class = this.sidebar_hidden ? "fa fa-caret-square-o-left" : "fa fa-caret-square-o-right";
     }
     this.sidebar_hidden = this.sidebar_hidden ? false : true;
+    this.requestService.toggleSidebar(this.sidebar_hidden);
   }
 
   is_friends() {

@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, HostBinding } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Post } from "../../classes/Post";
@@ -18,6 +18,7 @@ export class PostsComponent implements OnInit {
   current_user: User;
 
   @Output() updateUser: EventEmitter<User> = new EventEmitter<User>();
+  @HostBinding('class.active') is_active: boolean = false;
 
   constructor(
     private route: ActivatedRoute, 
@@ -29,6 +30,8 @@ export class PostsComponent implements OnInit {
       this.posts = posts;
       console.log(this.posts);
     });
+
+    this.requestService.sidebar_hidden$.subscribe((active) => this.is_active = active);
 
     let user: User
     if (user = JSON.parse(localStorage.getItem('current_user'))) {
