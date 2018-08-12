@@ -1,4 +1,4 @@
-<link rel="stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl(getTheme())">
+<link rel="stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl(user ? '/assets/themes/' + user.theme + '.css' : '/assets/themes/default.css')">
 <div class="wrapper">
   <nav [ngClass]="{ 'sidebar': true, 'hidden': sidebar_hidden}" *ngIf="user">
     <div class="sidebar-main">
@@ -15,7 +15,7 @@
           <li><a href="/blog/posts/{{user.username}}">home</a></li>                         
           <li><a href="/blog/account">control panel</a></li>
           <li><a href="/users/contact">contact</a></li> 
-          <li *ngIf="user.id==current_user.id"><a href="javascript:void(0)" onClick="openPostModal()">new</a></li>
+          <li *ngIf="current_user && user.user_id==current_user.user_id"><a href="javascript:void(0)" onClick="openPostModal()">new</a></li>
         </ul>
       </nav>
     </div>
@@ -23,7 +23,7 @@
   </nav>
   <router-outlet (activate)="onActivate($event)"></router-outlet>
 </div>
-<div class="navigation-content" *ngIf="user">
+<div class="navigation-content" *ngIf="user && current_user">
   <ul class="nav-buttons">
     <li *ngIf="user.user_id != current_user.user_id && !is_friends()" id="addFriend"><a href="#" onclick="addFriend()"><i class="fa fa-user-plus"></i>Add Friend</a></li>
     <li *ngIf="show_requests()" id="Requests"><a href="#" onClick="openRequests()"><p id="num-requests" >{{ check_requests() }}</p><i class="fa fa-users"></i><i>Requests</i></a></li>

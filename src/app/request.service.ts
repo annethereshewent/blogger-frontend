@@ -37,4 +37,16 @@ export class RequestService {
   addPosts(posts: Post[]) {
     this._posts.next(posts);
   }
+
+  getCommentText(post) {
+    if (post.num_comments == 0) {
+      return "Comments";
+    }
+    else if (post.num_comments == 1) {
+      return "1 Comment";
+    }
+    else {
+      return `${post.num_comments} Comments`;
+    }
+  }
 }

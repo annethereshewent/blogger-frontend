@@ -6,3 +6,43 @@
 #main {
   margin-top: 80px;
 }
+.edit-post {
+  margin-left: 10px;
+}
+.quote {
+  margin-left: 10px;
+}
+.content {
+  margin-bottom: 40px;
+}
+.tag {
+  margin-right: 20px;
+  color: #BD5C5C;
+}
+:host ::ng-deep .block-quote {
+  border-left: 2px solid grey;
+  padding-left:10px;
+}
+:host ::ng-deep .block-quote, :host ::ng-deep .block-quote-outer {
+  margin-left:10px;
+}
+:host ::ng-deep .quote-avatar {
+  display: inline-block;
+  border-radius: 20px;
+  width: 20px;
+}
+:host ::ng-deep .post-quote {
+  display: block;
+  border-bottom: 1px solid grey;
+
+}
+:host ::ng-deep .post-quote span {
+  font-weight: bold;
+}
+:host ::ng-deep .quote-post {
+  margin-bottom: 10px;
+}
+:host ::ng-deep .block-quote-outer a {
+  color:black;
+  font-size: 14px;
+}

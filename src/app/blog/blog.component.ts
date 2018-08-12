@@ -39,31 +39,37 @@ export class BlogComponent implements OnInit {
     private requestService: RequestService,
     private http: HttpClient
   ) {
-    let current_user: User;
-    if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
-      this.current_user = current_user;
-      if (this.router.url == "/blog/account") {
-        this.user = this.current_user;
+    
+    if (this.router.url == "/blog/account") {
+      let current_user: User; 
+      if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
+        this.current_user = current_user;
+        this.user = current_user;
       }
       else {
-        let username = this.route.snapshot.firstChild.params.username;
-        if (username) {
-          this
-            .http
-            .get<UserPostResponse>(`${environment.server_url}/api/fetch_blog_posts/${username}`)
-            .subscribe((data) => {
-              if (data.success) {
-                this.user = data.user;
-                this.requestService.addPosts(data.posts);
-              }
-            })
-          ;
-        }
+        localStorage.removeItem("current_user");
+        this.router.navigate(["/users"]);
       }
     }
-    else if (this.router.url == '/blog/account') {
-      localStorage.removeItem("current_user");
-      this.router.navigate(["/users"])
+    else {
+      let username = this.route.snapshot.firstChild.params.username;
+      if (username) {
+        let current_user: User;
+        if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
+          this.current_user = current_user;
+        }
+
+        this
+          .http
+          .get<UserPostResponse>(`${environment.server_url}/api/fetch_blog_posts/${username}`)
+          .subscribe((data) => {
+            if (data.success) {
+              this.user = data.user;
+              this.requestService.addPosts(data.posts);
+            }
+          })
+        ;
+      }
     }
 
   }
@@ -104,8 +110,8 @@ export class BlogComponent implements OnInit {
     this.sidebar_hidden = this.sidebar_hidden ? false : true;
   }
 
-  getTheme(): string {
-    return this.user ? '/assets/themes/' + this.user.theme + '.css' : '/assets/themes/default.css';
+  is_friends() {
+    return false;
   }
 
   onActivate(component) {

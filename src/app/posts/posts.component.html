@@ -1,7 +1,25 @@
 <div id="main">
   <div class="container-fluid">
-    <div class="row">
-      <div class="col-lg-7"><div class="content">TEST</div></div>
+    <div class="row" *ngFor="let post of posts">
+      <div class="col-lg-7">
+        <div class="content">
+          <p><i>Created on: {{post.created_at}}</i></p>
+          <div class="post">
+            <p *ngFor="let image of post.images"><img src="{{production_site ? image : 'http://localhost:3000' + image}}" class="img-fluid"></p>
+            <p [innerHtml]="post.post | safeHtml"></p>
+          </div>
+          <p *ngIf="post.edited"><i>(Post Edited on: {{ post.updated_at}})</i></p>
+          <div class="post-tags">
+            <a *ngFor="let tag of post.tags" href="javascript:void(0)" (click)="tagSearch(tag)"><span class="tag">{{tag}}</span></a>
+          </div>
+          <div class="post-buttons">
+            <a href="javascript:void(0)" class="comment-text" (click)="goToComments(post)">{{ requestService.getCommentText(post) }}</a> 
+            <a *ngIf="current_user && current_user.user_id==post.user_id" href="javascript:void(0)" class="edit-post" (click)="editPost(post)">Edit Post</a>
+            <a href="javascript:void(0)" class="quote" (click)="openQuoteModal(post)">Quote</a>
+            <a *ngIf="current_user && current_user.user_id==post.user_id" href="javascript:void(0)" (click)="deletePost(post)"><li class="fa fa-trash"></li></a>
+          </div>    
+        </div>
+      </div>
     </div>
   </div>
 </div>

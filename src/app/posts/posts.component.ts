@@ -14,8 +14,8 @@ import { RequestService } from "../request.service";
 })
 export class PostsComponent implements OnInit {
 
-  user: User;
   posts: Post[];
+  current_user: User;
 
   @Output() updateUser: EventEmitter<User> = new EventEmitter<User>();
 
@@ -23,11 +23,17 @@ export class PostsComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router, 
     private http: HttpClient,
-    private requestService: RequestService
+    public requestService: RequestService
   ) { 
     this.requestService.posts$.subscribe((posts) => { 
       this.posts = posts;
+      console.log(this.posts);
     });
+
+    let user: User
+    if (user = JSON.parse(localStorage.getItem('current_user'))) {
+      this.current_user = user;
+    }
   }
 
   ngOnInit() {

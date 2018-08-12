@@ -42,7 +42,7 @@ export class DashboardComponent implements OnInit {
   iterableDiffer: IterableDiffer<any>;
 
   constructor(
-    private requestService: RequestService, 
+    public requestService: RequestService, 
     private router: Router, 
     private http: HttpClient, 
     private modalService: BsModalService, 
@@ -323,18 +323,6 @@ export class DashboardComponent implements OnInit {
 
   tagSearch(tag: string): void {
     this.router.navigate([`/users/tags/${tag}`]);
-  }
-
-  getCommentText(post) {
-    if (post.num_comments == 0) {
-      return "Comments";
-    }
-    else if (post.num_comments == 1) {
-      return "1 Comment";
-    }
-    else {
-      return `${post.num_comments} Comments`;
-    }
   }
 
   ngOnInit() {
