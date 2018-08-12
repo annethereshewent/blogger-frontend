@@ -66,11 +66,7 @@ export class PostModalComponent implements OnInit {
     }
 
   }
-
-  // initialize(initControls) {
-  //   initControls.getEditor('events.focus', true);
-  // }
-
+  
   ngOnInit() {
     if (this.post) {
       this.editorContent = this.post.post;

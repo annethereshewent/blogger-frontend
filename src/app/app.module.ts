@@ -25,6 +25,7 @@ import { BlogComponent } from './blog/blog.component';
 import { AccountComponent } from './account/account.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { PostsComponent } from './posts/posts.component';
+import { CommentsComponent } from './comments/comments.component';
 
 const appRoutes: Routes = [
     { 
@@ -59,6 +60,9 @@ const appRoutes: Routes = [
             },
             {
                 path: "posts/:username/:page", component: PostsComponent
+            },
+            {
+                path: "comments/:username/:post_id", component: CommentsComponent
             }
         ]
     }
@@ -77,7 +81,8 @@ const appRoutes: Routes = [
     ImageModalComponent,
     BlogComponent,
     AccountComponent,
-    PostsComponent
+    PostsComponent,
+    CommentsComponent
   ],
   imports: [
     BrowserModule,

@@ -9,11 +9,12 @@ import { RequestService } from "../request.service";
 
 declare var $: any;
 
-interface UserPostResponse {
+
+interface CommentsResponse {
   success: boolean;
   message: string;
   user: User;
-  posts: Post[];
+  post: Post;
 }
 
 @Component({
@@ -47,6 +48,7 @@ export class BlogComponent implements OnInit {
     if (this.router.url == "/blog/account") {
       let current_user: User; 
       if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
+        console.log('it went here.');
         this.current_user = current_user;
         this.user = current_user;
       }
@@ -55,42 +57,6 @@ export class BlogComponent implements OnInit {
         this.router.navigate(["/users"]);
       }
     }
-    else {
-      let current_user: User;
-      if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
-        this.current_user = current_user;
-      }
-
-      this.route.firstChild.params.subscribe((params) => {
-        console.log("something happened");
-        let username = params.username;
-        if (username) {
-          if (username != this.username) {
-            this.username = username;
-          }
-          this.page = params.page;
-          let url = `${environment.server_url}/api/fetch_blog_posts/${username}/${this.page}`;
-
-          this
-            .http
-            .get<UserPostResponse>(url)
-            .subscribe((data) => {
-              if (data.success) {
-                if (!this.user || (this.user.username != data.user.username)) {
-                  this.user = data.user;
-                }
-
-                this.requestService.addPosts(data.posts);
-                this.prev_page = data.pagination.prev_page;
-                this.next_page = data.pagination.next_page;
-              }
-            })
-          ;
-        }
-      })
-      
-    }
-
   }
 
   ngOnInit(): void {
@@ -121,11 +87,11 @@ export class BlogComponent implements OnInit {
 
 
   navigateNextPage() {
-    this.router.navigate([`/blog/posts/${this.username}`, this.next_page]);
+    this.router.navigate([`/blog/posts/${this.user.username}`, this.next_page]);
   }
 
   navigatePreviousPage() {
-    this.router.navigate([`/blog/posts/${this.username}`, this.prev_page]);
+    this.router.navigate([`/blog/posts/${this.user.username}`, this.prev_page]);
   }
 
   toggleSidebar(): void {
@@ -147,6 +113,13 @@ export class BlogComponent implements OnInit {
     if (component.updateUser) {
       component.updateUser.subscribe((user) => {
         this.user = user;
+      })
+    }
+    if (component.pagination) {
+      component.pagination.subscribe((pagination) => {
+        this.next_page = pagination.next_page;
+        this.prev_page = pagination.prev_page;
+        this.page = pagination.page;
       })
     }
   }

@@ -1,0 +1,34 @@
+:host {
+  width: calc(100% - 300px);
+  padding: 40px;
+  transition: all 0.3s;
+  min-height: 100vh;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+:host(.active) {
+  width: 100%
+}
+.comment {
+
+}
+#comments-box {
+    margin-top: 40px;
+}
+.profile-thumb {
+    border-radius: 40px;
+    float: left;
+    margin-right: 20px;
+}
+.post {
+    margin-left: 10px;
+}
+@media (max-width: 991.98px) {
+  :host {
+    width: 100%;
+  }
+  :host(.active) {
+    width: calc(100% - 300px);
+  }
+}

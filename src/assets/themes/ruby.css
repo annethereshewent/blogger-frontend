@@ -76,6 +76,9 @@ body {
 a {
   color: red;
 }
+a:hover {
+  color: red;
+}
 .profile-pic {
   border-radius: 80px;
 }

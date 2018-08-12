@@ -64,6 +64,8 @@ export class AccountComponent implements OnInit {
       this.requestService.sidebar_hidden$.subscribe((active) => this.is_active = active)
       this.user = user;
 
+      this.updateUser.emit(this.user);
+
       this.userDiffer = this.differs.find(this.user).create();
 
       this.mainForm = new FormGroup({

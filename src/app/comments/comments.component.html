@@ -1,0 +1,42 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-1"></div>
+    <div class="col-sm-8">
+      <div class="content" *ngIf="post">
+        <p style="font-size:small;"><i>Creation Date: {{ post.created_at }}</i></p>
+        <div class="post"> 
+          
+          <p *ngFor="let image of post.images"><img [src]="image"></p>
+
+          <p [innerHtml]="post.post | safeHtml"></p>
+        </div>
+        <div class="post-buttons" style="font-size:12px">
+
+          <a *ngIf="current_user" href="javascript:void(0)" (click)="postNewComment()">New Comment</a>
+          &nbsp;&nbsp;
+          <a href="javascript:void(0)" (click)="goBack()">Back</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-10">
+      <div class="content" id='comments-box'>
+        <div *ngFor="let comment of comments" [ngStyle]="{ 'margin-left': getMargins(comment) } " class="comment">
+          <div style="font-size:small;"> 
+            <a href="goToBlog(comment.username)"><img [src]="production ? comment.avatar_thumb : 'http://localhost:3000' + comment.avatar_thumb" class="profile-thumb"></a>
+            <b>{{ comment.username }}</b>
+            &nbsp;
+            <i>Posted on:</i> {{ comment.created_at }}
+          </div>
+
+          <div class="post">
+            <p [innerHtml]="comment.comment | safeHtml"></p>
+          </div>
+          <p style="font-size:small;"><a href="#" onClick="ReplyToComment(comment)">Reply</a></p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
