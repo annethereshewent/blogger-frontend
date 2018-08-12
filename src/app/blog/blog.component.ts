@@ -76,7 +76,7 @@ export class BlogComponent implements OnInit {
             .get<UserPostResponse>(url)
             .subscribe((data) => {
               if (data.success) {
-                if (data.user) {
+                if (!this.user || (this.user.username != data.user.username)) {
                   this.user = data.user;
                 }
 

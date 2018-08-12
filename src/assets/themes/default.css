@@ -75,3 +75,6 @@ h3 {
   font-size: 20px;
   font-style: italic;
 }
+#prev_page a:hover, #next_page a:hover {
+  color: #C285FF;
+}
