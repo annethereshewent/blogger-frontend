@@ -6,6 +6,7 @@ import { Post } from "../../classes/Post";
 import { environment } from "../../environments/environment";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RequestService } from "../request.service";
+import { PostsService } from "../posts.service";
 
 declare var $: any;
 
@@ -42,6 +43,7 @@ export class BlogComponent implements OnInit {
     public router: Router, 
     private route: ActivatedRoute,
     private requestService: RequestService,
+    private postsService: PostsService,
     private http: HttpClient
   ) {
   
@@ -99,7 +101,13 @@ export class BlogComponent implements OnInit {
   }
 
   openPostModal(): void {
-
+    this
+      .postsService
+      .openPostModal()
+      .subscribe((post) => {
+        this.postsService.addPost(post);
+      })
+    ;
   }
 
   onActivate(component): void {

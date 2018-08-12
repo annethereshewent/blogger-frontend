@@ -15,7 +15,7 @@
           <li><a href="javascript:void(0)" (click)="router.navigate(['/blog/posts/' + user.username])">home</a></li>                         
           <li><a href="javascript:void(0)" (click)="router.navigate(['/blog/account'])">control panel</a></li>
           <li><a href="/users/contact">contact</a></li> 
-          <li *ngIf="current_user && user.user_id==current_user.user_id"><a href="javascript:void(0)" onClick="openPostModal()">new</a></li>
+          <li *ngIf="current_user && user.user_id==current_user.user_id"><a href="javascript:void(0)" (click)="openPostModal()">new</a></li>
         </ul>
       </nav>
       <div class="pagination main"><span id="prev_page"><a *ngIf="prev_page" href="javascript:void(0)" (click)="navigatePreviousPage()">← Previous</a></span> <span id="next_page"><a *ngIf="next_page" href="javascript:void(0)" (click)="navigateNextPage()">Next →</a></span></div>

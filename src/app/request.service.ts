@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Post } from '../classes/Post';
 import { Subject, BehaviorSubject } from "rxjs";
 
@@ -10,9 +10,6 @@ export class RequestService {
   constructor() { }
 
   posts: Post[];
-
-  private _posts: Subject<Post[]> = new BehaviorSubject<Post[]>(this.posts);
-  posts$ = this._posts.asObservable();
 
   private _sidebar_hidden: Subject<boolean> = new BehaviorSubject<boolean>(false);
   sidebar_hidden$ = this._sidebar_hidden.asObservable();
@@ -35,10 +32,6 @@ export class RequestService {
       return '';
 
     return '<div class="embed-responsive embed-responsive-16by9"><iframe src="https://www.youtube.com/embed/' + id + '" class="embed-responsive-item" frameborder="0" allowfullscreen></iframe></div>';
-  }
-
-  addPosts(posts: Post[]) {
-    this._posts.next(posts);
   }
 
   toggleSidebar(hidden: boolean) {

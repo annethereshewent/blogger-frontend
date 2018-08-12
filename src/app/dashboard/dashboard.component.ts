@@ -1,5 +1,6 @@
 import { Component, OnInit, HostListener, IterableDiffers, IterableDiffer } from '@angular/core';
 import { RequestService } from "../request.service";
+import { PostsService } from "../posts.service";
 import { Post } from "../../classes/Post";
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
@@ -7,7 +8,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
-import { PostModalComponent } from "../post-modal/post-modal.component";
 import { YoutubeModalComponent } from "../youtube-modal/youtube-modal.component";
 import { ImageModalComponent } from "../image-modal/image-modal.component";
 
@@ -42,7 +42,8 @@ export class DashboardComponent implements OnInit {
   iterableDiffer: IterableDiffer<any>;
 
   constructor(
-    public requestService: RequestService, 
+    public requestService: RequestService,
+    private postsService: PostsService,
     private router: Router, 
     private http: HttpClient, 
     private modalService: BsModalService, 
@@ -164,25 +165,17 @@ export class DashboardComponent implements OnInit {
   }
 
   editPost(post: Post): void {
-    let options  = {
-      animated: true,
-      class: 'modal-md',
-    };
+    this
+      .postsService
+      .editPost(post)
+      .subscribe((post) => {
+        let index = this.posts.map((post) => { return post.id }).indexOf(post.id);
 
-    let initialState = {
-      post: post,
-      type: "edit",
-      edit_tags: post.tags
-    };
+        let fixed_post = environment.production ? this.fixPosts([post])[0] : post;
 
-    this.bsModalRef = this.modalService.show(PostModalComponent,Object.assign({}, { class: "modal-md", initialState } ));
-    this.bsModalRef.content.postEmitter.subscribe((post) => {
-      let index = this.posts.map((post) => { return post.id }).indexOf(post.id);
-
-      let fixed_post = environment.production ? this.fixPosts([post])[0] : post;
-
-      this.posts[index] = fixed_post;
-    });
+        this.posts[index] = fixed_post;
+      })
+    ;
   }
 
   openYoutubeModal(): void {
@@ -200,87 +193,26 @@ export class DashboardComponent implements OnInit {
   }
 
   openQuoteModal(post: Post): void {
-    let data: string;
-    console.log(post);
-    if (post.images.length > 0 ) {
-      data = '<img src="' + post.images[0] + '"><p>Source: <a href="/posts/' + post.user_id + '">' + post.username + "</a></p>"
-    }
-    else {
-      let avatar_src = environment.production ? post.avatar : `http://localhost:3000${post.avatar}`;
-      let new_post = $("<div>").append(post.post);
+    this
+      .postsService
+      .openQuoteModal(post)
+      .subscribe((post) => {
+        let fixed_post = this.fixPosts([post])[0];
 
-      let before_contents: String = '';
-      let after_contents: String = '';
-
-      let num_quotes = $(new_post).find(".post-quote").length;
-
-      if (num_quotes) {
-        $(new_post).find(".post-quote").each(function(index) {
-          console.log("it's going inside this loop");
-          before_contents += "<div class='post-quote'>" + $(this).html() + "</div>";
-          if (index == num_quotes-1) {
-            after_contents = $(this).next().html();
-          }
-        });
-      }
-      else {
-        before_contents = '';
-        after_contents = post.post;
-      }
-
-      data = `${before_contents}<div class="post-quote"><img src="${avatar_src}" class="quote-avatar"><span>${post.username}</span><div class="quote-post">${after_contents}</div></div><p>`
-    }
-
-    console.log(data);
-
-    let edited_post: Post = {
-      id: post.id,
-      created_at: post.created_at,
-      updated_at: post.updated_at,
-      post: data,
-      edited: post.edited,
-      num_comments: post.num_comments,
-      avatar: post.avatar,
-      username: post.username,
-      images: post.images,
-      user_id: post.user_id,
-      tags: post.tags
-    };
-
-    let initialState = {
-      post: edited_post,
-      type: "quote"
-    };
-
-    this.bsModalRef = this.modalService.show(PostModalComponent, Object.assign({}, { class: "modal-md", initialState } ));
-    this.bsModalRef.content.postEmitter.subscribe((post) => {
-      let fixed_post = this.fixPosts([post])[0];
-
-      this.posts.unshift(fixed_post);
-    })
+        this.posts.unshift(fixed_post);
+      })
+    ;
   }
 
   deletePost(post: Post): void {
-    if (confirm("Are you sure you want to delete this post?")) {
-      let headers = new HttpHeaders()
-        .set("Authorization", this.user.token)
-      ;
-
-      this
-        .http
-        .post<DeleteResponse>(`${environment.server_url}/api/delete_post/${post.id}`, {}, { headers: headers })
-        .subscribe((data) => {
-          if (data.success) {
-            //remove the post from the posts array
-            this.posts.splice(this.posts.map((post) => { return post.id }).indexOf(post.id),1);
-          }
-          else {
-            console.log(data.message);
-          }
-        })
-      ;  
-    }
-    
+    this
+      .postsService
+      .deletePost(post, this.user.token)
+      .then((success) => {
+        this.posts.splice(this.posts.map((post) => { return post.id }).indexOf(post.id),1);
+      })
+      .catch((err) => console.log(err))
+    ;
   }
 
   fixPosts(posts: Post[]): Post[] {
@@ -308,17 +240,14 @@ export class DashboardComponent implements OnInit {
   }
 
   openPostModal(): void {
-    let options  = {
-      animated: true,
-      class: 'modal-md',
-    };
-    this.bsModalRef = this.modalService.show(PostModalComponent,options);
-    this.bsModalRef.content.postEmitter.subscribe((post) => {
-      let fixed_post = environment.production ? post : this.fixPosts([post])[0];
-      this.posts.unshift(fixed_post);
-
-    })
-
+    this
+      .postsService
+      .openPostModal()
+      .subscribe((post) => {
+        let fixed_post = environment.production ? post : this.fixPosts([post])[0];
+        this.posts.unshift(fixed_post);
+      })
+    ;
   }
 
   openAccountPath(): void {

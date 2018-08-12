@@ -7,6 +7,7 @@ import { Comment } from "../../classes/Comment";
 import { Pagination } from "../../classes/Pagination";
 import { environment } from "../../environments/environment";
 import { RequestService } from "../request.service";
+import { PostsService } from "../posts.service";
 
 
 
@@ -39,12 +40,23 @@ export class PostsComponent implements OnInit {
     private route: ActivatedRoute, 
     private router: Router, 
     private http: HttpClient,
-    public requestService: RequestService
+    public requestService: RequestService,
+    private postsService: PostsService
   ) {
     let current_user: User;
     if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
       this.current_user = current_user;
     }
+
+    this
+      .postsService
+      .post$
+      .subscribe((post) => {
+        if (post != null) {
+          this.posts.unshift(post);
+        }
+      })
+    ;
 
     this.route.params.subscribe((params) => {
       console.log("something happened");
@@ -85,6 +97,39 @@ export class PostsComponent implements OnInit {
 
   goToComments(post: Post) {
     this.router.navigate([`/blog/comments/${this.username}/${post.id}`])
+  }
+
+  editPost(post) {
+    this
+      .postsService
+      .editPost(post)
+      .subscribe((post) => {
+        let index = this.posts.map((post) => { return post.id }).indexOf(post.id);
+
+        this.posts[index] = post;
+      })
+    ;
+  }
+
+  openQuoteModal(post) {
+    this
+      .postsService
+      .openQuoteModal(post)
+      .subscribe((post) => {
+        this.posts.unshift(post);
+      })
+    ;
+  }
+
+  deletePost(post) {
+    this
+      .postsService
+      .deletePost(post, this.user.token)
+      .then((success) => {
+        this.posts.splice(this.posts.map((post) => { return post.id }).indexOf(post.id),1);
+      })
+      .catch((err) => console.log(err))
+    ;
   }
 
   ngOnInit() {
