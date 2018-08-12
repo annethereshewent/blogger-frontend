@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
 
+declare var $: any;
 
 @Component({
   selector: 'app-blog',
@@ -15,6 +16,9 @@ export class BlogComponent implements OnInit {
   user: User;
   current_user: User;
   production: boolean = environment.production;
+  sidebar_button_class: string = "fa fa-caret-square-o-left";
+  sidebar_hidden: boolean = false;
+  is_mobile: boolean = false;
 
 
 
@@ -38,10 +42,20 @@ export class BlogComponent implements OnInit {
 
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
+    $(window).resize(() => {
+      if ($(window).width() < 992) {
+        this.is_mobile = true;
+        this.sidebar_button_class = this.sidebar_hidden ? "fa fa-caret-square-o-left" : "fa fa-caret-square-o-right";
+      }
+      else if ($(window).width() > 991.998) {
+        this.is_mobile = false;
+        this.sidebar_button_class = this.sidebar_hidden ? "fa fa-caret-square-o-right" : "fa fa-caret-square-o-left";
+      }
+    });
   }
 
-  logout() {
+  logout(): void {
     localStorage.removeItem("current_user");
     this.router.navigate(["/users"]);
   }
@@ -52,6 +66,16 @@ export class BlogComponent implements OnInit {
 
   check_requests(): string {
     return '';
+  }
+
+  toggleSidebar(): void {
+    if (this.is_mobile) {
+      this.sidebar_button_class = this.sidebar_hidden ? "fa fa-caret-square-o-right" : "fa fa-caret-square-o-left";
+    }
+    else {
+      this.sidebar_button_class = this.sidebar_hidden ? "fa fa-caret-square-o-left" : "fa fa-caret-square-o-right";
+    }
+    this.sidebar_hidden = this.sidebar_hidden ? false : true;
   }
 
   onActivate(component) {

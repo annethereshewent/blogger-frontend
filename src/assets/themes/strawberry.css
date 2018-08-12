@@ -3,12 +3,7 @@ body {
   overflow-x: hidden;
 }
 .sidebar {
-  position:fixed;
-  height: 100%;
-  width: 300px;
   background:#CC0066;
-  top: 0;
-  left: 0;
   font-family: Palatino Linotype, serif;
   color:white;
 }

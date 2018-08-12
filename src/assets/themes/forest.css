@@ -13,12 +13,7 @@ body {
   overflow-x: hidden;
 }
 .sidebar {
-  position:fixed;
-  height: 100%;
-  width: 300px;
   background:#006600;
-  top: 0;
-  left: 0;
   color:white;
   font-family: "Lucida Sans", serif;
 }
@@ -84,9 +79,4 @@ body {
 h3 {
   font-size: 20px;
   font-style: italic;
-}
-@media (max-width: 991.98px) {
-  .sidebar {
-    width: 0px;
-  }
 }

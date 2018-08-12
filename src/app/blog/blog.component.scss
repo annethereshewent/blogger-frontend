@@ -41,11 +41,33 @@
   border-radius: 120px;
   margin-left: 40px;
 }
+.sidebar {
+  min-width: 300px;
+  max-width: 300px;
+  min-height: 100vh;
+  margin-right: 40px;
+  transition: all 0.3s
+}
+.sidebar.hidden {
+  margin-left: -300px;
+}
+.wrapper {
+  display: flex;
+  width: 100%;
+  align-items: stretch;
+}
+#sidebar-toggle-button { 
+  margin-left: 300px;
+  color: white; 
+}
+#sidebar-toggle-button.hidden {
+  margin-left: 0px;
+}
 @media (max-width: 991.98px) {
   .sidebar {
-    width: 0px;
+    margin-left: -300px;
   }
-  .sidebar-main {
-    display: none;
+  .sidebar.hidden {
+    margin-left: 0px;
   }
 }

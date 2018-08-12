@@ -1,12 +1,12 @@
 <div class="container-fluid main">
   <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-8">
       <alert *ngIf="alertDanger" type="danger" [dismissible]="true">Couldn't update your user settings.</alert>
       <alert *ngIf="alertSuccess" type="success" [dismissible]="true">Successfully saved your user settings!</alert>
     </div>
   </div>
   <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-8">
       <div class="content" (ngSubmit)="saveChanges()">
         <input type="file" class="avatar-upload" (change)="updateImage($event)" accept="image/*" #avatar_upload>
         <form (ngSubmit)="saveChanges()" [formGroup]="mainForm">

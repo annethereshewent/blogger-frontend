@@ -1,24 +1,28 @@
 <link rel="stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl('/assets/themes/' + user.theme + '.css')">
-<aside class="sidebar">
-  <div class="sidebar-main">
-    <div class="title">
-      {{ user.blog_title }}
-    </div>
-    <div class="img-container">
-      <img [ngClass]="{'sidebar-image': user.avatar.indexOf('user_icon.png') != -1, 'sidebar-image-normal': user.avatar.indexOf('user_icon.png') == -1}" [src]="production ? user.avatar : user.avatar.indexOf('data:') != -1 ? user.avatar : 'http://localhost:3000' + user.avatar"> 
-    </div>
+<div class="wrapper">
+  <nav [ngClass]="{ 'sidebar': true, 'hidden': sidebar_hidden}">
+    <div class="sidebar-main">
+      <div class="title">
+        {{ user.blog_title }}
+      </div>
+      <div class="img-container">
+        <img [ngClass]="{'sidebar-image': user.avatar.indexOf('user_icon.png') != -1, 'sidebar-image-normal': user.avatar.indexOf('user_icon.png') == -1}" [src]="production ? user.avatar : user.avatar.indexOf('data:') != -1 ? user.avatar : 'http://localhost:3000' + user.avatar"> 
+      </div>
 
-    <div class="description">{{ user.description }}</div>
-    <nav class="links">
-      <ul>
-        <li><a href="/blog/posts/{{user.username}}">home</a></li>                         
-        <li><a href="/blog/account">control panel</a></li>
-        <li><a href="/users/contact">contact</a></li> 
-        <li *ngIf="user.id==current_user.id"><a href="javascript:void(0)" onClick="openPostModal()">new</a></li>
-      </ul>
-    </nav>
-  </div>
-</aside>
+      <div class="description">{{ user.description }}</div>
+      <nav class="links">
+        <ul>
+          <li><a href="/blog/posts/{{user.username}}">home</a></li>                         
+          <li><a href="/blog/account">control panel</a></li>
+          <li><a href="/users/contact">contact</a></li> 
+          <li *ngIf="user.id==current_user.id"><a href="javascript:void(0)" onClick="openPostModal()">new</a></li>
+        </ul>
+      </nav>
+    </div>
+    <a href="javascript:void(0)" (click)="toggleSidebar()"><i id="sidebar-toggle-button" [class]="sidebar_button_class" aria-hidden="true"></i></a>
+  </nav>
+  <router-outlet (activate)="onActivate($event)"></router-outlet>
+</div>
 <div class="navigation-content">
   <ul class="nav-buttons">
     <li *ngIf="user.user_id != current_user.user_id && !is_friends()" id="addFriend"><a href="#" onclick="addFriend()"><i class="fa fa-user-plus"></i>Add Friend</a></li>
@@ -29,4 +33,3 @@
 </div>
 
 
-<router-outlet (activate)="onActivate($event)"></router-outlet>
