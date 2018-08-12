@@ -7,6 +7,13 @@ import { Subject, BehaviorSubject } from "rxjs";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from "../environments/environment";
 
+declare var $: any;
+
+interface DeleteResponse {
+  success: boolean;
+  message: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -86,7 +93,7 @@ export class PostsService {
     return this.bsModalRef.content.postEmitter;
   }
 
-  deletePost(post: Post, token): void {
+  deletePost(post: Post, token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (confirm("Are you sure you want to delete this post?")) {
         let headers = new HttpHeaders()
@@ -110,8 +117,6 @@ export class PostsService {
         reject("user_cancelled");
       }  
     })
-    
-    
   }
 
   editPost(post: Post): EventEmitter<Post> {

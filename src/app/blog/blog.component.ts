@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from "../../classes/User";
@@ -44,10 +44,13 @@ export class BlogComponent implements OnInit {
     private route: ActivatedRoute,
     private requestService: RequestService,
     private postsService: PostsService,
-    private http: HttpClient
+    private http: HttpClient,
+    private cdRef: ChangeDetectorRef
   ) {
   
-    this.current_user = JSON.parse(localStorage.getItem('current_user'));  
+    this.current_user = JSON.parse(localStorage.getItem('current_user'));
+
+
   }
 
   ngOnInit(): void {
@@ -114,6 +117,7 @@ export class BlogComponent implements OnInit {
     if (component.updateUser) {
       component.updateUser.subscribe((user) => {
         this.user = user;
+        this.cdRef.detectChanges();
       })
     }
     if (component.pagination) {
