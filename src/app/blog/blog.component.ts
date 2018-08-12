@@ -2,9 +2,19 @@ import { Component, OnInit } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from "../../classes/User";
+import { Post } from "../../classes/Post";
 import { environment } from "../../environments/environment";
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { RequestService } from "../request.service";
 
 declare var $: any;
+
+interface UserPostResponse {
+  success: boolean;
+  message: string;
+  user: User;
+  posts: Post[];
+}
 
 @Component({
   selector: 'app-blog',
@@ -26,13 +36,29 @@ export class BlogComponent implements OnInit {
     public sanitizer: DomSanitizer, 
     public router: Router, 
     private route: ActivatedRoute,
+    private requestService: RequestService,
+    private http: HttpClient
   ) {
     let current_user: User;
     if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
       this.current_user = current_user;
       if (this.router.url == "/blog/account") {
         this.user = this.current_user;
-        console.log(this.user.theme);
+      }
+      else {
+        let username = this.route.snapshot.firstChild.params.username;
+        if (username) {
+          this
+            .http
+            .get<UserPostResponse>(`${environment.server_url}/api/fetch_blog_posts/${username}`)
+            .subscribe((data) => {
+              if (data.success) {
+                this.user = data.user;
+                this.requestService.addPosts(data.posts);
+              }
+            })
+          ;
+        }
       }
     }
     else if (this.router.url == '/blog/account') {
