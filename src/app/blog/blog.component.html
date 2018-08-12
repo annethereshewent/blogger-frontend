@@ -18,8 +18,8 @@
           <li *ngIf="current_user && user.user_id==current_user.user_id"><a href="javascript:void(0)" (click)="openPostModal()">new</a></li>
         </ul>
       </nav>
-      <div class="pagination main"><span id="prev_page"><a *ngIf="prev_page" href="javascript:void(0)" (click)="navigatePreviousPage()">← Previous</a></span> <span id="next_page"><a *ngIf="next_page" href="javascript:void(0)" (click)="navigateNextPage()">Next →</a></span></div>
-      <div class="pagination-number pagination" *ngIf="page">Page {{ page }}</div>
+      <div class="pagination main"><span id="prev_page"><a *ngIf="pagination && pagination.prev_page" href="javascript:void(0)" (click)="navigatePreviousPage()">← Previous</a></span> <span id="next_page"><a *ngIf="pagination && pagination.next_page" href="javascript:void(0)" (click)="navigateNextPage()">Next →</a></span></div>
+      <div class="pagination-number pagination" *ngIf="pagination && pagination.page">Page {{ pagination.page }}</div>
     </div>
     <a href="javascript:void(0)" (click)="toggleSidebar()"><i id="sidebar-toggle-button" [class]="sidebar_button_class" aria-hidden="true"></i></a>
   </nav>

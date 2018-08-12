@@ -3,6 +3,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { Router, ActivatedRoute } from '@angular/router';
 import { User } from "../../classes/User";
 import { Post } from "../../classes/Post";
+import { Pagination } from "../../classes/Pagination";
 import { environment } from "../../environments/environment";
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { RequestService } from "../request.service";
@@ -31,9 +32,7 @@ export class BlogComponent implements OnInit {
   sidebar_button_class: string = "fa fa-caret-square-o-left";
   sidebar_hidden: boolean = false;
   is_mobile: boolean = false;
-  page: number = null;
-  prev_page: number = null;
-  next_page: number = null;
+  pagination: Pagination;
   username = '';
 
 
@@ -116,15 +115,17 @@ export class BlogComponent implements OnInit {
   onActivate(component): void {
     if (component.updateUser) {
       component.updateUser.subscribe((user) => {
+        let user_undefined = this.user == undefined;
         this.user = user;
-        this.cdRef.detectChanges();
+        if (user_undefined) {
+          console.log("is this firing off?");
+          this.cdRef.detectChanges();
+        }
       })
     }
     if (component.pagination) {
       component.pagination.subscribe((pagination) => {
-        this.next_page = pagination.next_page;
-        this.prev_page = pagination.prev_page;
-        this.page = pagination.page;
+        this.pagination = pagination;
       })
     }
   }
