@@ -111,16 +111,6 @@ export class PostsComponent implements OnInit {
     ;
   }
 
-  openQuoteModal(post) {
-    this
-      .postsService
-      .openQuoteModal(post)
-      .subscribe((post) => {
-        this.posts.unshift(post);
-      })
-    ;
-  }
-
   deletePost(post) {
     this
       .postsService

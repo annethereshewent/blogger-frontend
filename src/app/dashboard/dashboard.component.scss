@@ -1,31 +1,4 @@
 @import "../../styles.scss";
-:host ::ng-deep .block-quote {
-  border-left: 2px solid grey;
-  padding-left:10px;
-}
-:host ::ng-deep .block-quote, :host ::ng-deep .block-quote-outer {
-  margin-left:10px;
-}
-:host ::ng-deep .quote-avatar {
-  display: inline-block;
-  border-radius: 20px;
-  width: 20px;
-}
-:host ::ng-deep .post-quote {
-  display: block;
-  border-bottom: 1px solid grey;
-
-}
-:host ::ng-deep .post-quote span {
-  font-weight: bold;
-}
-:host ::ng-deep .quote-post {
-  margin-bottom: 10px;
-}
-:host ::ng-deep .block-quote-outer a {
-  color:black;
-  font-size: 14px;
-}
 .main-panel {
   background: #52527A; 
   border-radius: 15px;

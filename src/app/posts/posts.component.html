@@ -15,7 +15,6 @@
           <div class="post-buttons">
             <a href="javascript:void(0)" class="comment-text" (click)="goToComments(post)">{{ requestService.getCommentText(post) }}</a> 
             <a *ngIf="current_user && current_user.user_id==post.user_id" href="javascript:void(0)" class="edit-post" (click)="editPost(post)">Edit Post</a>
-            <a href="javascript:void(0)" class="quote" (click)="openQuoteModal(post)">Quote</a>
             <a *ngIf="current_user && current_user.user_id==post.user_id" href="javascript:void(0)" (click)="deletePost(post)"><li class="fa fa-trash"></li></a>
           </div>    
         </div>

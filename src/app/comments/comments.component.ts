@@ -38,6 +38,7 @@ export class CommentsComponent implements OnInit {
   @HostBinding('class.active') is_active: boolean = false;
   show_reply: boolean[];
   reply_comment: string[];
+  production = environment.production;
 
   constructor(
     private router: Router, 

@@ -6,7 +6,7 @@
         <p style="font-size:small;"><i>Creation Date: {{ post.created_at }}</i></p>
         <div class="post"> 
           
-          <p *ngFor="let image of post.images"><img [src]="image"></p>
+          <p *ngFor="let image of post.images"><img [src]="production ? image : 'http://localhost:3000' + image"></p>
 
           <p [innerHtml]="post.post | safeHtml"></p>
         </div>
