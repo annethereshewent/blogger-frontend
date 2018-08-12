@@ -15,6 +15,12 @@ interface CommentsResponse {
   user: User;
 }
 
+interface CommentsPostResponse {
+  success: boolean;
+  message: string;
+  comment: Comment;
+}
+
 @Component({
   selector: 'app-comments',
   templateUrl: './comments.component.html',
@@ -26,8 +32,12 @@ export class CommentsComponent implements OnInit {
   @Output() updateUser: EventEmitter<User> = new EventEmitter<User>();
   comments: Comment[];
   current_user: User;
+  show_new_comments = false;
   user: User;
+  new_comment: string;
   @HostBinding('class.active') is_active: boolean = false;
+  show_reply: boolean[];
+  reply_comment: string[];
 
   constructor(
     private router: Router, 
@@ -35,8 +45,11 @@ export class CommentsComponent implements OnInit {
     private http: HttpClient,
     private requestService: RequestService
   ) {
+
+    this.comments = [];
+
     this.requestService.sidebar_hidden$.subscribe((active) => this.is_active = active);
-    console.log('test??');
+
     let username = this.route.snapshot.params.username;
     console.log(username);
     let post_id = this.route.snapshot.params.post_id;
@@ -51,21 +64,90 @@ export class CommentsComponent implements OnInit {
           this.user = data.user;
           this.updateUser.emit(data.user);
           this.comments = data.comments;
+
+          this.show_reply = [];
+          this.reply_comment = [];
+
+          for (let i = 0; i < data.comments.length; i++) {
+            this.show_reply.push(false);
+            this.reply_comment.push('');
+          }
+          console.log(this.show_reply);
         }
       })
     ;
   }
 
+  openReply(index: number): void {
+    console.log(index);
+    this.show_reply[index] = true;
+  }
+
   ngOnInit() {
   }
 
-  getMargins(comment): string {
-    console.log(comment.indentLevel);
-    return (comment.indentLevel) * 15 + "px";
+  submit(postParams, callback): void {
+    if (this.current_user) {
+      let headers = new HttpHeaders()
+        .set("Authorization", this.current_user.token);
+
+      this
+        .http
+        .post<CommentsPostResponse>(`${environment.server_url}/api/post_comment`, postParams, { headers: headers})
+        .subscribe((data) => {
+          if (data.success) {
+            callback(data.comment);
+          }
+          else {
+            console.log(data.message);
+          }
+        })
+      ;
+    }  
   }
 
-  postNewComment(): void {
+  submitComment(): void {
+    this.submit({ 
+      comment: this.new_comment,
+      parent: 0,
+      pid: this.post.id,
+      indentLevel: 0
+    }, (comment: Comment) => {
+      this.comments.push(comment);
+      this.show_new_comments = false;
+    });
+  }
 
+  replyToComment(i: number) {
+    this.submit({
+      comment: this.reply_comment[i],
+      parent: this.comments[i].id,
+      pid: this.post.id,
+      indentLevel: this.comments[i].indentLevel+1
+    }, (comment: Comment) => {
+      this.show_reply[i] = false;
+      let index: number = -1;
+
+      for (let i = 0; i < this.comments.length; i++) {
+        if (this.comments[i].id == comment.parent) {
+          index = i;
+        }
+        else if (this.comments[i].parent == comment.parent) {
+          index = i;
+        }
+      }
+
+      if (index == this.comments.length-1) {
+        this.comments.push(comment);
+      }
+      else {
+        this.comments.splice(index+1, 0, comment);
+      }
+    })
+  }
+
+  getMargins(comment): string {
+    return (comment.indentLevel) * 15 + "px";
   }
 
   goBack() {

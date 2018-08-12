@@ -44,19 +44,8 @@ export class BlogComponent implements OnInit {
     private requestService: RequestService,
     private http: HttpClient
   ) {
-    
-    if (this.router.url == "/blog/account") {
-      let current_user: User; 
-      if (current_user = JSON.parse(localStorage.getItem("current_user"))) {
-        console.log('it went here.');
-        this.current_user = current_user;
-        this.user = current_user;
-      }
-      else {
-        localStorage.removeItem("current_user");
-        this.router.navigate(["/users"]);
-      }
-    }
+  
+    this.current_user = JSON.parse(localStorage.getItem('current_user'));  
   }
 
   ngOnInit(): void {
@@ -105,11 +94,15 @@ export class BlogComponent implements OnInit {
     this.requestService.toggleSidebar(this.sidebar_hidden);
   }
 
-  is_friends() {
+  is_friends(): boolean {
     return false;
   }
 
-  onActivate(component) {
+  openPostModal(): void {
+
+  }
+
+  onActivate(component): void {
     if (component.updateUser) {
       component.updateUser.subscribe((user) => {
         this.user = user;

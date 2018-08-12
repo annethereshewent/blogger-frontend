@@ -5,6 +5,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RequestService } from "../request.service";
 import { ValidatorService } from "../validator.service";
+import { Router, ActivatedRoute } from '@angular/router';
 
 interface GenericResponse {
   success: boolean;
@@ -57,7 +58,8 @@ export class AccountComponent implements OnInit {
     private http: HttpClient, 
     private differs: KeyValueDiffers, 
     private validatorService: ValidatorService, 
-    private requestService: RequestService
+    private requestService: RequestService,
+    private router: Router
   ) { 
     let user: User;
     if (user = JSON.parse(localStorage.getItem('current_user'))) {
@@ -81,6 +83,10 @@ export class AccountComponent implements OnInit {
           "password2": new FormControl(this.new_password2, [Validators.min(8)])
         }, this.validatorService.passwordsMustMatch)
       });
+    }
+    else {
+      localStorage.removeItem('current_user');
+      this.router.navigate(['/users']);
     }
   }
 

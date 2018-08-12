@@ -123,6 +123,10 @@ export class DashboardComponent implements OnInit {
     
   }
 
+  goToComments(post: Post) {
+    this.router.navigate([`/blog/comments/${post.username}`, post.id])
+  }
+
 
   logout(): void {
     localStorage.removeItem('current_user');

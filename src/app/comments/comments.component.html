@@ -1,7 +1,7 @@
 <div class="container-fluid">
   <div class="row">
-    <div class="col-sm-1"></div>
-    <div class="col-sm-8">
+    <div class="col-lg-1"></div>
+    <div class="col-lg-8">
       <div class="content" *ngIf="post">
         <p style="font-size:small;"><i>Creation Date: {{ post.created_at }}</i></p>
         <div class="post"> 
@@ -12,17 +12,29 @@
         </div>
         <div class="post-buttons" style="font-size:12px">
 
-          <a *ngIf="current_user" href="javascript:void(0)" (click)="postNewComment()">New Comment</a>
+          <a *ngIf="current_user" href="javascript:void(0)" (click)="show_new_comments = true">New Comment</a>
           &nbsp;&nbsp;
           <a href="javascript:void(0)" (click)="goBack()">Back</a>
         </div>
       </div>
     </div>
   </div>
+  <div class="row" *ngIf="show_new_comments">
+    <div class="col-lg-10">
+      <form class="content comment-container" (ngSubmit)="submitComment()">
+        <textarea class="form-control" name="new_comment" [(ngModel)]="new_comment"></textarea>
+        <div class="button-area">
+          <button class="btn btn-success">Post</button>
+          &nbsp;&nbsp;
+          <button type="button" class="btn btn-danger" (click)="show_new_comments = false">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
   <div class="row">
-    <div class="col-sm-10">
-      <div class="content" id='comments-box'>
-        <div *ngFor="let comment of comments" [ngStyle]="{ 'margin-left': getMargins(comment) } " class="comment">
+    <div class="col-lg-10">
+      <div class="content" id='comments-box' *ngIf="comments.length">
+        <div *ngFor="let comment of comments; let i = index" [ngStyle]="{ 'margin-left': getMargins(comment) } " class="comment">
           <div style="font-size:small;"> 
             <a href="goToBlog(comment.username)"><img [src]="production ? comment.avatar_thumb : 'http://localhost:3000' + comment.avatar_thumb" class="profile-thumb"></a>
             <b>{{ comment.username }}</b>
@@ -33,7 +45,22 @@
           <div class="post">
             <p [innerHtml]="comment.comment | safeHtml"></p>
           </div>
-          <p style="font-size:small;"><a href="#" onClick="ReplyToComment(comment)">Reply</a></p>
+          <p style="font-size:small;"><a href="javascript:void(0)" (click)="show_reply[i] = true">Reply</a></p>
+          <div class="reply-comment" *ngIf="show_reply[i]">
+            <hr>
+            <div class="row mb20">
+              <div class="col-lg-12">
+                <form (ngSubmit)="replyToComment(i)">
+                  <textarea class="form-control" [(ngModel)]="reply_comment[i]" name="reply_comment_{{i}}"></textarea>
+                  <div class="button-area">
+                    <button class="btn btn-success">Reply</button>
+                    &nbsp;&nbsp;
+                    <button type="button" class="btn btn-danger" (click)="show_reply[i] = false">Cancel</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
