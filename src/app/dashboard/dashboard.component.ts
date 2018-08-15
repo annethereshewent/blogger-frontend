@@ -10,6 +10,7 @@ import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { YoutubeModalComponent } from "../youtube-modal/youtube-modal.component";
 import { ImageModalComponent } from "../image-modal/image-modal.component";
+import { trigger, state, style, animate, transition } from '@angular/animations';
 
 
 declare var $: any;
@@ -20,15 +21,24 @@ interface PostInterface {
   posts: Post[];
 }
 
-interface DeleteResponse {
-  success: boolean;
-  message: string;
-}
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.scss']
+  styleUrls: ['./dashboard.component.scss'],
+  animations: [
+    trigger('simpleFadeAnimation', [
+      state('in', style({opacity: 1})),
+
+      transition("void => *", [
+        style({ opacity: 0}),
+        animate(600 )
+      ]),
+
+      transition("* => void", [
+        animate(600, style({ opacity: 0}))
+      ])
+    ])
+  ]
 })
 export class DashboardComponent implements OnInit {
   posts: Post[];
@@ -180,9 +190,14 @@ export class DashboardComponent implements OnInit {
 
   openYoutubeModal(): void {
     this.bsModalRef = this.modalService.show(YoutubeModalComponent, Object.assign({}, { class: "modal-md"}));
-    this.bsModalRef.content.postEmitter.subscribe((post) => {
-      this.posts.unshift(post);
-    })
+    this
+      .bsModalRef
+      .content
+      .postEmitter
+      .subscribe((post) => {
+        this.posts.unshift(post);
+      })
+    ;
   }
 
   openImageModal(): void {

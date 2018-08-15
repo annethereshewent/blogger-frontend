@@ -4,6 +4,8 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { environment } from "../environments/environment";
 import { User } from "../classes/User";
 
+declare var $: any;
+
 interface DuplicateInterface {
   duplicate: Boolean;
 }
@@ -48,6 +50,21 @@ export class ValidatorService {
       }
 
       return null;
+    }
+  }
+
+  required_html() {
+    return (control: FormControl): any => {
+      if ($("<div>").html(control.value).text().trim() == '') {
+        return {
+          required: {
+            value: control.value
+          }
+        }
+      }
+
+      return null;
+
     }
   }
 

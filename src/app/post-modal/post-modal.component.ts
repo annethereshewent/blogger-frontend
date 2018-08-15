@@ -59,7 +59,11 @@ export class PostModalComponent implements OnInit {
   }
 
 
-  constructor(public bsModalRef: BsModalRef, private http: HttpClient, private requestService: RequestService) {
+  constructor(
+    public bsModalRef: BsModalRef, 
+    private http: HttpClient, 
+    private requestService: RequestService
+  ) {
     let user = JSON.parse(localStorage.getItem('current_user'));
     if (user) {
       this.user = user;
@@ -102,6 +106,10 @@ export class PostModalComponent implements OnInit {
 
   submitPost(): void {
     if (this.user) {
+      if ($("<div>").html(this.editorContent).text().trim() == '') {
+        alert("your post is empty!");
+        return;
+      } 
 
       //first check to see if the post has any youtube URLs
       let youtube_id = this.requestService.parseYoutubeURL(this.editorContent);
@@ -133,7 +141,7 @@ export class PostModalComponent implements OnInit {
       
     }
     else {
-      console.log("error: user not found");
+      console.log("error: user not found, or post is empty");
     }
 
   } 

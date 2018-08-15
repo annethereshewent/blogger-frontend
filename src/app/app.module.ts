@@ -26,6 +26,7 @@ import { AccountComponent } from './account/account.component';
 import { AlertModule } from 'ngx-bootstrap/alert';
 import { PostsComponent } from './posts/posts.component';
 import { CommentsComponent } from './comments/comments.component';
+import { ChatComponent } from './chat/chat.component';
 
 const appRoutes: Routes = [
     { 
@@ -82,7 +83,8 @@ const appRoutes: Routes = [
     BlogComponent,
     AccountComponent,
     PostsComponent,
-    CommentsComponent
+    CommentsComponent,
+    ChatComponent
   ],
   imports: [
     BrowserModule,

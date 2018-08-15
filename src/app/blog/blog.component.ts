@@ -33,8 +33,8 @@ export class BlogComponent implements OnInit {
   sidebar_hidden: boolean = false;
   is_mobile: boolean = false;
   pagination: Pagination;
-  username = '';
-
+  username: string = '';
+  theme: string = 'default';
 
 
   constructor(
@@ -80,11 +80,11 @@ export class BlogComponent implements OnInit {
 
 
   navigateNextPage() {
-    this.router.navigate([`/blog/posts/${this.user.username}`, this.next_page]);
+    this.router.navigate([`/blog/posts/${this.user.username}`, this.pagination.next_page]);
   }
 
   navigatePreviousPage() {
-    this.router.navigate([`/blog/posts/${this.user.username}`, this.prev_page]);
+    this.router.navigate([`/blog/posts/${this.user.username}`, this.pagination.prev_page]);
   }
 
   toggleSidebar(): void {
@@ -120,6 +120,9 @@ export class BlogComponent implements OnInit {
         if (user_undefined) {
           console.log("is this firing off?");
           this.cdRef.detectChanges();
+        }
+        if (this.theme != user.theme) {
+          this.theme = user.theme;
         }
       })
     }
