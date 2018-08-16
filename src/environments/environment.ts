@@ -5,6 +5,7 @@
 export const environment = {
   production: false,
   server_url: "http://localhost:3000",
+  chat_url: "http://localhost:3001",
   enable_tracing: true
 };
 

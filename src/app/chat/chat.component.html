@@ -1,3 +1,21 @@
-<p>
-  chat works!
-</p>
+<div id="chat-window" [ngClass]="{'activated': chat_activated}">
+  <div id="chat-heading" (click)="toggleChatList()">Chat List</div>
+  <ul id="friends-list">
+    <li *ngFor="let friend of friends" (click)="openChatBox(friend)"><img [src]="production ? friend.avatar : 'http://localhost:3000' + friend.avatar" class="friend-avatar">{{friend.username}}</li>
+  </ul>
+</div>
+
+<div *ngFor="let chat_box of chat_boxes; let i = index;" class="chat-box" [ngStyle]="{ 'right': getPosition(i) }">
+  <div class="chat-box-heading" (click)="closeChatBox(i)">{{chat_box.friend.username}}</div>
+  <div class="chat-body" id="{{chat_box.friend.username}}" #chatBody>
+    <ul class="chat-messages">
+      <li *ngFor="let message of chat_box.history" [ngClass]="{ 'message-self': user.user_id == message.from, 'message-from': user.user_id != message.from }" [innerHtml]="message.message | safeHtml"></li>
+    </ul>
+  </div>
+  <form class="chat-input" (ngSubmit)="sendMessage(chat_box.friend, i)">
+    <input type="text" name="chat_content" autocomplete="off" class="form-control chat-input" [(ngModel)]="chat_content[i]">
+    <button style="display:none"></button>
+    <input type="file" style="display:none" #chat_upload>
+    <a href="javascript:void(0)" (click)="chat_upload.click()"><img src="/assets/images/camera_icon.png" class="chat-image"></a>
+  </form>
+</div>

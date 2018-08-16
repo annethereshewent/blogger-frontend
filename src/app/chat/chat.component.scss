@@ -1,0 +1,86 @@
+@import "../../styles.scss";
+#chat-window {
+  bottom: -385px;
+  width: 200px;
+  right: 0;
+  background: #DCDCDC;
+  border: 1px solid #BEBEBE;
+  transition: all 0.3s;
+  box-shadow: 3px 5px gray;
+  font-size: 12px;
+  height: 400px;
+}
+#chat-window, .chat-box {
+  position: fixed;
+  background: #DCDCDC;
+  border: 1px solid #BEBEBE;
+}
+#chat-heading, .chat-box-heading {
+  width: 100%;
+  background: #5353c6;
+  color: white;
+  text-align: center;
+  font-style: italic;
+  cursor: pointer;
+}
+#chat-window.activated {
+  bottom: 0;
+  transition: all 0.3s ease-in;
+}
+#friends-list {
+  list-style-type: none;
+}
+#friends-list li {
+  font-style: italic;
+  cursor: pointer;
+  margin-bottom:5px;
+}
+.friend-avatar {
+  border-radius: 30px;
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+}
+.chat-box {
+  height: 350px;
+  width: 300px;
+  bottom: 0;
+  font-size: 12px;
+}
+.chat-messages {
+  list-style-type: none;
+}
+.chat-messages li {
+  font-size: 12px;
+  border-radius: 15px;
+  word-wrap: break-word;
+  width: 90%;
+  margin-top: 20px;
+  padding-left: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.message-self {
+  background: #9191C8;
+}
+.message-from {
+  background: grey;
+  margin-left: 40px;
+}
+:host ::ng-deep .chat-image-file {
+  max-width: 90%;
+  height: auto;
+}
+.chat-body {
+  overflow-y: scroll;
+  height: 80%;
+  padding-right: 20px;
+  overflow-x: hidden;
+}
+.chat-image {
+  width: 25px;
+}
+.chat-input {
+  font-size: 12px;
+  height: 30px;
+}
