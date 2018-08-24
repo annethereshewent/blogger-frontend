@@ -15,7 +15,7 @@
   <form class="chat-input" (ngSubmit)="sendMessage(chat_box.friend, i)">
     <input type="text" name="chat_content" autocomplete="off" class="form-control chat-input" [(ngModel)]="chat_content[i]">
     <button style="display:none"></button>
-    <input type="file" style="display:none" (change)="upload_image($event, i)" #chat_upload>
+    <input type="file" style="display:none" (change)="upload_image($event, i)" accept="image/*" #chat_upload>
     <a href="javascript:void(0)" (click)="open_upload(i)"><img src="/assets/images/camera_icon.png" class="chat-image"></a>
   </form>
 </div>
