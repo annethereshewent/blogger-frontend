@@ -18,12 +18,12 @@ interface UpdateUserResponse {
 }
 
 interface FileReaderEventTarget extends EventTarget {
-    result:string
+  result:string
 }
 
 interface FileReaderEvent extends Event {
-    target: FileReaderEventTarget;
-    getMessage():string;
+  target: FileReaderEventTarget;
+  getMessage():string;
 }
 
 @Component({

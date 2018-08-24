@@ -122,6 +122,7 @@ export class BlogComponent implements OnInit {
           this.cdRef.detectChanges();
         }
         if (this.theme != user.theme) {
+          console.log("it's going in here");
           this.theme = user.theme;
         }
       })

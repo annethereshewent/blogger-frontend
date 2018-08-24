@@ -11,6 +11,14 @@ interface FriendResponse {
   message: string;
   is_friends: boolean;
 }
+interface FileReaderEventTarget extends EventTarget {
+  result:string
+}
+
+interface FileReaderEvent extends Event {
+  target: FileReaderEventTarget;
+  getMessage():string;
+}
 
 @Component({
   selector: 'app-chat',
@@ -19,6 +27,7 @@ interface FriendResponse {
 })
 export class ChatComponent implements OnInit {
   @ViewChildren("chatBody") chatBodies: QueryList<ElementRef>;
+  @ViewChildren("chat_upload") chat_uploads: QueryList<ElementRef>;
 
   chat_activated: boolean = false;
   socket: any = null;
@@ -137,7 +146,49 @@ export class ChatComponent implements OnInit {
 
   }
 
-  scrollToBottom(chatBody) {
+  upload_image(event, i: number): void {
+    console.log(i);
+    console.log(event);
+    let image = event.srcElement.files[0];
+    let friend = this.chat_boxes[i].friend;
+
+    let fileReader: FileReader = new FileReader();
+
+    fileReader.onload = (e: FileReaderEvent): void => {
+      this.socket.emit('message', {
+        from: this.user.username,
+        fromid: this.user.user_id,
+        to: friend.username,
+        toid: friend.user_id,
+        content: e.target.result,
+        type: 'image',
+        extension: image.name.substring(image.name.lastIndexOf('.')+1)
+      })
+    };
+
+    console.log(image);
+
+    fileReader.readAsBinaryString(image);
+
+    let previewReader = new FileReader();
+
+    previewReader.onload = (e: FileReaderEvent): void => {
+      this.chat_boxes[i].history.push({ 
+        to: friend.user_id, 
+        from: this.user.user_id, 
+        message: '<a href="' + e.target.result + '"><img src="' + e.target.result + '" class="chat-image-file"></a>'
+      });
+    }
+
+    previewReader.readAsDataURL(image);
+  }
+
+  open_upload(i: number): void {
+    let chat_upload = this.chat_uploads.toArray()[i];
+    chat_upload.nativeElement.click();
+  }
+
+  scrollToBottom(chatBody): void {
     setTimeout(() => {
       chatBody.nativeElement.scrollTop = chatBody.nativeElement.scrollHeight;  
     }, 20);
@@ -163,13 +214,14 @@ export class ChatComponent implements OnInit {
 
 
   getPosition(i: number): string {
-    return ((i+1) * (325)) + "px";
+    return ((i+1) * 325) + "px";
   }
   is_friends(user) {
     if (user.username != this.user.username && this.friends.map((friend) =>  { return friend.username }).indexOf(user.username) == -1) {
       let headers = new HttpHeaders()
         .set("Authorization", this.user.token)
       ;
+
       this
         .http
         .get<FriendResponse>(`${environment.server_url}/api/is_friends/${user.username}`, { headers: headers})
