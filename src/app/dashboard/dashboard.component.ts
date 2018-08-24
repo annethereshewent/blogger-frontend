@@ -82,6 +82,7 @@ export class DashboardComponent implements OnInit {
       if (params.tag_name) {
         this.tag_name = params.tag_name
       }
+
       this.iterableDiffer = differs.find([]).create(null);
       
       if (this.tag_name) {
@@ -180,7 +181,7 @@ export class DashboardComponent implements OnInit {
 
   @HostListener("window:  scroll", [])
   onScroll(): void {
-    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.tag_name && !this.loading_posts) {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.tag_name && !this.search_query && !this.loading_posts) {
       console.log('youve reached the bottom of the page!');
 
       if (this.user) {

@@ -1,5 +1,5 @@
 
-<h1 class="logo"><a href="javascript:void(0)" *ngIf="router.url=='/users/dashboard' || router.url.indexOf('/users/tags') != -1" (click)="dashboardPath()"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></a></h1>
+<h1 class="logo"><a href="javascript:void(0)" *ngIf="router.url!='/users/login'" (click)="dashboardPath()"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></a></h1>
 <h1 *ngIf="router.url=='/users/login'" class="logo"><span class="logo-bracket">[</span>blogger<span class="logo-bracket">].</span></h1>
 
 <div class="main container-fluid">
