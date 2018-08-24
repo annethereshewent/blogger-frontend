@@ -76,6 +76,12 @@ a .fa-trash {
 .post-tags a {
   text-underline: none
 }
+#search-row {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
 @include media-breakpoint-down(md) {
   .button-area {
     width: 100%

@@ -50,6 +50,7 @@ export class DashboardComponent implements OnInit {
   tag_name: string;
   title: string = "Feed Posts:"
   iterableDiffer: IterableDiffer<any>;
+  search_query: string = '';
 
   constructor(
     public requestService: RequestService,
@@ -61,9 +62,10 @@ export class DashboardComponent implements OnInit {
     private differs: IterableDiffers
   ) {
     
-    this.iterableDiffer = differs.find([]).create(null);
+    
 
-    this.tag_name = this.route.snapshot.params.tag_name;
+    // this.tag_name = this.route.snapshot.params.tag_name;
+    // this.search_query = this.route.snapshot.params.search_term;
 
     let user = JSON.parse(localStorage.getItem('current_user'));
     if (!user) {
@@ -71,67 +73,99 @@ export class DashboardComponent implements OnInit {
       return;
     }
     this.user = user;
-    if (this.tag_name) {
-      this.title = "Tag Search:";
 
-      let headers = new HttpHeaders()
-        .set("Authorization", this.user.token)
-      ;
-
-      this
-        .http
-        .get<PostInterface>(`${environment.server_url}/api/tag_search/${this.tag_name}`, { headers: headers})
-        .subscribe((data) => {
-          if (data.success) {
-            if (!environment.production) {
-              data.posts = this.fixPosts(data.posts);
-            }
-            this.posts = data.posts;
-
-          }
-          else {
-            console.log(data.message);
-          }
-        })
-      ;
-
-
-    }
-    else {
-      this.title = "Feed Posts:"
-      if (requestService.posts) {
-        this.posts = requestService.posts
+    this.route.params.subscribe((params) => {
+      console.log(params);
+      if (params.search_term) {
+        this.search_query = params.search_term;
       }
-      else {
-        console.log("posts not found in memory, making a request to backend for them");
+      if (params.tag_name) {
+        this.tag_name = params.tag_name
+      }
+      this.iterableDiffer = differs.find([]).create(null);
+      
+      if (this.tag_name) {
+        this.title = "Tag Search:";
 
-        const headers = new HttpHeaders()
-          .set("Authorization", user.token)
+        let headers = new HttpHeaders()
+          .set("Authorization", this.user.token)
         ;
 
         this
           .http
-          .get<PostInterface>(`${environment.server_url}/api/fetch_posts`, { headers: headers })
+          .get<PostInterface>(`${environment.server_url}/api/tag_search/${this.tag_name}`, { headers: headers})
           .subscribe((data) => {
             if (data.success) {
               if (!environment.production) {
-                data.posts = this.fixPosts(data.posts);  
+                data.posts = this.fixPosts(data.posts);
               }
-              
-              this.posts = data.posts
+              this.posts = data.posts;
+
             }
             else {
-              //token is invalid now, for some reason. redirect back to login page
-              localStorage.removeItem("current_user");
-              this.user = null;
-              this.router.navigate(["/users/login"])
+              console.log(data.message);
             }
           })
         ;
-      }  
-    }
+      }
+      else if (this.search_query) {
+        this.title = "Search Results:";
+        //query the api for the search term
+        let headers = new HttpHeaders()
+          .set("Authorization", this.user.token)
+        ;
 
-    
+
+        this
+          .http
+          .get<PostInterface>(`${environment.server_url}/api/search/${this.search_query}`, { headers: headers})
+          .subscribe((data) => {
+            if (data.success) {
+              data.posts = this.fixPosts(data.posts);
+              console.log(data.posts);   
+
+              this.posts = data.posts;
+            }
+            else {
+              console.log(data.message);
+            }
+          })
+        ;
+      }
+      else {
+        this.title = "Feed Posts:"
+        if (requestService.posts) {
+          this.posts = requestService.posts
+        }
+        else {
+          console.log("posts not found in memory, making a request to backend for them");
+
+          const headers = new HttpHeaders()
+            .set("Authorization", user.token)
+          ;
+
+          this
+            .http
+            .get<PostInterface>(`${environment.server_url}/api/fetch_posts`, { headers: headers })
+            .subscribe((data) => {
+              if (data.success) {
+                if (!environment.production) {
+                  data.posts = this.fixPosts(data.posts);  
+                }
+                
+                this.posts = data.posts
+              }
+              else {
+                //token is invalid now, for some reason. redirect back to login page
+                localStorage.removeItem("current_user");
+                this.user = null;
+                this.router.navigate(["/users/login"])
+              }
+            })
+          ;
+        }  
+      }
+    });  
   }
 
   goToComments(post: Post) {
@@ -231,25 +265,27 @@ export class DashboardComponent implements OnInit {
   }
 
   fixPosts(posts: Post[]): Post[] {
-    posts = posts.map((post: Post): Post => {
-      let post_selector = $("<div>").append(post.post);
-      $(post_selector).find( "img").each(function() {
-        let img_src = $(this).attr("src");
-        if (img_src.charAt(0) == "/") {
-          $(this).attr("src", "http://localhost:3000" + img_src);
-        }
-      });
+    if (environment.production) {
+      posts = posts.map((post: Post): Post => {
+        let post_selector = $("<div>").append(post.post);
+        $(post_selector).find( "img").each(function() {
+          let img_src = $(this).attr("src");
+          if (img_src.charAt(0) == "/") {
+            $(this).attr("src", "http://localhost:3000" + img_src);
+          }
+        });
 
-      // $(post_selector).find("iframe").each(function() {
-      //   $(this).addClass("embed-responsive-item");
-      //   $(this).wrap("<div class='embed-responsive embed-responsive-16by9'></div>");
-      // });
+        // $(post_selector).find("iframe").each(function() {
+        //   $(this).addClass("embed-responsive-item");
+        //   $(this).wrap("<div class='embed-responsive embed-responsive-16by9'></div>");
+        // });
 
-      post.post = $(post_selector).html();
+        post.post = $(post_selector).html();
 
 
-      return post;
-    });
+        return post;
+      });  
+    }
 
     return posts;
   }
@@ -271,6 +307,10 @@ export class DashboardComponent implements OnInit {
 
   tagSearch(tag: string): void {
     this.router.navigate([`/users/tags/${tag}`]);
+  }
+
+  search(): void {
+    this.router.navigate(['/users/search', this.search_query]);
   }
 
   ngOnInit() {

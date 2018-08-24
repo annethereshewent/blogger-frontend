@@ -45,6 +45,9 @@ const appRoutes: Routes = [
             },
             {
                 path: 'tags/:tag_name', component: DashboardComponent
+            },
+            {
+                path: "search/:search_term", component: DashboardComponent
             }
         ]
     },
