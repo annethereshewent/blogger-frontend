@@ -61,7 +61,6 @@ export class LoginComponent implements OnInit {
 
               user.token = token
 
-              console.log(user)
               localStorage.setItem("current_user", JSON.stringify(user));
 
               this.router.navigate(["/users/dashboard"]); 

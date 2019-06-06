@@ -12,22 +12,10 @@ import {Injectable} from "@angular/core";
 export class AddHttpInterceptor implements HttpInterceptor {
   token: string = null;
   constructor(private requestService: RequestService) {
-    let user = null
-    if (this.requestService.token) {
-      console.log('found a token from request service')
-      this.token = this.requestService.token
-    }
-    else if (user = JSON.parse(localStorage.getItem('current_user'))) {
-      console.log('token found in local storage')
-      this.token = user.token
-    }
-    else {
-      console.log('token not found. :-(')
-      this.token = null
-    }
+    this.token = this.fetch_token()
   }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
-    console.log('uhhh..................');
+    this.fetch_token()
     // Clone the request to add the new header
     if (this.token) {
       const clonedRequest = req.clone({ headers: req.headers.set('Authorization', `Bearer ${this.token}`) });
@@ -36,5 +24,22 @@ export class AddHttpInterceptor implements HttpInterceptor {
     else {
       return next.handle(req)
     }
+  }
+
+  fetch_token() {
+    let user = null
+    if (this.requestService.token) {
+      this.token = this.requestService.token
+
+      return true
+    }
+    if (user = JSON.parse(localStorage.getItem('current_user'))) {
+      this.token = user.token
+
+      return true
+    }
+
+    this.token = null
+    return false
   }
 }
