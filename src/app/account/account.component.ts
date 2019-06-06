@@ -120,7 +120,7 @@ export class AccountComponent implements OnInit {
 
   switchTheme(theme) {
     let headers = new HttpHeaders()
-      .set("Authorization", this.user.token)
+      .set("Authorization", `Bearer ${this.user.token}`)
     ;
 
     let theme_id: number;
@@ -172,7 +172,7 @@ export class AccountComponent implements OnInit {
 
   saveChanges(): void {
     let headers = new HttpHeaders()
-      .set("Authorization", this.user.token)
+      .set("Authorization", `Bearer ${this.user.token}`)
     ;
 
     let formData: FormData = new FormData();

@@ -75,7 +75,6 @@ export class DashboardComponent implements OnInit {
     this.user = user;
 
     this.route.params.subscribe((params) => {
-      console.log(params);
       if (params.search_term) {
         this.search_query = params.search_term;
       }
@@ -89,7 +88,7 @@ export class DashboardComponent implements OnInit {
         this.title = "Tag Search:";
 
         let headers = new HttpHeaders()
-          .set("Authorization", this.user.token)
+          .set("Authorization", `Bearer ${this.user.token}`)
         ;
 
         this
@@ -113,7 +112,7 @@ export class DashboardComponent implements OnInit {
         this.title = "Search Results:";
         //query the api for the search term
         let headers = new HttpHeaders()
-          .set("Authorization", this.user.token)
+          .set("Authorization", `Bearer ${this.user.token}`)
         ;
 
 
@@ -122,8 +121,7 @@ export class DashboardComponent implements OnInit {
           .get<PostInterface>(`${environment.server_url}/api/search/${this.search_query}`, { headers: headers})
           .subscribe((data) => {
             if (data.success) {
-              data.posts = this.fixPosts(data.posts);
-              console.log(data.posts);   
+              data.posts = this.fixPosts(data.posts);   
 
               this.posts = data.posts;
             }
@@ -142,7 +140,7 @@ export class DashboardComponent implements OnInit {
           console.log("posts not found in memory, making a request to backend for them");
 
           const headers = new HttpHeaders()
-            .set("Authorization", user.token)
+            .set("Authorization", `Bearer ${user.token}`)
           ;
 
           this
@@ -186,8 +184,10 @@ export class DashboardComponent implements OnInit {
 
       if (this.user) {
         let headers = new HttpHeaders()
-          .set("Authorization", this.user.token)
+          .set("Authorization", `Bearer ${this.user.token}`)
         ;
+
+        console.log(this.user)
 
         this.loading_posts = true;
         this

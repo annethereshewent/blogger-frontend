@@ -25,6 +25,7 @@
   </nav>
   <router-outlet (activate)="onActivate($event)"></router-outlet>
 </div>
+
 <div class="navigation-content" *ngIf="user && current_user">
   <ul class="nav-buttons">
     <li *ngIf="user.user_id != current_user.user_id && !is_friends()" id="addFriend"><a href="#" onclick="addFriend()"><i class="fa fa-user-plus"></i>Add Friend</a></li>

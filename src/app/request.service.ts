@@ -11,6 +11,8 @@ export class RequestService {
 
   posts: Post[];
 
+  token: string
+
   private _sidebar_hidden: Subject<boolean> = new BehaviorSubject<boolean>(false);
   sidebar_hidden$ = this._sidebar_hidden.asObservable();
 
