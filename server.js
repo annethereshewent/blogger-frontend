@@ -14,7 +14,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/dist/blogger-frontend'));
 
 app.get('/*', async function(req,res) {
-    let data = {};
+    let stylesheet = null
 
     if (req.url.indexOf('blog') != -1) {
         // need to get the user id from the path
@@ -27,10 +27,12 @@ app.get('/*', async function(req,res) {
 
         await client.connect()
 
-        data.stylesheet = await client.query(`SELECT theme_name from Theme where id = (SELECT theme_id from User where id = ${user_id})`)
+        stylesheet = await client.query(`SELECT theme_name from Theme where id = (SELECT theme_id from User where id = ${user_id})`)
     }
 
-    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'), data);
+    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'), {
+        stylesheet
+    });
 });
 
 // Start the app by listening on the default Heroku port
