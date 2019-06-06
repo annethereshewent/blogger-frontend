@@ -12,7 +12,7 @@ import {Injectable} from "@angular/core";
 export class AddHttpInterceptor implements HttpInterceptor {
   token: string = null;
   constructor(private requestService: RequestService) {
-    this.token = this.fetch_token()
+    this.fetch_token()
   }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     this.fetch_token()
