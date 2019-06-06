@@ -9,7 +9,7 @@
   padding-right:20px;
 }
 body {
-  background: #4DB870;
+  background: #4DB870 !important;
 }
 .sidebar {
   background:#006600;

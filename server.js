@@ -14,9 +14,10 @@ app.set('view_engine', 'ejs')
 app.get('/*', async function(req,res) {
     let stylesheet = 'default'
 
+    is_blog = false
     if (req.url.indexOf('blog') != -1) {
         // need to get the user id from the path
-
+        is_blog = true
         let tokens = req.url.split('/')
 
         let username = tokens[3];
@@ -26,13 +27,13 @@ app.get('/*', async function(req,res) {
         await client.connect()
 
         if (username != null) {
-            stylesheet = await client.query(`SELECT theme_name from themes where id = (SELECT theme_id from users where displayname = '${username}' limit 1)`)
-            console.log(stylesheet)   
+            let result = await client.query(`SELECT theme_name from themes where id = (SELECT theme_id from users where displayname = '${username}' limit 1)`)
+            stylesheet = result.rows[0].theme_name  
         } 
         
     }
 
-    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'), { stylesheet: stylesheet.rows[0].theme_name });
+    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'), { stylesheet, is_blog });
 });
 
 // Start the app by listening on the default Heroku port
