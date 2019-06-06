@@ -43,6 +43,10 @@ export class ImageModalComponent implements OnInit {
 
   }
 
+  onUploadError(err: any) {
+    console.log(err)
+  }
+
   ngOnInit() {
   }
 

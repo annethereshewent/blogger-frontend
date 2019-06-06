@@ -10,7 +10,7 @@ import { RequestService } from "../request.service";
 })
 export class UsersComponent implements OnInit {
 
-  constructor(private router: Router, private requestService: RequestService) {
+  constructor(public router: Router, private requestService: RequestService) {
 
   }
 

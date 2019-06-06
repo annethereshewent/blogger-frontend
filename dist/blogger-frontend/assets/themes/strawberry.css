@@ -1,0 +1,81 @@
+body {
+  background:#FFB2B2;
+}
+.sidebar {
+  background:#CC0066;
+  font-family: Palatino Linotype, serif;
+  color:white;
+}
+.sidebar a { 
+  color: white;
+  text-decoration: none;
+}
+.links ul {
+  list-style-type: none;
+}
+.links ul li {
+  border-bottom: 1px solid white;
+  width: 75%;
+
+}
+.sidebar-main {
+  margin-left: 20px;
+  margin-top: 40px;
+}
+.sidebar-image {
+  border-radius: 60px;
+  margin-left: 40px;
+}
+.description {
+  font-size:10px;
+  width:100px;
+  margin-left:70px;
+}
+.title {
+  color: white;
+  font-size:20px;
+  padding-bottom:10px;
+  padding-top:10px;
+  margin-top:20px;
+  border-top:1px solid white;
+  border-bottom:1px solid white;
+  width:150px;
+  text-align:center;
+  margin-left:40px;
+  margin-bottom: 20px;
+}
+.links a:hover {
+  padding-left:20px;
+  color:#009933;
+  border-color:#009933;
+  -webkit-transition: all 0.6s ease-in-out;
+  -moz-transition: all 0.6s ease-in-out;
+  -o-transition: all 0.6s ease-in-out;
+  -ms-transition: all 0.6s ease-in-out;
+  transition: all 0.6s ease-in-out;
+}
+.form-heading {
+  color: #009933;
+}
+.sub-heading {
+  color:#009933;
+  font-style:italic;
+  font-size:12px;
+  margin-top: -10px;
+}
+.content {
+  border-radius: 20px;
+  background: #F2F2FA;
+  border:5px solid #009933;
+  padding: 10px 0 0 20px;
+}
+.profile-pic {
+  border-radius: 80px;
+}
+h3 {
+  font-size: 20px;
+  font-style: italic;
+}
+#prev_page a:hover, #next_page a:hover {
+  color: #009933;
+}
