@@ -27,6 +27,8 @@ import { AlertModule } from 'ngx-bootstrap/alert';
 import { PostsComponent } from './posts/posts.component';
 import { CommentsComponent } from './comments/comments.component';
 import { ChatComponent } from './chat/chat.component';
+import { AddHttpInterceptor } from '../classes/AddHttpInterceptor';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
 
 const appRoutes: Routes = [
     { 
@@ -106,7 +108,14 @@ const appRoutes: Routes = [
         { enableTracing: false }
     )
   ],
-  providers: [RequestService],
+  providers: [
+    RequestService, 
+    {
+        provide: HTTP_INTERCEPTORS,
+        useClass: AddHttpInterceptor,
+        multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   entryComponents: [PostModalComponent, YoutubeModalComponent, ImageModalComponent]
 })

@@ -4,7 +4,7 @@ import { User } from "../../classes/User";
 import { Friend } from "../../classes/Friend";
 import { ChatBox } from "../../classes/ChatBox";
 import io from 'socket.io-client';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
 interface FriendResponse {
   success: boolean;
@@ -218,13 +218,9 @@ export class ChatComponent implements OnInit {
   }
   is_friends(user) {
     if (user.username != this.user.username && this.friends.map((friend) =>  { return friend.username }).indexOf(user.username) == -1) {
-      let headers = new HttpHeaders()
-        .set("Authorization", this.user.token)
-      ;
-
       this
         .http
-        .get<FriendResponse>(`${environment.server_url}/api/is_friends/${user.username}`, { headers: headers})
+        .get<FriendResponse>(`${environment.server_url}/api/is_friends/${user.username}`)
         .subscribe((data) => {
           this.friends.push(user);
         })

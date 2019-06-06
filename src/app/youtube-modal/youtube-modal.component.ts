@@ -1,7 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { RequestService } from "../request.service";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { User } from "../../classes/User";
 import { Post } from "../../classes/Post";
@@ -51,13 +51,10 @@ export class YoutubeModalComponent implements OnInit {
   submitVideo(): void {
     let user: User = JSON.parse(localStorage.getItem('current_user'));
     if (user) {
-      let headers = new HttpHeaders()
-        .set("Authorization", user.token)
-      ;
       if (this.youtube_video != '') {
         this
           .http
-          .post<PostResponse>(`${environment.server_url}/api/create_post`, { post: this.youtube_video, client: "web"}, { headers: headers})
+          .post<PostResponse>(`${environment.server_url}/api/create_post`, { post: this.youtube_video, client: "web"})
           .subscribe((data) => {
             if (data.success) {
               this.postEmitter.emit(data.post);

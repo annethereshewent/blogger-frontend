@@ -4,7 +4,7 @@ import { PostsService } from "../posts.service";
 import { Post } from "../../classes/Post";
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
@@ -87,13 +87,9 @@ export class DashboardComponent implements OnInit {
       if (this.tag_name) {
         this.title = "Tag Search:";
 
-        let headers = new HttpHeaders()
-          .set("Authorization", `Bearer ${this.user.token}`)
-        ;
-
         this
           .http
-          .get<PostInterface>(`${environment.server_url}/api/tag_search/${this.tag_name}`, { headers: headers})
+          .get<PostInterface>(`${environment.server_url}/api/tag_search/${this.tag_name}`)
           .subscribe((data) => {
             if (data.success) {
               if (!environment.production) {
@@ -111,14 +107,10 @@ export class DashboardComponent implements OnInit {
       else if (this.search_query) {
         this.title = "Search Results:";
         //query the api for the search term
-        let headers = new HttpHeaders()
-          .set("Authorization", `Bearer ${this.user.token}`)
-        ;
-
 
         this
           .http
-          .get<PostInterface>(`${environment.server_url}/api/search/${this.search_query}`, { headers: headers})
+          .get<PostInterface>(`${environment.server_url}/api/search/${this.search_query}`)
           .subscribe((data) => {
             if (data.success) {
               data.posts = this.fixPosts(data.posts);   
@@ -139,13 +131,11 @@ export class DashboardComponent implements OnInit {
         else {
           console.log("posts not found in memory, making a request to backend for them");
 
-          const headers = new HttpHeaders()
-            .set("Authorization", `Bearer ${user.token}`)
-          ;
+
 
           this
             .http
-            .get<PostInterface>(`${environment.server_url}/api/fetch_posts`, { headers: headers })
+            .get<PostInterface>(`${environment.server_url}/api/fetch_posts`)
             .subscribe((data) => {
               if (data.success) {
                 if (!environment.production) {
@@ -183,16 +173,10 @@ export class DashboardComponent implements OnInit {
       console.log('youve reached the bottom of the page!');
 
       if (this.user) {
-        let headers = new HttpHeaders()
-          .set("Authorization", `Bearer ${this.user.token}`)
-        ;
-
-        console.log(this.user)
-
         this.loading_posts = true;
         this
           .http
-          .get<PostInterface>(`${environment.server_url}/api/fetch_posts/${this.page}`, { headers: headers })
+          .get<PostInterface>(`${environment.server_url}/api/fetch_posts/${this.page}`)
           .subscribe((data) => {
             if (data.success) {
               if (!environment.production) {

@@ -50,12 +50,9 @@ export class LoginComponent implements OnInit {
           let token = data.access_token
           this.requestService.token = token
 
-          let headers = new HttpHeaders()
-            .set('Authorization', `Bearer ${token}`)
-
           this
             .http
-            .get<LoginResponse>(`${environment.server_url}/api/fetch_user`, { headers: headers })
+            .get<LoginResponse>(`${environment.server_url}/api/fetch_user`)
             .subscribe((data) => {
               //login was successful! redirect to the next page
               this.requestService.posts = data.posts;

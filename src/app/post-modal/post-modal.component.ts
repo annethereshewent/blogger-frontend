@@ -2,7 +2,7 @@ import { Component, OnInit, Output, Input, EventEmitter } from '@angular/core';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { User } from "../../classes/User";
 import { Post } from "../../classes/Post";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from "../../environments/environment";
 import { RequestService } from "../request.service";
 
@@ -84,13 +84,9 @@ export class PostModalComponent implements OnInit {
   }
 
   postRequest(url, postParams): void {
-    let headers = new HttpHeaders()
-      .set("Authorization", this.user.token)
-    ;
-
     this
       .http
-      .post<SubmitPostInterface>(url, postParams, { headers: headers })
+      .post<SubmitPostInterface>(url, postParams)
       .subscribe((data) => {
         if (data.success) {
           console.log("post request was successful");

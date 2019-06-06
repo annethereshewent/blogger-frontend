@@ -1,7 +1,7 @@
 import { Component, OnInit, KeyValueChanges, KeyValueDiffer, KeyValueDiffers, Output, EventEmitter, HostBinding } from '@angular/core';
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { RequestService } from "../request.service";
 import { ValidatorService } from "../validator.service";
@@ -119,10 +119,6 @@ export class AccountComponent implements OnInit {
   }
 
   switchTheme(theme) {
-    let headers = new HttpHeaders()
-      .set("Authorization", `Bearer ${this.user.token}`)
-    ;
-
     let theme_id: number;
 
     switch(theme) {
@@ -145,7 +141,7 @@ export class AccountComponent implements OnInit {
 
     this
       .http
-      .post<GenericResponse>(`${environment.server_url}/api/switch_theme`, { theme_id: theme_id}, { headers: headers})
+      .post<GenericResponse>(`${environment.server_url}/api/switch_theme`, { theme_id: theme_id})
       .subscribe((data) => {
         if (data.success) {
           this.user.theme = theme;
@@ -171,10 +167,6 @@ export class AccountComponent implements OnInit {
   }
 
   saveChanges(): void {
-    let headers = new HttpHeaders()
-      .set("Authorization", `Bearer ${this.user.token}`)
-    ;
-
     let formData: FormData = new FormData();
     if (this.avatar) {
       formData.append('avatar', this.avatar);
@@ -189,13 +181,9 @@ export class AccountComponent implements OnInit {
   }
 
   saveSettings(postParams): void {
-    let headers = new HttpHeaders()
-      .set("Authorization", this.user.token)
-    ;
-
     this
       .http
-      .post<UpdateUserResponse>(`${environment.server_url}/api/update_user`, postParams, { headers: headers })
+      .post<UpdateUserResponse>(`${environment.server_url}/api/update_user`, postParams)
       .subscribe((data) => {
         if (data.success) {
           console.log('updated user successfully');
@@ -212,10 +200,6 @@ export class AccountComponent implements OnInit {
   }
 
   saveSecurityChanges(): void {
-    let headers = new HttpHeaders()
-      .set("Authorization", this.user.token)
-    ;
-
     let postParams: any = {
       id: this.user.user_id,
       email: this.user.email

@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { User } from "../../classes/User";
 import { Post } from "../../classes/Post";
 import { Comment } from "../../classes/Comment";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { RequestService } from "../request.service";
 import { environment } from "../../environments/environment";
 
@@ -89,12 +89,9 @@ export class CommentsComponent implements OnInit {
 
   submit(postParams, callback): void {
     if (this.current_user) {
-      let headers = new HttpHeaders()
-        .set("Authorization", this.current_user.token);
-
       this
         .http
-        .post<CommentsPostResponse>(`${environment.server_url}/api/post_comment`, postParams, { headers: headers})
+        .post<CommentsPostResponse>(`${environment.server_url}/api/post_comment`, postParams)
         .subscribe((data) => {
           if (data.success) {
             callback(data.comment);

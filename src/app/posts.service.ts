@@ -4,7 +4,7 @@ import { PostModalComponent } from "./post-modal/post-modal.component";
 import { BsModalService } from 'ngx-bootstrap/modal';
 import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 import { Subject, BehaviorSubject } from "rxjs";
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from "../environments/environment";
 
 declare var $: any;
@@ -96,13 +96,9 @@ export class PostsService {
   deletePost(post: Post, token: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
       if (confirm("Are you sure you want to delete this post?")) {
-        let headers = new HttpHeaders()
-          .set("Authorization", token)
-        ;
-
         this
           .http
-          .post<DeleteResponse>(`${environment.server_url}/api/delete_post/${post.id}`, {}, { headers: headers })
+          .post<DeleteResponse>(`${environment.server_url}/api/delete_post/${post.id}`, {})
           .subscribe((data) => {
             if (data.success) {
               resolve(true);
