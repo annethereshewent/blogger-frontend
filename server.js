@@ -13,7 +13,7 @@ app.set('view engine', 'ejs');
 // Serve only the static files from the dist directory
 app.use(express.static(__dirname + '/dist/blogger-frontend'));
 
-app.get('/*', function(req,res) {
+app.get('/*', async function(req,res) {
     let data = {};
 
     if (req.url.indexOf('blog') != -1) {
