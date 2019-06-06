@@ -6,10 +6,6 @@ const ejs = require('ejs');
 const { Client } = require('pg');
 const app = express();
 
-
-
-app.set('view engine', 'ejs');
-
 // Serve only the static files from the dist directory
 app.use(express.static(__dirname + '/dist/blogger-frontend'));
 
