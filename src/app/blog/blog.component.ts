@@ -35,7 +35,6 @@ export class BlogComponent implements OnInit {
   pagination: Pagination;
   username: string = '';
   theme: string = 'default';
-  production: boolean = environment.production
 
   constructor(
     public sanitizer: DomSanitizer, 
