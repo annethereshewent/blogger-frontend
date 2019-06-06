@@ -26,7 +26,7 @@ app.get('/*', async function(req,res) {
         await client.connect()
 
         if (username != null) {
-            stylesheet = await client.query(`SELECT theme_name from themes where id = (SELECT theme_id from User where displayname = ${username} limit 1)`)
+            stylesheet = await client.query(`SELECT theme_name from themes where id = (SELECT theme_id from users where displayname = ${username} limit 1)`)
             console.log(stylesheet)   
         } 
         
