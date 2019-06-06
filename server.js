@@ -30,7 +30,7 @@ app.get('/*', function(req,res) {
         data.stylesheet = await client.query(`SELECT theme_name from Theme where id = (SELECT theme_id from User where id = ${user_id})`)
     }
 
-    res.render(path.join(__dirname+'/dist/blogger-frontend/index.html'), data);
+    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'), data);
 });
 
 // Start the app by listening on the default Heroku port
