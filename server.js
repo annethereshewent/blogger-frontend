@@ -40,7 +40,7 @@ app.get('/*', async function(req,res) {
         
     // }
 
-    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'));
+    res.render(path.join(__dirname+'/dist/blogger-frontend/index.html'));
 });
 
 // Start the app by listening on the default Heroku port
