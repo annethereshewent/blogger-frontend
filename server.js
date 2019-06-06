@@ -12,7 +12,7 @@ app.use(express.static(__dirname + '/dist/blogger-frontend'));
 app.set('view_engine', 'ejs')
 
 app.get('/*', async function(req,res) {
-    let stylesheet = null
+    let stylesheet = 'default'
 
     if (req.url.indexOf('blog') != -1) {
         // need to get the user id from the path
@@ -26,7 +26,7 @@ app.get('/*', async function(req,res) {
         await client.connect()
 
         if (username != null) {
-            stylesheet = await client.query(`SELECT theme_name from Theme where id = (SELECT theme_id from User where displayname = ${username} limit 1)`)
+            stylesheet = await client.query(`SELECT theme_name from themes where id = (SELECT theme_id from User where displayname = ${username} limit 1)`)
             console.log(stylesheet)   
         } 
         
