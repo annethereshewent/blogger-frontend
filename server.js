@@ -32,7 +32,7 @@ app.get('/*', async function(req,res) {
         
     }
 
-    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'), { stylesheet });
+    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'), { stylesheet: stylesheet.rows[0].theme_name });
 });
 
 // Start the app by listening on the default Heroku port
