@@ -14,12 +14,15 @@ export class AddHttpInterceptor implements HttpInterceptor {
   constructor(private requestService: RequestService) {
     let user = null
     if (this.requestService.token) {
+      console.log('found a token from request service')
       this.token = this.requestService.token
     }
     else if (user = JSON.parse(localStorage.getItem('current_user'))) {
+      console.log('token found in local storage')
       this.token = user.token
     }
     else {
+      console.log('token not found. :-(')
       this.token = null
     }
   }
