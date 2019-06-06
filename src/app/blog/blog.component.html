@@ -1,4 +1,4 @@
-<link rel="stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl(theme ? '/assets/themes/' + theme + '.css' : '/assets/themes/default.css')">
+<link *ngIf="!production" rel="stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl(theme ? '/assets/themes/' + theme + '.css' : '/assets/themes/default.css')">
 <div class="wrapper">
   <nav [ngClass]="{ 'sidebar': true, 'hidden': sidebar_hidden}" *ngIf="user != undefined">
     <div class="sidebar-main">

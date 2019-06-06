@@ -9,34 +9,30 @@ const app = express();
 // Serve only the static files from the dist directory
 app.use(express.static(__dirname + '/dist/blogger-frontend'));
 
+app.set('view_engine', 'ejs')
+
 app.get('/*', async function(req,res) {
     let stylesheet = null
 
-    // if (req.url.indexOf('blog') != -1) {
-    //     // need to get the user id from the path
+    if (req.url.indexOf('blog') != -1) {
+        // need to get the user id from the path
 
-    //     let tokens = req.url.split('/')
+        let tokens = req.url.split('/')
 
-    //     let username = null
+        let username = tokens[2];
 
-    //     if (['posts', 'comments'].includes(tokens[1])) {
-    //         username = tokens[2]
-    //     }
-    //     else {
+        const client = new Client();
 
-    //     }
+        await client.connect()
 
-    //     const client = new Client();
-
-    //     await client.connect()
-
-    //     if (username != null) {
-    //         stylesheet = await client.query(`SELECT theme_name from Theme where id = (SELECT theme_id from User where displayname = ${username} limit 1)`)    
-    //     } 
+        if (username != null) {
+            stylesheet = await client.query(`SELECT theme_name from Theme where id = (SELECT theme_id from User where displayname = ${username} limit 1)`)
+            console.log(stylesheet)   
+        } 
         
-    // }
+    }
 
-    res.sendFile(path.join(__dirname+'/dist/blogger-frontend/index.html'));
+    res.render(path.join(__dirname+'/dist/blogger-frontend/index.ejs'));
 });
 
 // Start the app by listening on the default Heroku port

@@ -59,7 +59,9 @@ const appRoutes: Routes = [
     {
         path: 'blog', component: BlogComponent, children: [
             {
-                path: "account", component: AccountComponent
+                // adding the username seems stupid, but it's to get server-side rendering of custom stylesheets working
+                // properly
+                path: "account/:username", component: AccountComponent
             },
             {
                 path: "posts/:username", redirectTo: "/blog/posts/:username/1", pathMatch: "full"

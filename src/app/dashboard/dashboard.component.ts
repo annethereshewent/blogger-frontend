@@ -287,7 +287,9 @@ export class DashboardComponent implements OnInit {
   }
 
   openAccountPath(): void {
-    this.router.navigate(["/blog/account"])
+    if (this.user) {
+      this.router.navigate([`/blog/account/${this.user.username}`])
+    }
   }
 
   tagSearch(tag: string): void {

@@ -59,10 +59,17 @@ export class AccountComponent implements OnInit {
     private differs: KeyValueDiffers, 
     private validatorService: ValidatorService, 
     private requestService: RequestService,
-    private router: Router
+    private router: Router,
+    private route: ActivatedRoute
   ) { 
     let user: User;
     if (user = JSON.parse(localStorage.getItem('current_user'))) {
+      this.route.params.subscribe((params) => {
+        if (params.username != user.username) {
+          this.router.navigate(['/blog/account/' + user.username])
+          return
+        }
+      }) 
       this.requestService.sidebar_hidden$.subscribe((active) => this.is_active = active)
       this.user = user;
 

@@ -17,6 +17,7 @@ interface CommentsResponse {
   message: string;
   user: User;
   post: Post;
+  production: boolean = environment.production
 }
 
 @Component({

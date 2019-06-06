@@ -28,7 +28,7 @@ export class ImageModalComponent implements OnInit {
         params: { tags: this.tags },
         acceptedFiles: "image/*",
         headers: {
-          "Authorization": this.user.token
+          "Authorization": `Bearer ${this.user.token}`
         }
       };
     }
