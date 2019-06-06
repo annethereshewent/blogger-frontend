@@ -66,7 +66,7 @@ export class BlogComponent implements OnInit {
 
   logout(): void {
     localStorage.removeItem("current_user");
-    this.router.navigate(["/users"]);
+    location.href = '/users'
   }
 
   show_requests(): boolean {
