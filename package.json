@@ -8,7 +8,7 @@
     "e2e": "ng e2e",
     "start": "node server.js",
     "myBuild": "ng build --aot --prod",
-    "rename": "renamer -f \"/index.html$/\" -r \"/index.ejs/\"  \"/dist/blogger-frontend/*\"",
+    "rename": "renamer -f \"/index.html$/\" -r \"/index.ejs$/\"  \"/dist/blogger-frontend/*\"",
     "postinstall": "npm run myBuild && npm run rename"
   },
   "private": true,
