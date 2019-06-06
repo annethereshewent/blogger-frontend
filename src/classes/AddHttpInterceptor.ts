@@ -27,19 +27,24 @@ export class AddHttpInterceptor implements HttpInterceptor {
   }
 
   fetch_token() {
-    let user = null
-    if (this.requestService.token) {
-      this.token = this.requestService.token
+    if (!this.token) {
+      let user = null
+      if (this.requestService.token) {
+        this.token = this.requestService.token
 
-      return true
+        return true
+      }
+      if (user = JSON.parse(localStorage.getItem('current_user'))) {
+        this.token = user.token
+
+        return true
+      }
+
+      this.token = null
+      return false 
     }
-    if (user = JSON.parse(localStorage.getItem('current_user'))) {
-      this.token = user.token
 
-      return true
-    }
-
-    this.token = null
-    return false
+    return true
+    
   }
 }
