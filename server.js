@@ -19,14 +19,14 @@ app.get('/*', async function(req,res) {
 
         let tokens = req.url.split('/')
 
-        let username = tokens[2];
+        let username = tokens[3];
 
         const client = new Client();
 
         await client.connect()
 
         if (username != null) {
-            stylesheet = await client.query(`SELECT theme_name from themes where id = (SELECT theme_id from users where displayname = ${username} limit 1)`)
+            stylesheet = await client.query(`SELECT theme_name from themes where id = (SELECT theme_id from users where displayname = '${username}' limit 1)`)
             console.log(stylesheet)   
         } 
         
