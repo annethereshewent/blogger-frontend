@@ -24,6 +24,7 @@ export class AddHttpInterceptor implements HttpInterceptor {
     }
   }
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
+    console.log('uhhh..................');
     // Clone the request to add the new header
     if (this.token) {
       const clonedRequest = req.clone({ headers: req.headers.set('Authorization', `Bearer ${this.token}`) });
