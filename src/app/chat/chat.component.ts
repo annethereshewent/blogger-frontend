@@ -5,8 +5,8 @@ import { Friend } from "../../classes/Friend";
 import { ChatBox } from "../../classes/ChatBox";
 import io from 'socket.io-client';
 import { HttpClient } from '@angular/common/http';
-import { Subject, Subscription } from 'rxjs';
-import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 
 interface FriendResponse {
   success: boolean;
@@ -39,7 +39,7 @@ export class ChatComponent implements OnInit {
   chat_boxes: ChatBox[] = [];
   chat_content: string[] = [];
 
-  private userSubject: Subject<any> = new Subject<any>;
+  private userSubject: Subject<any> = new Subject<any>();
 
   entityMap = {
     '&': '&amp;',
@@ -59,10 +59,12 @@ export class ChatComponent implements OnInit {
 
     this
       .userSubject
-      .pipe(debounceTime(1000), distinctUntilChanged())
+      .pipe(debounceTime(600))
       .subscribe((user) => {
+        console.log(`received ${user.username}`)
         this.is_friends(user)
       })
+
     if (this.user) {
       this.socket = io(environment.chat_url);
       this.socket.emit('login', { username: this.user.username, avatar: this.user.avatar_thumb, user_id: this.user.user_id })
@@ -70,15 +72,18 @@ export class ChatComponent implements OnInit {
       this.socket.emit('list');
 
       this.socket.on('user-list', (user) => {
+        console.log(`user-list request received with user ${user.username}`)
         this.userSubject.next(user)
       });
 
       this.socket.on('list', () => {
+        console.log('received list request from some user, sending user info')
         this.socket.emit('user-list', {
           username: this.user.username,
           avatar: this.user.avatar_thumb,
           user_id: this.user.user_id
-        });
+        })
+        
       });
 
       this.socket.on('chat_history', (message) => {
