@@ -77,7 +77,7 @@ export class BlogComponent implements OnInit {
 
   goToDashboard() {
     if (environment.production) {
-      location.href = '/users/dasbhoard'
+      location.href = '/users/dashboard'
     }
     else {
       this.router.navigate(['/users/dashboard'])
