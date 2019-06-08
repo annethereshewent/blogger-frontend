@@ -52,7 +52,6 @@ export class CommentsComponent implements OnInit {
     this.requestService.sidebar_hidden$.subscribe((active) => this.is_active = active);
 
     let username = this.route.snapshot.params.username;
-    console.log(username);
     let post_id = this.route.snapshot.params.post_id;
 
     this.current_user = JSON.parse(localStorage.getItem("current_user"));
@@ -73,7 +72,6 @@ export class CommentsComponent implements OnInit {
             this.show_reply.push(false);
             this.reply_comment.push('');
           }
-          console.log(this.show_reply);
         }
       })
     ;
@@ -84,6 +82,7 @@ export class CommentsComponent implements OnInit {
 
     if (username != this.current_user.username) {
       if (environment.production) {
+        console.log('it should be going in here')
         location.href = url
       }
       else {
@@ -97,7 +96,6 @@ export class CommentsComponent implements OnInit {
   }
 
   openReply(index: number): void {
-    console.log(index);
     this.show_reply[index] = true;
   }
 
