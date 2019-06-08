@@ -30,6 +30,7 @@ export class PostsComponent implements OnInit {
   current_user: User;
   username: string;
   user: User;
+  production: boolean = environment.production
 
   @Output() updateUser: EventEmitter<User> = new EventEmitter<User>();
   @Output() pagination: EventEmitter<Pagination> = new EventEmitter<Pagination>();

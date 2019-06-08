@@ -5,7 +5,7 @@
         <div class="content">
           <p><i>Created on: {{post.created_at}}</i></p>
           <div class="post">
-            <p *ngFor="let image of post.images"><img src="{{production_site ? image : 'http://localhost:3000' + image}}" class="img-fluid"></p>
+            <p *ngFor="let image of post.images"><img src="{{production ? image : 'http://localhost:3000' + image}}" class="img-fluid"></p>
             <p [innerHtml]="post.post | safeHtml"></p>
           </div>
           <p *ngIf="post.edited"><i>(Post Edited on: {{ post.updated_at}})</i></p>
