@@ -132,11 +132,9 @@ export class BlogComponent implements OnInit {
         let user_undefined = this.user == undefined;
         this.user = user;
         if (user_undefined) {
-          console.log("is this firing off?");
           this.cdRef.detectChanges();
         }
         if (this.theme != user.theme) {
-          console.log("it's going in here");
           this.theme = user.theme;
         }
       })
