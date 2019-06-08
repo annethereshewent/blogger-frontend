@@ -80,9 +80,8 @@ export class CommentsComponent implements OnInit {
   goToBlog(username: string) {
     let url = `/blog/posts/${username}`
 
-    if (username != this.current_user.username) {
+    if (username != this.user.username) {
       if (environment.production) {
-        console.log('it should be going in here')
         location.href = url
       }
       else {
