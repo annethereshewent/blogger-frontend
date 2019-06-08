@@ -28,10 +28,10 @@
 
 <div class="navigation-content" *ngIf="user && current_user">
   <ul class="nav-buttons">
-    <li *ngIf="user.user_id != current_user.user_id && !is_friends()" id="addFriend"><a href="#" onclick="addFriend()"><i class="fa fa-user-plus"></i>Add Friend</a></li>
+    <li *ngIf="user.user_id != current_user.user_id && !is_friends()" id="addFriend"><a href="javascript:void(0)" (click)="addFriend()"><i class="fa fa-user-plus"></i>Add Friend</a></li>
     <li *ngIf="show_requests()" id="Requests"><a href="#" onClick="openRequests()"><p id="num-requests" >{{ check_requests() }}</p><i class="fa fa-users"></i><i>Requests</i></a></li>
     <li *ngIf="current_user" id="Logout"><a href="javascript:void(0)" (click)="logout()"><i class="fa fa-sign-out"></i>Logout</a></li>
-    <li *ngIf="current_user" id="Dashboard"><a href="/users/dashboard"><i class="fa fa-tachometer"></i>Dashboard</a></li>
+    <li *ngIf="current_user" id="Dashboard"><a href="javascript:void(0)" (click)="goToDashboard()"><i class="fa fa-tachometer"></i>Dashboard</a></li>
   </ul>
 </div>
 

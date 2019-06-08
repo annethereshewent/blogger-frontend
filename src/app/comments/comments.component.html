@@ -36,7 +36,7 @@
       <div class="content" id='comments-box' *ngIf="comments.length">
         <div *ngFor="let comment of comments; let i = index" [ngStyle]="{ 'margin-left': getMargins(comment) } " class="comment">
           <div style="font-size:small;"> 
-            <a href="goToBlog(comment.username)"><img [src]="production ? comment.avatar_thumb : 'http://localhost:3000' + comment.avatar_thumb" class="profile-thumb"></a>
+            <a href="javascript:void(0)" (click)="goToBlog(comment.username)"><img [src]="production ? comment.avatar_thumb : 'http://localhost:3000' + comment.avatar_thumb" class="profile-thumb"></a>
             <b>{{ comment.username }}</b>
             &nbsp;
             <i>Posted on:</i> {{ comment.created_at }}

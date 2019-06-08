@@ -66,7 +66,22 @@ export class BlogComponent implements OnInit {
 
   logout(): void {
     localStorage.removeItem("current_user");
-    location.href = '/users'
+    if (environment.production) {
+      location.href = '/users'  
+    }
+    else {
+      this.router.navigate(['/users'])
+    }
+    
+  }
+
+  goToDashboard() {
+    if (environment.production) {
+      location.href = '/users/dasbhoard'
+    }
+    else {
+      this.router.navigate(['/users/dashboard'])
+    }
   }
 
   show_requests(): boolean {
