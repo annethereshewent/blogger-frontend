@@ -28,7 +28,10 @@ app.get('/*', async function(req,res) {
 
         if (username != null) {
             let result = await client.query(`SELECT theme_name from themes where id = (SELECT theme_id from users where displayname = '${username}' limit 1)`)
-            stylesheet = result.rows[0].theme_name  
+            if (result) {
+                stylesheet = result.rows[0].theme_name     
+            }
+             
         } 
         
     }
