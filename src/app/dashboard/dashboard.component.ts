@@ -213,13 +213,29 @@ export class DashboardComponent implements OnInit {
 
   showSidebar(user: User) {
     if (!this.sidebar_user || this.sidebar_user.user_id != user.user_id) {
+      console.log('going in here')
       this.sidebar_user = user
+      
+      setTimeout(() => {
+        this.requestService.toggleDashSidebar(true)
+      }, 300)
+      
+    }
+    else {
+      this.requestService.toggleDashSidebar(false)
+      setTimeout(() => {
+        this.sidebar_user = null  
+      }, 300)
+      
+      
     }
 
-    setTimeout(() => {
-      this.sidebar_active = !this.sidebar_active
-      this.requestService.toggleDashSidebar(this.sidebar_active)
-    }, 300)
+    // setTimeout(() => {
+    //   this.sidebar_active = !this.sidebar_active
+    //   this.requestService.toggleDashSidebar(this.sidebar_active)
+    // }, 300)
+
+
     
     
   }
