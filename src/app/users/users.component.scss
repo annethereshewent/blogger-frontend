@@ -1,6 +1,6 @@
 @import "../../styles.scss";
-body {
-  background:$blogger_purple;
+::ng-deep body {
+  background: $blogger_purple;
 }
 .main {
   margin-top:100px;

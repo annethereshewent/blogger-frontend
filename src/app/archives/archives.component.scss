@@ -1,7 +1,30 @@
 ::ng-deep body {
-  background: #f4f4f4 !important;
+  background: #f4f4f4;
 }
-#date-select {
+.navigation-content {
+  top:10px;
+  right:10px;
+  position:fixed;
+}
+.nav-buttons {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+.nav-buttons li {
+  background:grey;
+  opacity:0.7;
+  border: 1px solid black;
+  border-radius:10px;
+  width:60px;
+  font-size:10px;
+  display:inline;
+  margin:0;
+  padding: 0 10px 0 10px;
+}
+.nav-buttons li a {
+  text-decoration:none;
+  color:black;
 }
 #archive-settings {
   position: absolute;

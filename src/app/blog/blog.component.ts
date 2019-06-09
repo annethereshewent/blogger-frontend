@@ -47,8 +47,6 @@ export class BlogComponent implements OnInit {
   ) {
   
     this.current_user = JSON.parse(localStorage.getItem('current_user'));
-
-
   }
 
   ngOnInit(): void {

@@ -1,12 +1,11 @@
-import { Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { RequestService } from "../request.service";
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
-  styleUrls: ['./users.component.scss'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./users.component.scss']
 })
 export class UsersComponent implements OnInit {
 

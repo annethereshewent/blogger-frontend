@@ -76,6 +76,10 @@ export class ArchivesComponent implements OnInit {
     }
   }
 
+  goToDashboard() {
+    this.router.navigate(['/users/dashboard'])
+  }
+
   ngOnInit() {
   }
 

@@ -4,8 +4,8 @@
       <ng-select id="date-select" [items]="options" groupBy="year" (change)="getArchivePosts($event.value)"></ng-select>
     </div>
   </div>
-  
 </div>
+
 <div id="main">
   <ngx-masonry [options]="{ horizontalOrder: true }">
     <div ngxMasonryItem class="masonry-item content" *ngFor="let post of posts, let i = index">
@@ -22,3 +22,9 @@
     </div>
    </ngx-masonry>
  </div>
+ <div class="navigation-content">
+    <ul class="nav-buttons">
+      <li id="Logout"><a href="javascript:void(0)" (click)="logout()"><i class="fa fa-sign-out"></i>Logout</a></li>
+      <li id="Dashboard"><a href="javascript:void(0)" (click)="goToDashboard()"><i class="fa fa-tachometer"></i>Dashboard</a></li>   
+    </ul>
+  </div>
