@@ -5,6 +5,7 @@ import { Post } from "../../classes/Post";
 import { Comment } from "../../classes/Comment";
 import { HttpClient } from '@angular/common/http';
 import { RequestService } from "../request.service";
+import { PostsService } from "../posts.service";
 import { environment } from "../../environments/environment";
 
 interface CommentsResponse {
@@ -44,7 +45,8 @@ export class CommentsComponent implements OnInit {
     private router: Router, 
     private route: ActivatedRoute, 
     private http: HttpClient,
-    private requestService: RequestService
+    private requestService: RequestService,
+    private postsService: PostsService
   ) {
 
     this.comments = [];
@@ -60,7 +62,7 @@ export class CommentsComponent implements OnInit {
       .get<CommentsResponse>(`${environment.server_url}/api/fetch_comments/${post_id}?username=${username}`)
       .subscribe((data) => {
         if (data.success) {
-          this.post = data.post;
+          this.post = this.postsService.fixPosts([data.post])[0];
           this.user = data.user;
           this.updateUser.emit(data.user);
           this.comments = data.comments;

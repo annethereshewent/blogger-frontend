@@ -46,10 +46,10 @@ export class PostsService {
           }
         });
 
-        // $(post_selector).find("iframe").each(function() {
-        //   $(this).addClass("embed-responsive-item");
-        //   $(this).wrap("<div class='embed-responsive embed-responsive-16by9'></div>");
-        // });
+        $(post_selector).find("iframe").each(function() {
+          $(this).addClass("embed-responsive-item");
+          $(this).wrap("<div class='embed-responsive embed-responsive-16by9'></div>");
+        });
 
         post.post = $(post_selector).html();
 
