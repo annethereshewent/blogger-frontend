@@ -9,12 +9,8 @@ import { RequestService } from "../request.service";
 interface LoginResponse {
   success: Boolean,
   posts: Post[],
-  token: string,
+  access_token: string,
   user: User;
-}
-
-interface TokenResponse {
-  access_token: string
 }
 
 @Component({
@@ -40,7 +36,7 @@ export class LoginComponent implements OnInit {
   login(): void {
     this
       .http
-      .post<TokenResponse>(`${environment.server_url}/oauth/token`, {
+      .post<LoginResponse>(`${environment.server_url}/oauth/token`, {
         username: this.username,
         password: this.password,
         grant_type: 'password'
@@ -50,26 +46,23 @@ export class LoginComponent implements OnInit {
           let token = data.access_token
           this.requestService.token = token
 
-          this
-            .http
-            .get<LoginResponse>(`${environment.server_url}/api/fetch_user`)
-            .subscribe((data) => {
-              //login was successful! redirect to the next page
-              this.requestService.posts = data.posts;
-              //save the token/user to local storage or possibly a session if thats possible.
-              let user = data.user
+          this.requestService.posts = data.posts;
+          //save the token/user to local storage or possibly a session if thats possible.
+          let user = data.user
 
-              user.token = token
+          user.token = token
 
-              localStorage.setItem("current_user", JSON.stringify(user));
+          localStorage.setItem("current_user", JSON.stringify(user));
 
-              this.router.navigate(["/users/dashboard"]); 
-            })
+          this.router.navigate(["/users/dashboard"])
           
         }
         else {
           //invalid login
           this.invalidLogin = true;
+        },
+        (error) => {
+          console.log(error)
         }
       })
    ;
