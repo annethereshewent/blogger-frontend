@@ -37,9 +37,8 @@ export class SidebarPostsComponent implements OnInit {
 
   @HostListener("window:  scroll", ["$event"])
   onScroll(): void {
-    let pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
-    let max = document.documentElement.scrollHeight;
-    if (pos >= max && !this.loading_posts) {
+    let sidebar = document.getElementById('sidebar')
+    if (sidebar.offsetHeight + sidebar.scrollTop >= sidebar.scrollHeight && !this.loading_posts) {
       this.loading_posts = true;
       this
         .http
@@ -47,7 +46,7 @@ export class SidebarPostsComponent implements OnInit {
         .subscribe((data) => {
           if (data.success) {
             if (!environment.production) {
-              this.postsService.fixPosts(data.posts);
+              data.posts = this.postsService.fixPosts(data.posts);
             }
             this.posts.push.apply(this.posts, data.posts);
             this.page++;

@@ -172,7 +172,7 @@ export class DashboardComponent implements OnInit {
           .subscribe((data) => {
             if (data.success) {
               if (!environment.production) {
-                this.postsService.fixPosts(data.posts);
+                data.posts = this.postsService.fixPosts(data.posts);
               }
               this.posts.push.apply(this.posts, data.posts);
               this.page++;
