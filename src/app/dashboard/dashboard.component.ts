@@ -93,7 +93,7 @@ export class DashboardComponent implements OnInit {
           .subscribe((data) => {
             if (data.success) {
               if (!environment.production) {
-                data.posts = this.fixPosts(data.posts);
+                data.posts = this.postsService.fixPosts(data.posts);
               }
               this.posts = data.posts;
 
@@ -113,7 +113,7 @@ export class DashboardComponent implements OnInit {
           .get<PostInterface>(`${environment.server_url}/api/search/${this.search_query}`)
           .subscribe((data) => {
             if (data.success) {
-              data.posts = this.fixPosts(data.posts);   
+              data.posts = this.postsService.fixPosts(data.posts);   
 
               this.posts = data.posts;
             }
@@ -136,7 +136,7 @@ export class DashboardComponent implements OnInit {
             .subscribe((data) => {
               if (data.success) {
                 if (!environment.production) {
-                  data.posts = this.fixPosts(data.posts);  
+                  data.posts = this.postsService.fixPosts(data.posts);  
                 }
                 
                 this.posts = data.posts
@@ -191,7 +191,7 @@ export class DashboardComponent implements OnInit {
           .subscribe((data) => {
             if (data.success) {
               if (!environment.production) {
-                this.fixPosts(data.posts);
+                this.postsService.fixPosts(data.posts);
               }
               this.posts.push.apply(this.posts, data.posts);
               this.page++;
@@ -211,7 +211,7 @@ export class DashboardComponent implements OnInit {
       .subscribe((post) => {
         let index = this.posts.map((post) => { return post.id }).indexOf(post.id);
 
-        let fixed_post = environment.production ? this.fixPosts([post])[0] : post;
+        let fixed_post = environment.production ? this.postsService.fixPosts([post])[0] : post;
 
         this.posts[index] = fixed_post;
       })
@@ -242,7 +242,7 @@ export class DashboardComponent implements OnInit {
       .postsService
       .openQuoteModal(post)
       .subscribe((post) => {
-        let fixed_post = this.fixPosts([post])[0];
+        let fixed_post = this.postsService.fixPosts([post])[0];
 
         this.posts.unshift(fixed_post);
       })
@@ -260,38 +260,12 @@ export class DashboardComponent implements OnInit {
     ;
   }
 
-  fixPosts(posts: Post[]): Post[] {
-    if (environment.production) {
-      posts = posts.map((post: Post): Post => {
-        let post_selector = $("<div>").append(post.post);
-        $(post_selector).find( "img").each(function() {
-          let img_src = $(this).attr("src");
-          if (img_src.charAt(0) == "/") {
-            $(this).attr("src", "http://localhost:3000" + img_src);
-          }
-        });
-
-        // $(post_selector).find("iframe").each(function() {
-        //   $(this).addClass("embed-responsive-item");
-        //   $(this).wrap("<div class='embed-responsive embed-responsive-16by9'></div>");
-        // });
-
-        post.post = $(post_selector).html();
-
-
-        return post;
-      });  
-    }
-
-    return posts;
-  }
-
   openPostModal(): void {
     this
       .postsService
       .openPostModal()
       .subscribe((post) => {
-        let fixed_post = environment.production ? post : this.fixPosts([post])[0];
+        let fixed_post = environment.production ? post : this.postsService.fixPosts([post])[0];
         this.posts.unshift(fixed_post);
       })
     ;

@@ -9,8 +9,6 @@ import { environment } from "../../environments/environment";
 import { RequestService } from "../request.service";
 import { PostsService } from "../posts.service";
 
-
-
 interface UserPostResponse {
   success: boolean;
   message: string;
@@ -78,7 +76,7 @@ export class PostsComponent implements OnInit {
                 this.updateUser.emit(this.user);
               }
 
-              this.posts = data.posts;
+              this.posts = this.postsService.fixPosts(data.posts);
               
               this.pagination.emit(data.pagination);
             }

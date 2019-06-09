@@ -35,6 +35,32 @@ export class PostsService {
     return this.bsModalRef.content.postEmitter;
   }
 
+  fixPosts(posts: Post[]): Post[] {
+    if (!environment.production) {
+      posts = posts.map((post: Post): Post => {
+        let post_selector = $("<div>").append(post.post);
+        $(post_selector).find( "img").each(function() {
+          let img_src = $(this).attr("src");
+          if (img_src.charAt(0) == "/") {
+            $(this).attr("src", "http://localhost:3000" + img_src);
+          }
+        });
+
+        // $(post_selector).find("iframe").each(function() {
+        //   $(this).addClass("embed-responsive-item");
+        //   $(this).wrap("<div class='embed-responsive embed-responsive-16by9'></div>");
+        // });
+
+        post.post = $(post_selector).html();
+
+
+        return post;
+      });  
+    }
+
+    return posts;
+  }
+
   openQuoteModal(post: Post): EventEmitter<Post> {
     let data: string;
     if (post.images.length > 0 ) {

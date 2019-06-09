@@ -29,51 +29,57 @@ import { CommentsComponent } from './comments/comments.component';
 import { ChatComponent } from './chat/chat.component';
 import { AddHttpInterceptor } from '../classes/AddHttpInterceptor';
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { NgxMasonryModule } from 'ngx-masonry';
+import { ArchivesComponent } from './archives/archives.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 const appRoutes: Routes = [
-    { 
-        path: 'users', component: UsersComponent, children: [
-            {
-                path: '', redirectTo: 'login', pathMatch: "full"
-            },
-            {
-                path: 'login', component: LoginComponent
-            },
-            {
-                path: "register", component: RegisterComponent
-            },
-            {
-                path: "dashboard", component: DashboardComponent
-            },
-            {
-                path: 'tags/:tag_name', component: DashboardComponent
-            },
-            {
-                path: "search/:search_term", component: DashboardComponent
-            }
-        ]
-    },
-    {
-        path: '', redirectTo: 'users', pathMatch: "full"
-    },
-    {
-        path: 'blog', component: BlogComponent, children: [
-            {
-                // adding the username seems stupid, but it's to get server-side rendering of custom stylesheets working
-                // properly
-                path: "account/:username", component: AccountComponent
-            },
-            {
-                path: "posts/:username", redirectTo: "/blog/posts/:username/1", pathMatch: "full"
-            },
-            {
-                path: "posts/:username/:page", component: PostsComponent
-            },
-            {
-                path: "comments/:username/:post_id", component: CommentsComponent
-            }
-        ]
-    }
+  { 
+    path: 'users', component: UsersComponent, children: [
+      {
+        path: '', redirectTo: 'login', pathMatch: "full"
+      },
+      {
+        path: 'login', component: LoginComponent
+      },
+      {
+        path: "register", component: RegisterComponent
+      },
+      {
+        path: "dashboard", component: DashboardComponent
+      },
+      {
+        path: 'tags/:tag_name', component: DashboardComponent
+      },
+      {
+        path: "search/:search_term", component: DashboardComponent
+      }
+    ]
+  },
+  {
+    path: 'archive/:username', component: ArchivesComponent
+  },
+  {
+    path: '', redirectTo: 'users', pathMatch: "full"
+  },
+  {
+    path: 'blog', component: BlogComponent, children: [
+      {
+        // adding the username seems stupid, but it's to get server-side rendering of custom stylesheets working
+        // properly
+        path: "account/:username", component: AccountComponent
+      },
+      {
+        path: "posts/:username", redirectTo: "/blog/posts/:username/1", pathMatch: "full"
+      },
+      {
+        path: "posts/:username/:page", component: PostsComponent
+      },
+      {
+        path: "comments/:username/:post_id", component: CommentsComponent
+      }
+    ]
+  }
 ];
 
 @NgModule({
@@ -91,13 +97,16 @@ const appRoutes: Routes = [
     AccountComponent,
     PostsComponent,
     CommentsComponent,
-    ChatComponent
+    ChatComponent,
+    ArchivesComponent
   ],
   imports: [
     BrowserModule,
     TagInputModule,
     BrowserAnimationsModule,
     FormsModule,
+    NgSelectModule,
+    NgxMasonryModule,
     ReactiveFormsModule,
     ModalModule.forRoot(),
     HttpClientModule,
