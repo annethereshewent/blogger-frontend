@@ -80,20 +80,7 @@ export class CommentsComponent implements OnInit {
   }
 
   goToBlog(username: string) {
-    let url = `/blog/posts/${username}`
-
-    if (username != this.user.username) {
-      if (environment.production) {
-        location.href = url
-      }
-      else {
-        this.router.navigate([url])
-      }
-    }
-    else {
-      this.router.navigate([url])
-    }
-    
+    this.router.navigate([`/blog/posts/${username}`])
   }
 
   openReply(index: number): void {

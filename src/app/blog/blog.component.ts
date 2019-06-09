@@ -68,12 +68,7 @@ export class BlogComponent implements OnInit {
       .post(`${environment.server_url}/oauth/revoke`, { token: this.current_user.token })
       .subscribe(() => {
         localStorage.removeItem("current_user");
-        if (environment.production) {
-          location.href = '/users'  
-        }
-        else {
-          this.router.navigate(['/users'])
-        }   
+        this.router.navigate(['/users'])
       })   
   }
 
@@ -138,6 +133,8 @@ export class BlogComponent implements OnInit {
         }
         if (this.theme != user.theme) {
           this.theme = user.theme;
+          // this gets the job done! we can keep this as a single page app and remove the db code from express
+          $("#blog-stylesheet").attr("href", `/assets/themes/${this.theme}.css`);
         }
       })
     }

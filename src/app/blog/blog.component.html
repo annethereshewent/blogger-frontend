@@ -1,4 +1,4 @@
-<link rel="stylesheet" id="blog-stylesheet" [href]="sanitizer.bypassSecurityTrustResourceUrl(theme ? '/assets/themes/' + theme + '.css' : '/assets/themes/default.css')">
+<link rel="stylesheet" id="blog-stylesheet">
 <div class="wrapper">
   <nav [ngClass]="{ 'sidebar': true, 'hidden': sidebar_hidden}" *ngIf="user != undefined">
     <div class="sidebar-main">

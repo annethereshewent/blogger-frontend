@@ -155,13 +155,7 @@ export class DashboardComponent implements OnInit {
   }
 
   goToComments(post: Post) {
-    if (environment.production) {
-      location.href = `/blog/comments/${post.username}/${post.id}`  
-    }
-    else {
-      this.router.navigate([`/blog/comments/${post.username}/${post.id}`])
-    }
-    
+    this.router.navigate([`/blog/comments/${post.username}/${post.id}`])    
   }
 
 
@@ -273,12 +267,7 @@ export class DashboardComponent implements OnInit {
 
   openAccountPath(): void {
     if (this.user) {
-      if (environment.production) {
-        location.href = `/blog/account/${this.user.username}`  
-      }
-      else {
-        this.router.navigate([`/blog/account/${this.user.username}`])
-      }
+      this.router.navigate([`/blog/account/${this.user.username}`])
     }
   }
 

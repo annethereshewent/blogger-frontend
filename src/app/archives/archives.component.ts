@@ -67,13 +67,7 @@ export class ArchivesComponent implements OnInit {
   }
 
   goToPost(post: Post) {
-    let url = `/blog/comments/${this.username}/${post.id}`
-    if (environment.production) {
-      location.href = url
-    }
-    else {
-      this.router.navigate([url])
-    }
+    this.router.navigate([`/blog/comments/${this.username}/${post.id}`])
   }
 
   goToDashboard() {
