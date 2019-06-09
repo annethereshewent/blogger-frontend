@@ -222,9 +222,16 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+  @HostListener('document:click', ['$event']) clickout(event) {
+    // Click outside of sidebar detected
+    this.requestService.toggleDashSidebar(false)
+    setTimeout(() => {
+      this.sidebar_user = null
+    }, 1000)
+  }
 
-
-  toggleSidebar(user: User) {
+  toggleSidebar(user: User, event) {
+    event.stopPropagation()
     if (!this.sidebar_user || this.sidebar_user.user_id != user.user_id) {
       let cloned_user = JSON.parse(JSON.stringify(user))
 

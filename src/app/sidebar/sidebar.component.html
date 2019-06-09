@@ -1,4 +1,4 @@
-<div id="sidebar"[ngClass]="{ active: sidebar_active }" [ngStyle]="{background: user.background_color ? user.background_color : '#e6b3ff'}">
+<div id="sidebar"[ngClass]="{ active: sidebar_active }" [ngStyle]="{background: user.background_color ? user.background_color : '#e6b3ff'}" (click)="$event.stopPropagation()">
   <div class="banner" [ngStyle]="getBannerStyle()">
     <a href="javascript:void(0)"><img class="sidebar avatar" [ngStyle]="{ border: '4px solid ' + user.background_color ? user.background_color : 'e6b3ff' }" [src]="user.avatar_small"></a>
     <div *ngIf="showSidebarSettings">

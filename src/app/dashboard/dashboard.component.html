@@ -22,7 +22,7 @@
     <div class="row" *ngFor="let post of posts" [@simpleFadeAnimation]="'in'">
       <div class="col-lg-2"></div>
       <div class="dash-avatar">
-        <a href="javascript:void(0)" (click)="toggleSidebar(post.user)">
+        <a href="javascript:void(0)" (click)="toggleSidebar(post.user, $event)">
           <img class="avatar img-fluid" src="{{production_site ? post.avatar : 'http://localhost:3000' + post.avatar}}">
         </a>
         <p style="font-size:12px;color:white;margin-left:2px;"><b>{{ post.username }}</b></p>
