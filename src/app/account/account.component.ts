@@ -33,10 +33,10 @@ interface FileReaderEvent extends Event {
 })
 export class AccountComponent implements OnInit {
 
-  production: Boolean = environment.production
+  production: boolean = environment.production
   user: User;
   password: string;
-  authorized: Boolean = false;
+  authorized: boolean = false;
 
   alertSuccess = false;
   alertDanger = false;

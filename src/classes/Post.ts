@@ -1,3 +1,5 @@
+import { User } from './User';
+
 export class Post {
   id: number;
   created_at: string;
@@ -10,4 +12,5 @@ export class Post {
   images: string[];
   user_id: number;
   tags: string[];
+  user: User;
 }

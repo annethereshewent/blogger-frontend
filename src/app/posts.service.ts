@@ -102,7 +102,8 @@ export class PostsService {
       username: post.username,
       images: post.images,
       user_id: post.user_id,
-      tags: post.tags
+      tags: post.tags,
+      user: post.user
     };
 
     let initialState = {

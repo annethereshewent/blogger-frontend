@@ -1,6 +1,6 @@
-<div id="sidebar" *ngIf="user" [ngClass]="{ active: sidebar_active }" [ngStyle]="{background: user.background_color ? user.background_color : '#e6b3ff'}">
+<div id="sidebar"[ngClass]="{ active: sidebar_active }" [ngStyle]="{background: user.background_color ? user.background_color : '#e6b3ff'}">
   <div class="banner" [ngStyle]="getBannerStyle()">
-    <a href="javascript:void(0)>"><img class="sidebar avatar" [ngStyle]="{ border: '4px solid ' + user.background_color ? user.background_color : 'e6b3ff' }" [src]="getAvatarSrc()"></a>
+    <a href="javascript:void(0)"><img class="sidebar avatar" [ngStyle]="{ border: '4px solid ' + user.background_color ? user.background_color : 'e6b3ff' }" [src]="user.avatar_small"></a>
     <div *ngIf="showSidebarSettings">
       <a href="javascript:void(0)" (click)="avatar_upload.click()"><img class="sidebar-edit" id="avatar-edit" src="/assets/images/edit_icon.png"></a>
       <a href="javascript:void(0)" (click)="banner_upload.click()"><img class="sidebar-edit" id="banner-edit" src="/assets/images/edit_icon.png"></a>
@@ -9,36 +9,35 @@
 
 
   <div class="sidebar-buttons">
-
-      <button *ngIf="user.id == current_user.id && !showSidebarSettings" type="button" (click)="showSidebar()" class="btn btn-info btn-sm">Modify Theme</button>
-      <div *ngIf="showSidebarSettings">
-          <button type="button" (click)="saveSidebarSettings()" class="btn btn-success btn-sm">Save</button>
-          <button type="button" (click)="cancelSidebarSettings()" class="btn btn-danger btn-sm">Cancel</button>
-      </div>
+    <button *ngIf="user.user_id == current_user.user_id && !showSidebarSettings" type="button" (click)="showSidebarOptions()" class="btn btn-info btn-sm">Modify Theme</button>
+    <div *ngIf="showSidebarSettings">
+      <button type="button" (click)="saveSidebarSettings()" class="btn btn-success btn-sm">Save</button>
+      <button type="button" (click)="cancelSidebarSettings()" class="btn btn-danger btn-sm">Cancel</button>
+    </div>
   </div>
-  <input type="file" class="sidebar-files" #avatar_upload>
-  <input type="file" class="sidebar-files" #banner_upload>
+  <input type="file" class="sidebar-files" (change)="onImageChange($event, 'avatar')" accept="image/*" #avatar_upload>
+  <input type="file" class="sidebar-files" (change)="onImageChange($event, 'banner')" accept="image/*" #banner_upload>
 
 
 
   <div [ngStyle]="{ color: user.text_color ? user.text_color : '#ffffff' }" class="sidebar-description-area">
-      <p class="sidebar-title">{{ user.blog_title }}</p>
-      <p class="sidebar-description">{{ user.description }}</p>
+    <p class="sidebar-title">{{ user.blog_title }}</p>
+    <p class="sidebar-description">{{ user.description }}</p>
   </div>
 
 
   <div *ngIf="showSidebarSettings">
-      <div class="background-color-picker">
-          <label class="sidebar-label">Background Color:</label>
-          <input type="color" name="background-color" id="background-color" [(ngModel)]="user.background_color" />
-      </div>
-      <div class="text-color-picker">
-          <label class="sidebar-label">Font Color:</label>
-          <input type="color" name="text-color" id="text-color" [(ngModel)]="user.text_color" />
-      </div>
+    <div class="background-color-picker">
+      <label class="sidebar-label">Background Color:</label>
+      <input type="color" name="background-color" id="background-color" [(ngModel)]="user.background_color" />
+    </div>
+    <div class="text-color-picker">
+      <label class="sidebar-label">Font Color:</label>
+      <input type="color" name="text-color" id="text-color" [(ngModel)]="user.text_color" />
+    </div>
   </div>
 
   <div class="sidebar-main">
-      <app-sidebar-posts></app-sidebar-posts>
+    <app-sidebar-posts></app-sidebar-posts>
   </div>
 </div>

@@ -4,6 +4,20 @@ import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
 import { RequestService } from "../request.service";
 
+interface SidebarResponse {
+  success: boolean,
+  message: string
+}
+
+interface FileReaderEventTarget extends EventTarget {
+  result:string
+}
+
+interface FileReaderEvent extends Event {
+  target: FileReaderEventTarget;
+  getMessage():string;
+}
+
 @Component({
   selector: 'app-sidebar',
   templateUrl: './sidebar.component.html',
@@ -14,11 +28,15 @@ export class SidebarComponent implements OnInit {
   current_user: User;
   cloned_user: User;
   @Input() user: User;
-  @Output() userReset: EventEmitter<User> = new EventEmitter<User>()
+  @Output() userReset: EventEmitter<User> = new EventEmitter<User>();
+  @Output() userUpdate: EventEmitter<User> = new EventEmitter<User>();
+
+  avatar_file: File;
+  banner_file: File;
+
 
   sidebar_active: boolean = false
   production: boolean =  environment.production
-
 
   showSidebarSettings: boolean = false;
 
@@ -30,37 +48,77 @@ export class SidebarComponent implements OnInit {
     })
   }
 
-  getAvatarSrc() {
-    return environment.production ? this.user.avatar_small : 'http://localhost:3000' + this.user.avatar_small
-  }
-
   cancelSidebarSettings() {
     this.userReset.emit(this.cloned_user)
     this.showSidebarSettings = false
   }
 
   saveSidebarSettings() {
+    let formData = new FormData()
 
+    formData.append('text_color', this.user.text_color)
+    formData.append('background_color', this.user.background_color)
+
+    console.log(this.avatar_file)
+    console.log(this.banner_file)
+
+    if (this.avatar_file) {
+      formData.append('avatar', this.avatar_file)
+    }
+    if (this.banner_file) {
+      formData.append('banner', this.banner_file)
+    }
+
+    this
+      .http
+      .post<SidebarResponse>(`${environment.server_url}/api/save_sidebar_settings`, formData)
+      .subscribe((data) => {
+        if (data.success) {
+          this.userUpdate.emit(this.user)
+        }
+      })
   }
 
   getBannerStyle() {
-    let banner = ''
-    if (this.user) {
-      banner = environment.production ? this.user.banner : 'http://localhost:3000' + this.user.banner
-    }
-
     return {
-      'background-image': `url(${banner})`
+      'background-image': `url(${this.user.banner})`
     }
   }
 
-  showSidebar() {
+  showSidebarOptions() {
     this.cloned_user = JSON.parse(JSON.stringify(this.user))
 
     this.showSidebarSettings = true
   }
 
-  ngOnInit() {
+  onImageChange(event, type) {
+    let image = event.srcElement.files[0];
+
+    if (image) {
+      let fileReader: FileReader = new FileReader();
+
+      fileReader.onload = (e: FileReaderEvent): void => {
+        if (type == 'avatar') {
+          this.user.avatar_small = e.target.result
+        }
+        else if (type == 'banner') {
+          this.user.banner = e.target.result
+        }
+      };
+
+      if (type == 'avatar') {
+        this.avatar_file = image
+      }
+      else if (type == 'banner') {
+        this.banner_file = image
+      }
+
+      fileReader.readAsDataURL(image)
+    }
+    
   }
 
+  ngOnInit() {
+
+  }
 }

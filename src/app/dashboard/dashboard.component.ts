@@ -215,10 +215,32 @@ export class DashboardComponent implements OnInit {
     this.sidebar_user = user
   }
 
-  showSidebar(user: User) {
+  updateSidebarUser(user) {
+    for (let i = 0; i < this.posts.length; i++) {
+      if (this.posts[i].user.user_id == user.user_id) {
+        this.posts[i].user = user
+      }
+    }
+  }
+
+
+  toggleSidebar(user: User) {
     if (!this.sidebar_user || this.sidebar_user.user_id != user.user_id) {
-      this.sidebar_user = user
-      
+      let cloned_user = JSON.parse(JSON.stringify(user))
+
+      if (!environment.production) {
+        let data_regex = /^data:image\/.*;base64.*/
+        let host_regex = /^http:\/\/localhost:3000.*/
+        if (!data_regex.test(cloned_user.avatar_small) && !host_regex.test(cloned_user.avatar_small)) {
+          cloned_user.avatar_small = 'http://localhost:3000' + cloned_user.avatar_small  
+        }
+        if (!data_regex.test(cloned_user.banner) && !host_regex.test(cloned_user.banner)) {
+          cloned_user.banner = 'http://localhost:3000' + cloned_user.banner 
+        }  
+      }
+
+      this.sidebar_user = cloned_user
+
       setTimeout(() => {
         this.requestService.toggleDashSidebar(true)
       }, 300)
@@ -228,7 +250,7 @@ export class DashboardComponent implements OnInit {
       this.requestService.toggleDashSidebar(false)
       setTimeout(() => {
         this.sidebar_user = null  
-      }, 300) 
+      }, 1000) 
     }
   }
 
@@ -301,5 +323,4 @@ export class DashboardComponent implements OnInit {
       this.requestService.posts = this.posts;
     }
   }
-
 }
