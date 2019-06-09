@@ -10,7 +10,7 @@ interface LoginResponse {
   success: Boolean,
   posts: Post[],
   access_token: string,
-  user: User;
+  user: User
 }
 
 @Component({
@@ -60,9 +60,6 @@ export class LoginComponent implements OnInit {
         else {
           //invalid login
           this.invalidLogin = true;
-        },
-        (error) => {
-          console.log(error)
         }
       })
    ;
