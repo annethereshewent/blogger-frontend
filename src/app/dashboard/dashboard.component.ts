@@ -211,6 +211,10 @@ export class DashboardComponent implements OnInit {
     ;
   }
 
+  resetSidebarUser(user) {
+    this.sidebar_user = user
+  }
+
   showSidebar(user: User) {
     if (!this.sidebar_user || this.sidebar_user.user_id != user.user_id) {
       this.sidebar_user = user

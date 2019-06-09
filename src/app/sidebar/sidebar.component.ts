@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { User } from "../../classes/User";
 import { environment } from "../../environments/environment";
@@ -12,9 +12,13 @@ import { RequestService } from "../request.service";
 export class SidebarComponent implements OnInit {
 
   current_user: User;
+  cloned_user: User;
   @Input() user: User;
+  @Output() userReset: EventEmitter<User> = new EventEmitter<User>()
+
   sidebar_active: boolean = false
   production: boolean =  environment.production
+
 
   showSidebarSettings: boolean = false;
 
@@ -27,10 +31,16 @@ export class SidebarComponent implements OnInit {
   }
 
   getAvatarSrc() {
-    if (this.user) {
-      return environment.production ? this.user.avatar_small : 'http://localhost:3000' + this.user.avatar_small
-    }
-    return ''
+    return environment.production ? this.user.avatar_small : 'http://localhost:3000' + this.user.avatar_small
+  }
+
+  cancelSidebarSettings() {
+    this.userReset.emit(this.cloned_user)
+    this.showSidebarSettings = false
+  }
+
+  saveSidebarSettings() {
+
   }
 
   getBannerStyle() {
@@ -42,6 +52,12 @@ export class SidebarComponent implements OnInit {
     return {
       'background-image': `url(${banner})`
     }
+  }
+
+  showSidebar() {
+    this.cloned_user = JSON.parse(JSON.stringify(this.user))
+
+    this.showSidebarSettings = true
   }
 
   ngOnInit() {

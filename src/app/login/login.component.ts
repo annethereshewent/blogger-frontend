@@ -45,13 +45,11 @@ export class LoginComponent implements OnInit {
         if (data.access_token) {
           let token = data.access_token
           this.requestService.token = token
-
           this.requestService.posts = data.posts;
           //save the token/user to local storage or possibly a session if thats possible.
           let user = data.user
 
           user.token = token
-
           localStorage.setItem("current_user", JSON.stringify(user));
 
           this.router.navigate(["/users/dashboard"])

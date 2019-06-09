@@ -52,9 +52,6 @@
 .sidebar.content {
   margin-left: 60px;
 }
-.color-picker, .edit-banner {
-  display: none;
-}
 .text-color-picker, .background-color-picker {
   position: absolute;
 }
@@ -76,7 +73,6 @@
   right: 0;
 }
 .sidebar-edit {
-  display: none;
   width: 30px;
   height: 30px;
   background-color: rgb(0,0,0);
@@ -85,7 +81,7 @@
 #avatar-edit {
   position: absolute;
   top:150px;
-  left: 275px;
+  left: 53%;
 }
 #banner-edit { 
   margin-top:20px;

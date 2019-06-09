@@ -1,17 +1,19 @@
 <div id="sidebar" *ngIf="user" [ngClass]="{ active: sidebar_active }" [ngStyle]="{background: user.background_color ? user.background_color : '#e6b3ff'}">
   <div class="banner" [ngStyle]="getBannerStyle()">
     <a href="javascript:void(0)>"><img class="sidebar avatar" [ngStyle]="{ border: '4px solid ' + user.background_color ? user.background_color : 'e6b3ff' }" [src]="getAvatarSrc()"></a>
-    <a href="javascript:void(0)" (click)="avatar_upload.click()"><img class="sidebar-edit" id="avatar-edit" src="/assets/images/edit_icon.png"></a>
-    <a href="javascript:void(0)" (click)="banner_upload.click()"><img class="sidebar-edit" id="banner-edit" src="/assets/images/edit_icon.png"></a>
+    <div *ngIf="showSidebarSettings">
+      <a href="javascript:void(0)" (click)="avatar_upload.click()"><img class="sidebar-edit" id="avatar-edit" src="/assets/images/edit_icon.png"></a>
+      <a href="javascript:void(0)" (click)="banner_upload.click()"><img class="sidebar-edit" id="banner-edit" src="/assets/images/edit_icon.png"></a>
+    </div>
   </div>
 
 
   <div class="sidebar-buttons">
 
-      <button *ngIf="user.id == current_user.id" type="button" (click)="edit_sidebar_settings()" class="btn btn-info btn-sm">Modify Theme</button>
+      <button *ngIf="user.id == current_user.id && !showSidebarSettings" type="button" (click)="showSidebar()" class="btn btn-info btn-sm">Modify Theme</button>
       <div *ngIf="showSidebarSettings">
-          <button type="button" (click)="save_sidebar_settings()" class="btn btn-success">Save</button>
-          <button type="button" (click)="cancel_sidebar_settings(user)" class="btn btn-danger">Cancel</button>
+          <button type="button" (click)="saveSidebarSettings()" class="btn btn-success btn-sm">Save</button>
+          <button type="button" (click)="cancelSidebarSettings()" class="btn btn-danger btn-sm">Cancel</button>
       </div>
   </div>
   <input type="file" class="sidebar-files" #avatar_upload>
@@ -25,7 +27,7 @@
   </div>
 
 
-  <div class="color-picker">
+  <div *ngIf="showSidebarSettings">
       <div class="background-color-picker">
           <label class="sidebar-label">Background Color:</label>
           <input type="color" name="background-color" id="background-color" [(ngModel)]="user.background_color" />
