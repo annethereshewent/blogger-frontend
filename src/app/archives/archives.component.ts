@@ -74,6 +74,10 @@ export class ArchivesComponent implements OnInit {
     this.router.navigate(['/users/dashboard'])
   }
 
+  logout() {
+    this.requestService.logout()
+  }
+
   ngOnInit() {
   }
 
