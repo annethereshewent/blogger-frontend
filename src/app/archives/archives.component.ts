@@ -34,7 +34,7 @@ export class ArchivesComponent implements OnInit {
 
   constructor(
     public router: Router, 
-    public requestService: RequestService
+    public requestService: RequestService,
     private http: HttpClient, 
     private route: ActivatedRoute, 
     private postsService: PostsService, 
