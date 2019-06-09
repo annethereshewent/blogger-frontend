@@ -9,7 +9,6 @@
     "start": "node server.js",
     "myBuild": "ng build --aot --prod",
     "rename": "node -e \"require('fs').rename('dist/blogger-frontend/index.html', 'dist/blogger-frontend/index.ejs', function(err) { if (err) console.log(err); console.log('File successfully renamed!') })\"",
-    // "postinstall": "npm run myBuild && npm run rename"
     "postinstall": "ng build --aot --prod"
   },
   "private": true,
