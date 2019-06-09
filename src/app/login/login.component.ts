@@ -5,7 +5,8 @@ import { environment } from "../../environments/environment";
 import { Router } from '@angular/router';
 import { User } from "../../classes/User";
 import { RequestService } from "../request.service";
-
+import { throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 interface LoginResponse {
   success: Boolean,
   posts: Post[],
@@ -41,6 +42,12 @@ export class LoginComponent implements OnInit {
         password: this.password,
         grant_type: 'password'
       })
+      .pipe(catchError((error) => {
+        if (error.status == 401) {
+          this.invalidLogin = true
+        }
+        return throwError("Invalid login")
+      }))
      .subscribe((data) => {
         if (data.access_token) {
           let token = data.access_token
@@ -52,8 +59,7 @@ export class LoginComponent implements OnInit {
           user.token = token
           localStorage.setItem("current_user", JSON.stringify(user));
 
-          this.router.navigate(["/users/dashboard"])
-          
+          this.router.navigate(["/users/dashboard"])  
         }
         else {
           //invalid login

@@ -5,8 +5,10 @@ import {
   HttpRequest,
 } from '@angular/common/http';
 import { RequestService } from "../app/request.service";
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { Injectable } from "@angular/core";
+import { catchError } from 'rxjs/operators';
+
 
 @Injectable()
 export class AddHttpInterceptor implements HttpInterceptor {
@@ -18,7 +20,12 @@ export class AddHttpInterceptor implements HttpInterceptor {
     // Clone the request to add the new header  
     if (token) {
       const clonedRequest = req.clone({ headers: req.headers.set('Authorization', `Bearer ${token}`) });
-      return next.handle(clonedRequest)  
+      return next.handle(clonedRequest).pipe(catchError((error) => {
+        if (error.status == 401) {
+          this.requestService.logout()
+          return throwError("Invalid token")
+        }
+      }))  
     }
     else {
       return next.handle(req)
