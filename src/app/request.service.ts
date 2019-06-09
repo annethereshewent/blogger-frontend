@@ -43,6 +43,7 @@ export class RequestService {
         .http
         .post(`${environment.server_url}/oauth/revoke`, { token: user.token })
         .subscribe(() => {
+          this.token = null
           localStorage.removeItem('current_user');
           this.router.navigate(["/users"]) 
         })  

@@ -19,11 +19,9 @@ export class SidebarComponent implements OnInit {
   showSidebarSettings: boolean = false;
 
   constructor(private http: HttpClient, private requestService: RequestService) {
-    console.log('im here')
     this.current_user = JSON.parse(localStorage.getItem('current_user'))
 
     this.requestService.dash_sidebar_active$.subscribe((active) => {
-      console.log(active)
       this.sidebar_active = active
     })
   }
