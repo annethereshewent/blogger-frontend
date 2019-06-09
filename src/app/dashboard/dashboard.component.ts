@@ -158,21 +158,6 @@ export class DashboardComponent implements OnInit {
     this.router.navigate([`/blog/comments/${post.username}/${post.id}`])    
   }
 
-
-  logout(): void {
-    this
-      .http
-      .post(`${environment.server_url}/oauth/revoke`, { token: this.user.token })
-      .subscribe(() => {
-        localStorage.removeItem('current_user');
-        this.router.navigate(["/users"]) 
-      })
-    
-
-    
-    
-  }
-
   @HostListener("window:  scroll", [])
   onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.tag_name && !this.search_query && !this.loading_posts) {

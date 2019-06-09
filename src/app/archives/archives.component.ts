@@ -5,6 +5,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Post } from "../../classes/Post";
 import { User } from "../../classes/User";
 import { PostsService } from "../posts.service";
+import { RequestService } from "../request.service";
 
 interface ArchiveInterface {
   success: boolean,
@@ -31,7 +32,13 @@ export class ArchivesComponent implements OnInit {
 
   username: string
 
-  constructor(private http: HttpClient, public router: Router, private route: ActivatedRoute, private postsService: PostsService) {
+  constructor(
+    public router: Router, 
+    public requestService: RequestService
+    private http: HttpClient, 
+    private route: ActivatedRoute, 
+    private postsService: PostsService, 
+  ) {
     this.current_user = JSON.parse(localStorage.getItem('current_user'))
 
     if (this.current_user) {
@@ -72,10 +79,6 @@ export class ArchivesComponent implements OnInit {
 
   goToDashboard() {
     this.router.navigate(['/users/dashboard'])
-  }
-
-  logout() {
-    this.requestService.logout()
   }
 
   ngOnInit() {

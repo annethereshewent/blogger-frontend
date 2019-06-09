@@ -1,13 +1,16 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Post } from '../classes/Post';
 import { Subject, BehaviorSubject } from "rxjs";
+import { HttpClient } from '@angular/common/http';
+import { environment } from "../environments/environment";
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
 })
 export class RequestService {
 
-  constructor() { }
+  constructor(private http: HttpClient, private router: Router) { }
 
   posts: Post[];
 
@@ -27,6 +30,21 @@ export class RequestService {
     }
 
     return null;
+  }
+
+  logout() {
+    let user = JSON.parse(localStorage.getItem('current_user'))
+
+    if (user) {
+      this
+        .http
+        .post(`${environment.server_url}/oauth/revoke`, { token: user.token })
+        .subscribe(() => {
+          localStorage.removeItem('current_user');
+          this.router.navigate(["/users"]) 
+        })  
+    }
+    
   }
 
   getYoutubeVideo(id) {

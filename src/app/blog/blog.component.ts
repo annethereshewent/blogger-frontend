@@ -39,8 +39,8 @@ export class BlogComponent implements OnInit {
   constructor(
     public sanitizer: DomSanitizer, 
     public router: Router, 
+    public requestService: RequestService,
     private route: ActivatedRoute,
-    private requestService: RequestService,
     private postsService: PostsService,
     private http: HttpClient,
     private cdRef: ChangeDetectorRef
@@ -63,13 +63,7 @@ export class BlogComponent implements OnInit {
   }
 
   logout(): void {
-    this
-      .http
-      .post(`${environment.server_url}/oauth/revoke`, { token: this.current_user.token })
-      .subscribe(() => {
-        localStorage.removeItem("current_user");
-        this.router.navigate(['/users'])
-      })   
+    this.requestService.logout()
   }
 
   goToDashboard() {
