@@ -129,9 +129,6 @@ export class DashboardComponent implements OnInit {
           this.posts = requestService.posts
         }
         else {
-          console.log("posts not found in memory, making a request to backend for them");
-
-
 
           this
             .http
@@ -169,14 +166,22 @@ export class DashboardComponent implements OnInit {
 
 
   logout(): void {
-    localStorage.removeItem('current_user');
-    this.router.navigate(["/users"])
+    this
+      .http
+      .post(`${environment.server_url}/oauth/revoke`, { token: this.user.token })
+      .subscribe(() => {
+        localStorage.removeItem('current_user');
+        this.router.navigate(["/users"]) 
+      })
+    
+
+    
+    
   }
 
   @HostListener("window:  scroll", [])
   onScroll(): void {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.tag_name && !this.search_query && !this.loading_posts) {
-      console.log('youve reached the bottom of the page!');
 
       if (this.user) {
         this.loading_posts = true;
@@ -322,7 +327,6 @@ export class DashboardComponent implements OnInit {
   ngDoCheck() {
     let changes = this.iterableDiffer.diff(this.posts);
     if (changes) {
-      console.log('changes detected.');
       this.requestService.posts = this.posts;
     }
   }

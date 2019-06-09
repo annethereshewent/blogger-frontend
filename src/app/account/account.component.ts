@@ -119,7 +119,6 @@ export class AccountComponent implements OnInit {
         }
         else {
           console.log(data.message);
-          console.log("could not authorize user.");
         }
       })
     ;
@@ -159,13 +158,11 @@ export class AccountComponent implements OnInit {
   }
 
   updateImage(event): void {
-    console.log(event.srcElement.files[0]);
     this.avatar = event.srcElement.files[0];
 
     let fileReader: FileReader = new FileReader();
 
     fileReader.onload = (e: FileReaderEvent): void => {
-      console.log(e.target.result);
       this.user.avatar_small = e.target.result;
       this.user.avatar = e.target.result;
     };
@@ -193,7 +190,6 @@ export class AccountComponent implements OnInit {
       .post<UpdateUserResponse>(`${environment.server_url}/api/update_user`, postParams)
       .subscribe((data) => {
         if (data.success) {
-          console.log('updated user successfully');
           this.user = data.user;
           localStorage.setItem("current_user", JSON.stringify(this.user));
           this.alertSuccess = true;

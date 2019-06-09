@@ -37,7 +37,6 @@ export class PostsService {
 
   openQuoteModal(post: Post): EventEmitter<Post> {
     let data: string;
-    console.log(post);
     if (post.images.length > 0 ) {
       data = '<img src="' + post.images[0] + '"><p>Source: <a href="/posts/' + post.user_id + '">' + post.username + "</a></p>"
     }
@@ -52,7 +51,6 @@ export class PostsService {
 
       if (num_quotes) {
         $(new_post).find(".post-quote").each(function(index) {
-          console.log("it's going inside this loop");
           before_contents += "<div class='post-quote'>" + $(this).html() + "</div>";
           if (index == num_quotes-1) {
             after_contents = $(this).next().html();
@@ -66,8 +64,6 @@ export class PostsService {
 
       data = `${before_contents}<div class="post-quote"><img src="${avatar_src}" class="quote-avatar"><span>${post.username}</span><div class="quote-post">${after_contents}</div></div><p>`
     }
-
-    console.log(data);
 
     let edited_post: Post = {
       id: post.id,

@@ -89,7 +89,6 @@ export class PostModalComponent implements OnInit {
       .post<SubmitPostInterface>(url, postParams)
       .subscribe((data) => {
         if (data.success) {
-          console.log("post request was successful");
           this.postEmitter.emit(data.post);
           this.bsModalRef.hide();
         }
@@ -136,10 +135,6 @@ export class PostModalComponent implements OnInit {
       }
       
     }
-    else {
-      console.log("error: user not found, or post is empty");
-    }
-
   } 
 
 }

@@ -60,7 +60,6 @@ export class PostsComponent implements OnInit {
     ;
 
     this.route.params.subscribe((params) => {
-      console.log("something happened");
       let username = params.username;
       if (username) {
         if (username != this.username) {

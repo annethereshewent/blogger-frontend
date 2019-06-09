@@ -61,7 +61,6 @@ export class ChatComponent implements OnInit {
       .userSubject
       .pipe(debounceTime(600))
       .subscribe((user) => {
-        console.log(`received ${user.username}`)
         this.is_friends(user)
       })
 
@@ -72,12 +71,10 @@ export class ChatComponent implements OnInit {
       this.socket.emit('list');
 
       this.socket.on('user-list', (user) => {
-        console.log(`user-list request received with user ${user.username}`)
         this.userSubject.next(user)
       });
 
       this.socket.on('list', () => {
-        console.log('received list request from some user, sending user info')
         this.socket.emit('user-list', {
           username: this.user.username,
           avatar: this.user.avatar_thumb,
@@ -163,8 +160,6 @@ export class ChatComponent implements OnInit {
   }
 
   upload_image(event, i: number): void {
-    console.log(i);
-    console.log(event);
     let image = event.srcElement.files[0];
     let friend = this.chat_boxes[i].friend;
 
@@ -181,8 +176,6 @@ export class ChatComponent implements OnInit {
         extension: image.name.substring(image.name.lastIndexOf('.')+1)
       })
     };
-
-    console.log(image);
 
     fileReader.readAsBinaryString(image);
 

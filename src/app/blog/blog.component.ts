@@ -65,14 +65,18 @@ export class BlogComponent implements OnInit {
   }
 
   logout(): void {
-    localStorage.removeItem("current_user");
-    if (environment.production) {
-      location.href = '/users'  
-    }
-    else {
-      this.router.navigate(['/users'])
-    }
-    
+    this
+      .http
+      .post(`${environment.server_url}/oauth/revoke`, { token: this.current_user.token })
+      .subscribe(() => {
+        localStorage.removeItem("current_user");
+        if (environment.production) {
+          location.href = '/users'  
+        }
+        else {
+          this.router.navigate(['/users'])
+        }   
+      })   
   }
 
   goToDashboard() {

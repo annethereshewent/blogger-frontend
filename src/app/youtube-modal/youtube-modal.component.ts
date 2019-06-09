@@ -36,7 +36,6 @@ export class YoutubeModalComponent implements OnInit {
 
   loadYoutubeVideo(): void {
     if (this.youtube_url != '') {
-      console.log(this.youtube_url);
       let youtube_id = this.requestService.parseYoutubeURL(this.youtube_url);
 
       if (youtube_id === null) {
@@ -59,9 +58,6 @@ export class YoutubeModalComponent implements OnInit {
             if (data.success) {
               this.postEmitter.emit(data.post);
             }
-            else {
-              console.log("could not create video");
-            }
 
             this.bsModalRef.hide();
           }) 
@@ -71,7 +67,6 @@ export class YoutubeModalComponent implements OnInit {
 
     }
     else {
-      console.log("user not found!");
       this.bsModalRef.hide();
     }
   }
