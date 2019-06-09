@@ -50,6 +50,8 @@ export class SidebarComponent implements OnInit {
 
   cancelSidebarSettings() {
     this.userReset.emit(this.cloned_user)
+    this.avatar_file = null
+    this.banner_file = null
     this.showSidebarSettings = false
   }
 
@@ -58,9 +60,6 @@ export class SidebarComponent implements OnInit {
 
     formData.append('text_color', this.user.text_color)
     formData.append('background_color', this.user.background_color)
-
-    console.log(this.avatar_file)
-    console.log(this.banner_file)
 
     if (this.avatar_file) {
       formData.append('avatar', this.avatar_file)

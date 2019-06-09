@@ -1,3 +1,19 @@
-<p>
-  sidebar-posts works!
-</p>
+<div class="content" *ngFor="let post of posts">
+    <p style="font-size:small;"><i>Creation Date: {{ post.created_at }}</i></p>
+    <div class="post"> 
+        <p *ngFor="let image of post.images"><img [src]="production ? image : 'http://localhost:3000' + image"></p>
+
+        <p [innerHtml]="post.post | safeHtml"></p>
+    </div>
+
+    <p *ngIf="post.edited" style="font-size:small;"><i>(Edited on: {{ post.updated_at }})</i></p>
+
+    <p *ngIf="post.tags.length > 0" class="print-tags"><i>Tags: <span *ngFor="let tag of tags"></span></i></p>
+
+    <div class="post-buttons" style="font-size:12px">
+        <a href="javascript:void(0)">{{ requestService.getCommentText(post) }}</a>
+        &nbsp;&nbsp;
+        <a href="javascript:void(0)" (click)="openQuoteModal()" style="margin-left:5px">Quote</a>
+        <a *ngIf="current_user.user_id == _user.user_id" class="delete" href="javascript:void(0)" (click)="deletePost(post)"><li class="fa fa-trash"></li></a>
+    </div>
+</div>

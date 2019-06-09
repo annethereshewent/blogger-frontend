@@ -1,0 +1,20 @@
+.content {
+  border-radius: 25px;
+  border: 1px solid black;
+  background: #F2F2FA;
+  margin-bottom: 40px;
+  padding: 10px 20px 0 20px;
+  word-wrap: break-word;  
+  width: 92%;
+}
+.content h3 {
+  text-align: left;
+  color: black;
+}
+:host ::ng-deep table td {
+  border: 1px solid black;
+}
+.print-tags {
+  color:#666699;
+  font-size:12px;
+}
