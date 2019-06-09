@@ -36,12 +36,12 @@ export class RequestService {
   }
 
   logout() {
-    let user = JSON.parse(localStorage.getItem('current_user'))
+    let token = this.token ? this.token : JSON.parse(localStorage.getItem('current_user')).token
 
-    if (user) {
+    if (token) {
       this
         .http
-        .post(`${environment.server_url}/oauth/revoke`, { token: user.token })
+        .post(`${environment.server_url}/oauth/revoke`, { token })
         .subscribe(() => {
           this.token = null
           localStorage.removeItem('current_user');
