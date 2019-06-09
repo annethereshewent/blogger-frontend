@@ -19,6 +19,9 @@ export class RequestService {
   private _sidebar_hidden: Subject<boolean> = new BehaviorSubject<boolean>(false);
   sidebar_hidden$ = this._sidebar_hidden.asObservable();
 
+  private _dash_sidebar_active: Subject<boolean> = new BehaviorSubject<boolean>(false)
+  dash_sidebar_active$ = this._dash_sidebar_active.asObservable()
+
   parseYoutubeURL(content) {
     var regEx = /^.*((youtu.be\/)|(v\/)|(\/u\/\w\/)|(embed\/)|(watch\?))\??v?=?([^#\&\?]*).*/;
     var match = content.match(regEx);
@@ -56,6 +59,10 @@ export class RequestService {
 
   toggleSidebar(hidden: boolean) {
     this._sidebar_hidden.next(hidden);
+  }
+
+  toggleDashSidebar(active: boolean) {
+    this._dash_sidebar_active.next(active)
   }
 
   getCommentText(post) {

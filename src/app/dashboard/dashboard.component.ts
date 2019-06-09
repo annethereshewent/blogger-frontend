@@ -43,14 +43,16 @@ interface PostInterface {
 export class DashboardComponent implements OnInit {
   posts: Post[];
   user: User;
+  sidebar_user: User;
   production_site: Boolean = environment.production;
   page: number = 2;
-  loading_posts = false;
+  loading_posts: boolean = false;
   bsModalRef: BsModalRef;
   tag_name: string;
   title: string = "Feed Posts:"
   iterableDiffer: IterableDiffer<any>;
   search_query: string = '';
+  sidebar_active: boolean = false
 
   constructor(
     public requestService: RequestService,
@@ -207,6 +209,19 @@ export class DashboardComponent implements OnInit {
         this.posts.unshift(post);
       })
     ;
+  }
+
+  showSidebar(user: User) {
+    if (!this.sidebar_user || this.sidebar_user.user_id != user.user_id) {
+      this.sidebar_user = user
+    }
+
+    setTimeout(() => {
+      this.sidebar_active = !this.sidebar_active
+      this.requestService.toggleDashSidebar(this.sidebar_active)
+    }, 300)
+    
+    
   }
 
   openImageModal(): void {

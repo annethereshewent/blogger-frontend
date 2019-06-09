@@ -94,7 +94,7 @@ export class BlogComponent implements OnInit {
     else {
       this.sidebar_button_class = this.sidebar_hidden ? "fa fa-caret-square-o-left" : "fa fa-caret-square-o-right";
     }
-    this.sidebar_hidden = this.sidebar_hidden ? false : true;
+    this.sidebar_hidden = !this.sidebar_hidden
     this.requestService.toggleSidebar(this.sidebar_hidden);
   }
 

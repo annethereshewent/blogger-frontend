@@ -9,4 +9,7 @@ export class User {
     description: string;
     email: string;
     theme: string;
+    background_color: string;
+    text_color: string;
+    banner: string;
 }

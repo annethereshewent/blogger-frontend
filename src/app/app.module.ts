@@ -32,6 +32,8 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { NgxMasonryModule } from 'ngx-masonry';
 import { ArchivesComponent } from './archives/archives.component';
 import { NgSelectModule } from '@ng-select/ng-select';
+import { SidebarComponent } from './sidebar/sidebar.component';
+import { SidebarPostsComponent } from './sidebar-posts/sidebar-posts.component';
 
 const appRoutes: Routes = [
   { 
@@ -98,7 +100,9 @@ const appRoutes: Routes = [
     PostsComponent,
     CommentsComponent,
     ChatComponent,
-    ArchivesComponent
+    ArchivesComponent,
+    SidebarComponent,
+    SidebarPostsComponent
   ],
   imports: [
     BrowserModule,
