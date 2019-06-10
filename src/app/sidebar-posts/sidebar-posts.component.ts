@@ -57,10 +57,12 @@ export class SidebarPostsComponent implements OnInit {
   }
 
   fetch_user_posts() {
+    this.loading_posts = true
     this
       .http
       .get<PostInterface>(`${environment.server_url}/api/fetch_blog_posts/${this._user.username}/${this.page}`)
       .subscribe((data) => {
+        this.loading_posts = false
         if (data.success) {
           this.posts = data.posts
           this.page++  
@@ -69,7 +71,6 @@ export class SidebarPostsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.fetch_user_posts()  
   }
 
 }
