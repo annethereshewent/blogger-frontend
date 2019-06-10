@@ -46,6 +46,7 @@ export class LoginComponent implements OnInit {
       })
       .pipe(catchError((error) => {
         if (error.status == 401) {
+          this.loading = false
           this.invalidLogin = true
         }
         return throwError("Invalid login")

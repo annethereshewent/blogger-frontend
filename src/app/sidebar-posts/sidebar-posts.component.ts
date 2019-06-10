@@ -39,7 +39,7 @@ export class SidebarPostsComponent implements OnInit {
   onScroll(): void {
     let sidebar = document.getElementById('sidebar')
     if (sidebar.offsetHeight + sidebar.scrollTop >= sidebar.scrollHeight && !this.loading_posts) {
-      this.loading_posts = true;
+      this.loading_posts = true
       this
         .http
         .get<PostInterface>(`${environment.server_url}/api/fetch_posts/${this.page}`)
@@ -48,9 +48,9 @@ export class SidebarPostsComponent implements OnInit {
             if (!environment.production) {
               data.posts = this.postsService.fixPosts(data.posts);
             }
-            this.posts.push.apply(this.posts, data.posts);
-            this.page++;
-            this.loading_posts = false;
+            this.posts.push.apply(this.posts, data.posts)
+            this.page++
+            this.loading_posts = false
           }
         })
     }
