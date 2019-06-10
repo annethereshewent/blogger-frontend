@@ -74,6 +74,7 @@ export class SidebarComponent implements OnInit {
       .subscribe((data) => {
         if (data.success) {
           this.userUpdate.emit(this.user)
+          this.showSidebarSettings = false
         }
       })
   }
