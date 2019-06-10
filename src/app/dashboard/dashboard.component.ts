@@ -89,10 +89,13 @@ export class DashboardComponent implements OnInit {
       if (this.tag_name) {
         this.title = "Tag Search:";
 
+        this.loading_posts = true
+
         this
           .http
           .get<PostInterface>(`${environment.server_url}/api/tag_search/${this.tag_name}`)
           .subscribe((data) => {
+            this.loading_posts = false
             if (data.success) {
               if (!environment.production) {
                 data.posts = this.postsService.fixPosts(data.posts);

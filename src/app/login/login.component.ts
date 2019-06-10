@@ -20,9 +20,10 @@ interface LoginResponse {
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  username: String = '';
-  password: String = '';
-  invalidLogin: Boolean = false;
+  username: string = '';
+  password: string = '';
+  invalidLogin: boolean = false;
+  loading: boolean = false
 
   constructor(
     private http: HttpClient, 
@@ -35,6 +36,7 @@ export class LoginComponent implements OnInit {
     }
   }
   login(): void {
+    this.loading = true
     this
       .http
       .post<LoginResponse>(`${environment.server_url}/oauth/token`, {
@@ -49,6 +51,7 @@ export class LoginComponent implements OnInit {
         return throwError("Invalid login")
       }))
      .subscribe((data) => {
+        this.loading = false
         if (data.access_token) {
           let token = data.access_token
           this.requestService.token = token

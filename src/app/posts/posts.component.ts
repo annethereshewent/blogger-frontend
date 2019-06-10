@@ -29,6 +29,7 @@ export class PostsComponent implements OnInit {
   username: string;
   user: User;
   production: boolean = environment.production
+  loading: boolean = false
 
   @Output() updateUser: EventEmitter<User> = new EventEmitter<User>();
   @Output() pagination: EventEmitter<Pagination> = new EventEmitter<Pagination>();
@@ -66,10 +67,13 @@ export class PostsComponent implements OnInit {
         let page = params.page;
         let url = `${environment.server_url}/api/fetch_blog_posts/${username}/${page}`;
 
+        this.loading = true
+
         this
           .http
           .get<UserPostResponse>(url)
           .subscribe((data) => {
+            this.loading = false
             if (data.success) {
               if (!this.user || (this.user.username != data.user.username)) {
                 this.user = data.user;
