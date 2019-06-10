@@ -5,10 +5,12 @@ import { Post } from "../../classes/Post";
 import { environment } from "../../environments/environment";
 import { RequestService } from "../request.service";
 import { PostsService } from "../posts.service";
+import { Pagination } from '../../classes/Pagination' 
 
 interface PostInterface {
   success: boolean,
-  posts: Post[]
+  posts: Post[],
+  pagination: Pagination
 }
 
 @Component({
@@ -30,6 +32,7 @@ export class SidebarPostsComponent implements OnInit {
   page: number = 1;
   production: boolean = environment.production
   loading_posts: boolean = false
+  finished_loading_posts: boolean = false
 
   posts: Post[];
 
@@ -38,21 +41,8 @@ export class SidebarPostsComponent implements OnInit {
   @HostListener("window:  scroll", ["$event"])
   onScroll(): void {
     let sidebar = document.getElementById('sidebar')
-    if (sidebar.offsetHeight + sidebar.scrollTop >= sidebar.scrollHeight && !this.loading_posts) {
-      this.loading_posts = true
-      this
-        .http
-        .get<PostInterface>(`${environment.server_url}/api/fetch_posts/${this.page}`)
-        .subscribe((data) => {
-          if (data.success) {
-            if (!environment.production) {
-              data.posts = this.postsService.fixPosts(data.posts);
-            }
-            this.posts.push.apply(this.posts, data.posts)
-            this.page++
-            this.loading_posts = false
-          }
-        })
+    if (sidebar.offsetHeight + sidebar.scrollTop >= sidebar.scrollHeight && !this.loading_posts && !this.finished_loading_posts) {
+      this.fetch_user_posts()
     }
   }
 
@@ -64,7 +54,20 @@ export class SidebarPostsComponent implements OnInit {
       .subscribe((data) => {
         this.loading_posts = false
         if (data.success) {
-          this.posts = data.posts
+          let pagination: Pagination = data.pagination
+
+          if (!pagination.next_page) {
+            this.finished_loading_posts = true
+          } 
+          if (!environment.production) {
+            data.posts = this.postsService.fixPosts(data.posts)
+          }
+          if (this.page == 1) {
+            this.posts = data.posts
+          }
+          else {
+            this.posts.push.apply(this.posts, data.posts)
+          }
           this.page++  
         }
       })  
