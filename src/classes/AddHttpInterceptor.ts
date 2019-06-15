@@ -8,11 +8,12 @@ import { RequestService } from "../app/request.service";
 import { Observable, throwError } from 'rxjs';
 import { Injectable } from "@angular/core";
 import { catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 
 @Injectable()
 export class AddHttpInterceptor implements HttpInterceptor {
-  constructor(private requestService: RequestService) {
+  constructor(private requestService: RequestService, private router: Router) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
@@ -25,10 +26,20 @@ export class AddHttpInterceptor implements HttpInterceptor {
           this.requestService.logout()
           return throwError("Invalid token")
         }
+
+        return throwError("An unknown error has occurred")
       }))  
     }
     else {
-      return next.handle(req)
+      return next.handle(req).pipe(catchError((error) => {
+        if (error.status == 401) {
+          if (this.router.url != '/users') {
+            this.router.navigate(['/users'])  
+          }
+          return throwError("Unauthorized")
+        }
+        return throwError("An unknown error has occurred")
+      }))
     }
   }
 

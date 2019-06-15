@@ -7,6 +7,7 @@ import { User } from "../../classes/User";
 import { RequestService } from "../request.service";
 import { throwError } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+
 interface LoginResponse {
   success: Boolean,
   posts: Post[],
@@ -45,11 +46,12 @@ export class LoginComponent implements OnInit {
         grant_type: 'password'
       })
       .pipe(catchError((error) => {
-        if (error.status == 401) {
+        if (error == 'Unauthorized') {
           this.loading = false
           this.invalidLogin = true
+          return throwError("Invalid login")
         }
-        return throwError("Invalid login")
+        return throwError("An unknown error has occurred")
       }))
      .subscribe((data) => {
         this.loading = false
