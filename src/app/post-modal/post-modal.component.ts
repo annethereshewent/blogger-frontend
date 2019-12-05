@@ -74,9 +74,12 @@ export class PostModalComponent implements OnInit {
   ngOnInit() {
     if (this.post) {
       this.editorContent = this.post.post;
-      this.buttonLabel = this.type == "edit" ? "Edit Post" : "Quote Post";
-      this.editorHeading = this.type == 'edit' ? "Edit Post" : "Quote Post";
 
+      if (!['edit', 'quote'].includes(this.type)) {
+        this.buttonLabel = this.type == "edit" ? "Edit Post" : "Quote Post";
+        this.editorHeading = this.type == 'edit' ? "Edit Post" : "Quote Post";
+      }
+      
       if (this.edit_tags) {
         this.tags = this.edit_tags.map((tag) => { return { display: tag, value: tag } })
       }
@@ -97,6 +100,11 @@ export class PostModalComponent implements OnInit {
         }
       })
     ; 
+  }
+
+  clearModal(): void {
+    this.editorContent = '';
+    this.bsModalRef.hide();
   } 
 
   submitPost(): void {

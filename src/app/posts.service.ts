@@ -23,14 +23,40 @@ export class PostsService {
   private _post: Subject<Post> = new BehaviorSubject<Post>(null);
   post$ = this._post.asObservable();
 
+  private saved_contents: string = '';
+
   constructor(private modalService: BsModalService, private http: HttpClient) { }
 
   openPostModal(): EventEmitter<Post> {
-    let options  = {
-      animated: true,
-      class: 'modal-md',
-    };
-    this.bsModalRef = this.modalService.show(PostModalComponent,options);
+
+
+    // need to specify all of the Post properties or angular will complain lmao
+    // since this is a new post only the post property will actally exist
+    let post: Post = {
+      id: null,
+      created_at: null,
+      updated_at: null,
+      post: this.saved_contents,
+      edited: null,
+      num_comments: null,
+      avatar: null,
+      username: null,
+      images: null,
+      user_id: null,
+      tags: null,
+      user: null
+    }
+
+    let initialState = {
+      post,
+      type: 'new'
+    }
+
+    this.bsModalRef = this.modalService.show(PostModalComponent, Object.assign({}, { class: "modal-md", initialState } ));
+
+    this.modalService.onHide.subscribe((reason: string) => {
+      this.saved_contents = this.bsModalRef.content.editorContent;
+    });
 
     return this.bsModalRef.content.postEmitter;
   }
