@@ -75,7 +75,7 @@ export class PostModalComponent implements OnInit {
     if (this.post) {
       this.editorContent = this.post.post;
 
-      if (!['edit', 'quote'].includes(this.type)) {
+      if (['edit', 'quote'].includes(this.type)) {
         this.buttonLabel = this.type == "edit" ? "Edit Post" : "Quote Post";
         this.editorHeading = this.type == 'edit' ? "Edit Post" : "Quote Post";
       }
@@ -142,6 +142,7 @@ export class PostModalComponent implements OnInit {
         this.postRequest(`${environment.server_url}/api/create_post`, postParams);
       }
       
+      this.editorContent = '';
     }
   } 
 
