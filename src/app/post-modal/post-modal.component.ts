@@ -9,9 +9,9 @@ import { RequestService } from "../request.service";
 declare var $: any;
 
 interface SubmitPostInterface { 
-  success: Boolean;
+  success: boolean;
   post: Post;
-  message: String;
+  message: string;
 }
 
 @Component({
@@ -21,18 +21,18 @@ interface SubmitPostInterface {
 })
 export class PostModalComponent implements OnInit {
 
-  editorContent: String;
+  editorContent: string;
   user: User;
-  editorHeading: String = "Create a new post";
+  editorHeading: string = "Create a new post";
 
-  buttonLabel: String = "Submit Post";
+  buttonLabel: string = "Submit Post";
 
   tags: any[] = [];
 
   @Output() postEmitter: EventEmitter<Post> = new EventEmitter<Post>();
 
   @Input() post: Post;
-  @Input() type: String;
+  @Input() type: string;
   @Input() edit_tags: string[];
   options = {
     // inlineMode: false,
