@@ -33,7 +33,7 @@
     "font-awesome": "^4.7.0",
     "froala-editor": "^2.8.4",
     "imagesloaded": "^4.1.4",
-    "jquery": "^3.3.1",
+    "jquery": "^3.5.0",
     "ngx-bootstrap": "^3.0.1",
     "ngx-chips": "^1.9.3",
     "ngx-dropzone-wrapper": "^6.2.0",
