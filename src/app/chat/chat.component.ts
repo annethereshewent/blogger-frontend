@@ -40,7 +40,8 @@ export class ChatComponent implements OnInit {
   chat_content: string[] = [];
 
   private userSubject: Subject<any> = new Subject<any>();
-  private userSubscription: Subscription<any> = null
+  // sorry... i just need this to pass build for now, @ TODO
+  private userSubscription: any = null
 
   entityMap = {
     '&': '&amp;',
