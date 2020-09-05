@@ -34,7 +34,8 @@ export class AddHttpInterceptor implements HttpInterceptor {
       return next.handle(req).pipe(catchError((error) => {
         if (error.status == 401) {
           if (this.router.url != '/users') {
-            this.router.navigate(['/users'])  
+            this.requestService.logout()
+            return throwError('Unauthorized')
           }
           return throwError("Unauthorized")
         }
