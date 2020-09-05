@@ -134,25 +134,32 @@ export class DashboardComponent implements OnInit {
           this.posts = requestService.posts
         }
         else {
-
           this
             .http
             .get<PostInterface>(`${environment.server_url}/api/fetch_posts`)
-            .subscribe((data) => {
-              if (data.success) {
-                if (!environment.production) {
-                  data.posts = this.postsService.fixPosts(data.posts);  
+            .subscribe(
+              (data) => {
+                if (data.success) {
+                  if (!environment.production) {
+                    data.posts = this.postsService.fixPosts(data.posts);  
+                  }
+                  
+                  this.posts = data.posts
                 }
-                
-                this.posts = data.posts
-              }
-              else {
-                //token is invalid now, for some reason. redirect back to login page
-                localStorage.removeItem("current_user");
+                else {
+                  //token is invalid now, for some reason. redirect back to login page
+                  localStorage.removeItem("current_user");
+                  this.user = null;
+                  this.router.navigate(["/users/login"])
+                }
+              },
+              (err) => {
+                console.log('what')
+                console.log(err.response)
+                localStorage.removeItem('current_user');
                 this.user = null;
-                this.router.navigate(["/users/login"])
-              }
-            })
+                this.router.navigate(['/users/login']);
+              }) 
           ;
         }  
       }
@@ -168,6 +175,7 @@ export class DashboardComponent implements OnInit {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.tag_name && !this.search_query && !this.loading_posts) {
 
       if (this.user) {
+        console.log('testing if this is firing off')
         this.loading_posts = true;
         this
           .http
@@ -181,6 +189,9 @@ export class DashboardComponent implements OnInit {
               this.page++;
               this.loading_posts = false;
             }
+          },
+          (err) => {
+            console.log('here????')
           })
         ;  
       }

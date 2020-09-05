@@ -40,6 +40,7 @@ export class ChatComponent implements OnInit {
   chat_content: string[] = [];
 
   private userSubject: Subject<any> = new Subject<any>();
+  privat userSubscription: Subscription<any>
 
   entityMap = {
     '&': '&amp;',
@@ -57,9 +58,9 @@ export class ChatComponent implements OnInit {
 
     this.user = JSON.parse(localStorage.getItem('current_user'));
 
-    this
+    this.userSubscription = this
       .userSubject
-      .pipe(debounceTime(600))
+      .pipe(debounceTime(1000))
       .subscribe((user) => {
         this.is_friends(user)
       })
@@ -226,15 +227,24 @@ export class ChatComponent implements OnInit {
     return ((i+1) * 325) + "px";
   }
   is_friends(user) {
-    if (user.username != this.user.username && !this.isDupe(user.username)) {
+    this.user = localStorage.getItem('current_user');
+    if (this.user != null ) {
+      if (user.username != this.user.username && !this.isDupe(user.username)) {
+        this
+          .http
+          .get<FriendResponse>(`${environment.server_url}/api/is_friends/${user.username}`)
+          .subscribe((data) => {
+            this.friends.push(user);
+          })
+        ;
+      }
+    } else {
       this
-        .http
-        .get<FriendResponse>(`${environment.server_url}/api/is_friends/${user.username}`)
-        .subscribe((data) => {
-          this.friends.push(user);
-        })
+        .userSubscription
+        .unsubscribe()
       ;
     }
+    
   }
   /*
    * this.friends.map(friend => friend.username).indexOf(user.username)
