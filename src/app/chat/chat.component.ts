@@ -1,11 +1,11 @@
-import { Component, OnInit, ViewChildren, ElementRef, QueryList} from '@angular/core';
+import { Component, OnInit, ViewChildren, ElementRef, QueryList } from '@angular/core';
 import { environment } from "../../environments/environment";
 import { User } from "../../classes/User";
 import { Friend } from "../../classes/Friend";
 import { ChatBox } from "../../classes/ChatBox";
 import io from 'socket.io-client';
 import { HttpClient } from '@angular/common/http';
-import { Subject } from 'rxjs';
+import { Subject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 
 interface FriendResponse {
@@ -227,7 +227,7 @@ export class ChatComponent implements OnInit {
     return ((i+1) * 325) + "px";
   }
   is_friends(user) {
-    this.user = localStorage.getItem('current_user');
+    this.user = JSON.parse(localStorage.getItem('current_user'));
     if (this.user != null ) {
       if (user.username != this.user.username && !this.isDupe(user.username)) {
         this
