@@ -191,6 +191,7 @@ export class AccountComponent implements OnInit {
       .subscribe((data) => {
         if (data.success) {
           this.user = data.user;
+          console.log(this.user)
           localStorage.setItem("current_user", JSON.stringify(this.user));
           this.alertSuccess = true;
         }

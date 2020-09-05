@@ -154,8 +154,6 @@ export class DashboardComponent implements OnInit {
                 }
               },
               (err) => {
-                console.log('what')
-                console.log(err.response)
                 localStorage.removeItem('current_user');
                 this.user = null;
                 this.router.navigate(['/users/login']);
@@ -175,7 +173,6 @@ export class DashboardComponent implements OnInit {
     if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight && !this.tag_name && !this.search_query && !this.loading_posts) {
 
       if (this.user) {
-        console.log('testing if this is firing off')
         this.loading_posts = true;
         this
           .http
@@ -191,7 +188,7 @@ export class DashboardComponent implements OnInit {
             }
           },
           (err) => {
-            console.log('here????')
+            console.log(err);
           })
         ;  
       }

@@ -32,7 +32,6 @@ export class LoginComponent implements OnInit {
     private requestService: RequestService
   ) {
     let user = localStorage.getItem('current_user');
-    console.log(user)
     if (user) {
       this.router.navigate(["/users/dashboard"]);
     }
