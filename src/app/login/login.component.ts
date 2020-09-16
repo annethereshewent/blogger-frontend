@@ -56,9 +56,10 @@ export class LoginComponent implements OnInit {
      .subscribe((data) => {
         this.loading = false
         if (data.access_token) {
+          
           let token = data.access_token
           this.requestService.token = token
-          this.requestService.posts = data.posts;
+
           //save the token/user to local storage or possibly a session if thats possible.
           let user = data.user
 
